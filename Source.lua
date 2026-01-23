@@ -65,31 +65,45 @@ local function copySkin(targetPlayer)
         end
     end
 end
+-----------------------------------------------------------Key-------------------------------------------------------
+-- function(Key):
+--   local Window = WindUI:CreateWindow({
+ --   KeySystem = {                                                   
+ --      Note = "Example Key System. With platoboost.",              
+ --       API = {                                                     
+ --           { -- PlatoBoost
+ --               Type = "platoboost",                                
+ --               ServiceId = 19220, -- service id
+  --              Secret = "b549aa50-d100-4cfa-a4b4-cb5503d207af", -- platoboost secret
+ --           },                                                      
+ --       },                                                          
+ --   },                                                              
+--})
 --------------------------------------------------------------INFORMAÇÕES---------------------------------------------------------
-local Players = game:GetService("Players")
-local MarketplaceService = game:GetService("MarketplaceService")
-local RunService = game:GetService("RunService")
+--local Players = game:GetService("Players")
+--local MarketplaceService = game:GetService("MarketplaceService")
+--local RunService = game:GetService("RunService")
 
-local player = Players.LocalPlayer
-local placeId = game.PlaceId
+--local player = Players.LocalPlayer
+--local placeId = game.PlaceId
 
 -- Obter nome do lugar (mapa) via MarketplaceService (pode falhar em alguns jogos)
-local placeName = "Carregando..."
-local success, err = pcall(function()
-    placeName = MarketplaceService:GetProductInfo(placeId).Name
-end)
-if not success then
-    placeName = "Mapa Desconhecido"
-end
+--local placeName = "Carregando..."
+--local success, err = pcall(function()
+ --   placeName = MarketplaceService:GetProductInfo(placeId).Name
+--end)
+--if not success then
+--    placeName = "Mapa Desconhecido"   
+----end
 
 -- Tempo no servidor (atualizado a cada segundo)
-local startTime = os.time()
-local timeInServer = 0
+--local startTime = os.time()
+--local timeInServer = 0
 
 -- Atualiza o tempo no servidor
-RunService.Heartbeat:Connect(function()
-    timeInServer = os.time() - startTime
-end)
+--RunService.Heartbeat:Connect(function()
+ --   timeInServer = os.time() - startTime
+--end)
 
 ------------------------------------------------------- Icons --------------------------------------------------------------
 local InicioIcon = Icons.Icon("user")
@@ -181,300 +195,153 @@ local function gradient(text, startColor, endColor)
     end
     return result
 end
----------------------------------------------- POPUP ------------------------------------------------------------------------
-WindUI:Popup({
-    Title = gradient("RoyalHub Demo", Color3.fromHex("#6A11CB"), Color3.fromHex("#2575FC")),
-    Icon = "sparkles",
-    Content = "loc:LIB_DESC",
-    Buttons = {
-        {
-            Title = "Aviso",
-            Icon = "arrow-right",
+----------------------------------------------DETECTAR USUARIO----------------------------------
+local localPlayer = game:GetService("Players").LocalPlayer
+local playerName = localPlayer.Name
+local isWhitelisted = (playerName == "S1wlkrX" or playerName == "thenoctisblack78")
+
+print("Usuário detectado:", playerName)
+print("É whitelistado?", isWhitelisted)
+---------------------------------------------- Popup -------------------------------------------
+
+WindUI:Popup({ 
+    Title = "Royal Hub King Legacy version",
+    Icon = "info",
+    Content = "Esta script está em desenvolvimento, pode ocorrer bugs!",
+    Buttoms = { 
+        { 
+            Title = "Sair",
+            Callback = function() end,
+            Variant = "Tertiary",
+
+        },
+        { 
+            Title = "Continuar mesmo assim",
+            Callback = function() end,
             Variant = "Primary",
-            Callback = function() end
         }
     }
 })
---------------------------------------------- WINDOW ------------------------------------------------------------------------
-local Window = WindUI:CreateWindow({
-    Title = "loc:TittleHub",
-    Icon = "star",
-    Author = "loc:WELCOME",
-    Folder = "RoyalHub Demo",
-    Size = UDim2.fromOffset(350, 320),
-    Theme = "Dark",
-     User = {
-        Enabled = true,
-        Anonymous = false
-    }
+
+------------------------------------------ Notificação---------------------------------------------------
+
+WindUi:Notify({
+    Title = "Congratulations!",
+    Content = "Obrigado por testar esta script, boa play!",
+    Duration = 3,
+    Icon = "acessibility"
 })
 
--- TAGS--
-Window:Tag({
-    Title = "Demo",
-    Color = Color3.fromHex("#FFA500")
-})
-Window:Tag({
-    Title = "1.0.9",
-    Color = Color3.fromHex("#FFFF00")
-})
-
---------------------------------------------- TOPBAR BUTTONS -------------------------------------------------------------
-
-Window:CreateTopbarButton("theme-switcher", "moon", function()
-    WindUI:SetTheme(WindUI:GetCurrentTheme() == "Dark" and "Light" or "Dark")
-    WindUI:Notify({
-        Title = "Tema alterado",
-        Content = "Tema atual:"..WindUI:GetCurrentTheme(),
-        Duration = 2
-    })
-end, 990)
-
-------------------------------------------------------------- Tabs -----------------------------------------------------------
-local home = Window:Tab({
-    Title = "loc:Inicio",
-    Icon = "user",
-    Description = "loc:ini_desc",
-})
-
-local Trol = Window:Tab({
-    Title = "Trolls",
-    Icon = "crosshair",
-    Description = "Trolls do RoyalHub",
-})
-local Roupas = Window:Tab({
-    Title = "Roupas",
-    Icon = "shirt",
-    Description = "Copie roupas e use estilos personalizados!",
-})
-
-local Utilities = Window:Tab({
-    Title = "loc:UTILITIES",
-    Icon = "accessibility",
-    Description = "Utilidades do RoyalHub",
-})
-
-local setting = Window:Tab({
-    Title = "loc:SETTINGS",
-    Icon = "settings",
-    Description = "Configurações do RoyalHub",
-})
-
------------------------------------------------------- Buttoons -------------------------------------------------------------
- local SpeedSlider = Trol:Slider({
-    Title = "Velocidade",
-    Step = 1, -- incrementos de 1
-    Value = {
-        Min = 16,
-        Max = 900,
-        Default = 16,
-    },
-    Callback = function(value)
-        local player = S.Players.LocalPlayer
-        local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = value
-        end
-    end
-})
---------------------------------------------- Pulo ------------------------------------------------------------
-local JumpSlider = Trol:Slider({
-    Title = "Altura do Pulo",
-    Step = 1,
-    Value = {
-        Min = 10,
-        Max = 500,
-        Default = 50,
-    },
-    Callback = function(value)
-        local player = S.Players.LocalPlayer
-        local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid.JumpPower = value
-        end
-    end
-})
----------------------------------------------- Noclip ------------------------------------------------------------
-local noclipEnabled = false
-local lastCollisionState = {} -- Armazena o estado original das partes
-
-Trol:Toggle({
-    Title = "Noclip",
-    Description = "Passar por paredes",
-    Icon = "eye", -- Ícone corrigido
-    DefaultValue = false,
-    Callback = function(state)
-        noclipEnabled = state
+------------------------------------------ Window ------------------------------------------------------
+local function createWindow()
+    if isWhitelisted then
+        -- Se for usuário whitelistado, cria a window diretamente sem sistema de key
+        print("Usuário whitelistado detectado. Pulando sistema de key...")
         
-        -- Se desativado, restaura a colisão das partes
-        if not state then
-            local char = S.Players.LocalPlayer.Character
-            if char then
-                for _, part in pairs(char:GetChildren()) do
-                    if part:IsA("BasePart") and lastCollisionState[part] ~= nil then
-                        part.CanCollide = lastCollisionState[part]
-                    end
+        local Window = WindUI:CreateWindow({
+            Title = "RoyalHub King Legacy",
+            Icon = "Open Configs",
+            Author = "Einzbern",
+            Folder = "RoyalHub",
+            Size = UDim2.fromOffset(500, 460),
+            MinSize = Vector2.new(550, 350),
+            MaxSize = Vector2.new(850, 560),
+            Transparent = true,
+            Theme = "Dark",
+            Resizable = true,
+            SideBarWidth = 200,
+            BackgroundImageTransparency = 0.42,
+            HideSearchBar = true,
+            ScrollBarEnabled = true,
+            user = {
+                Enabled = true,
+                Anonymous = true,
+                Callback = function()
+                    print("Executado.")
+             end
+            }
+        })
+
+        return Window
+        
+    else
+          -- Se não for whitelistado, usa o sistema de key
+        print("Sistema de key ativado...")
+        
+        local Window = WindUI:CreateWindow({
+            Title = "RoyalHub King Legacy",
+            Icon = "Open Configs",
+            Author = "Einzbern",
+            Folder = "RoyalHub",
+            Size = UDim2.fromOffset(500, 460),
+            MinSize = Vector2.new(550, 350),
+            MaxSize = Vector2.new(850, 560),
+            Transparent = true,
+            Theme = "Dark",
+            Resizable = true,
+            SideBarWidth = 200,
+            BackgroundImageTransparency = 0.42,
+            HideSearchBar = true,
+            ScrollBarEnabled = true,
+            KeySystem = {                                                   
+                Note = "RoyalHub Key System. With platoboost.",              
+                API = {                                                     
+                    { -- PlatoBoost
+                        Type = "platoboost",                                
+                        ServiceId = 19220, -- service id
+                        Secret = "b549aa50-d100-4cfa-a4b4-cb5503d207af", -- platoboost secret
+                    },                                                      
+                },                                                          
+            },
+            user = {
+                Enabled = true,
+                Anonymous = true,
+                Callback = function()
+                    print("Executado.")
                 end
-                lastCollisionState = {} -- Limpa o cache
-            end
-        end
+            }
+        })
+
+          -- Callback quando a key é validada
+        Window:OnKeyValidated(function()
+            print("Key validada com sucesso!")
+        end)
+        
+        return Window
     end
+end
+---------------------------------------TAB---------------------------------------
+    local Tab = Window:Tab({
+    Title = "Home",
+    Icon = "crosshair", 
+    Locked = false,
+    Tab:Select() -- Select Tab
 })
 
-S.Run.Stepped:Connect(function()
-    local char = S.Players.LocalPlayer.Character
-    if noclipEnabled and char then
-        for _, part in pairs(char:GetChildren()) do
-            if part:IsA("BasePart") then
-                -- Salva o estado original da colisão (se não foi salvo antes)
-                if lastCollisionState[part] == nil then
-                    lastCollisionState[part] = part.CanCollide
-                end
-                part.CanCollide = false
-            end
-        end
+local Button = Tab:Button({
+    Title = "Configurações",
+    Desc = "Altere o tema da UI.",
+    Locked = false,
+    Callback = function()
+
     end
-end)
--------------------------------------------------- Teleport -------------------------------------------------------------
-local function GetSafePlayerList()
-    local players = {}
-    local success, err = pcall(function()
-        for _, player in ipairs(S.Players:GetPlayers()) do
-            if player ~= S.Players.LocalPlayer and player.Name then
-                table.insert(players, player.Name)
-            end
-        end
-    end)
-    return players
-end
 
-local function CreateTeleportDropdown()
-    local playerList = GetSafePlayerList()
-    
-    return Trol:Dropdown({
-        Title = "👥 Teleportar",
-        Description = #playerList > 0 and (#playerList.." jogadores") or "Nenhum jogador",
-        Options = #playerList > 0 and playerList or {"Nenhum jogador online"},
-        Callback = function(selected)
-            if selected == "Nenhum jogador online" then return end
-            
-            local target = S.Players:FindFirstChild(selected)
-            if target and target.Character then
-                local hrp = target.Character:FindFirstChild("HumanoidRootPart")
-                local localChar = S.Players.LocalPlayer.Character
-                
-                if hrp and localChar and localChar:FindFirstChild("HumanoidRootPart") then
-                    localChar.HumanoidRootPart.CFrame = hrp.CFrame
-                    WindUI:Notify({
-                        Title = "✅ Teleportado!",
-                        Content = "Você foi até "..target.Name,
-                        Duration = 3
-                    })
-                end
-            end
-        end
-    })
-end
-
--- Variável global para controle
-local CurrentTeleportDropdown = CreateTeleportDropdown()
-
--- Sistema de atualização robusto
-local function UpdateTeleportDropdown()
-    local newPlayerList = GetSafePlayerList()
-    
-    -- Destrói e recria o dropdown (garante compatibilidade)
-    CurrentTeleportDropdown:Destroy()
-    CurrentTeleportDropdown = CreateTeleportDropdown()
-    
-    -- Debug opcional
-    print("Lista atualizada:", table.concat(newPlayerList, ", "))
-end
-
--- Conexão segura dos eventos
-local updateDebounce = false
-local function SafeUpdate()
-    if updateDebounce then return end
-    updateDebounce = true
-    
-    task.spawn(function()
-        pcall(UpdateTeleportDropdown)
-        task.wait(1) -- Debounce de 1 segundo
-        updateDebounce = false
-    end)
-end
-
--- Inicialização segura
-task.delay(3, function() -- Espera 3 segundos para o primeiro carregamento
-    pcall(SafeUpdate)
-end)
-
--- Conexão dos eventos
-S.Players.PlayerAdded:Connect(SafeUpdate)
-S.Players.PlayerRemoving:Connect(SafeUpdate)
---------------------------------------------------------Fly-------------------------------------------------------------
-local flying = false
-local flySpeed = 50
-local flyBV
-
-Trol:Toggle({
-    Title = "Fly",
-    Description = "Ativa ou desativa o voo",
-    Default = false,
-    Callback = function(state)
-        flying = state
-        local player = S.Players.LocalPlayer
-        local char = player.Character
-        if flying and char and char:FindFirstChild("HumanoidRootPart") then
-            flyBV = Instance.new("BodyVelocity")
-            flyBV.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-            flyBV.Velocity = Vector3.new(0, 0, 0)
-            flyBV.Parent = char.HumanoidRootPart
-        elseif char and char:FindFirstChild("HumanoidRootPart") and flyBV then
-            flyBV:Destroy()
-        end
-    end})
-
--- Controle do movimento do voo
-S.Run.RenderStepped:Connect(function()
-    if flying then
-        local player = S.Players.LocalPlayer
-        local char = player.Character
-        if char and char:FindFirstChild("HumanoidRootPart") then
-            local direction = Vector3.new(0,0,0)
-            if S.UI:IsKeyDown(Enum.KeyCode.W) then direction = direction + char.HumanoidRootPart.CFrame.LookVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.S) then direction = direction - char.HumanoidRootPart.CFrame.LookVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.A) then direction = direction - char.HumanoidRootPart.CFrame.RightVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.D) then direction = direction + char.HumanoidRootPart.CFrame.RightVector end
-            flyBV.Velocity = direction.Unit * flySpeed
-        end
-    end
-end)
-
--------------------------------------------------- Copiar Skin -------------------------------------------------------------
-local clothesDropDown = Roupas:Dropdown({
-    Title = "Copiar roupa",
-    Description = "Escolha um jogador para copiar a roupa",
-    Options = {S.Players.GetPlayers}, -- será preenchido dinamicamente
-    Callback = function(selected)
-        local target = S.Players:FindFirstChild(selected)
-        if target then
-            copySkin(target)
-        end
-    end
 })
 
--- Atualiza lista de jogadores
-local function ClothesPlayerList()
-    local options = {}
-    for _, plr in pairs(S.Players:GetPlayers()) do
-        if plr ~= S.Players.LocalPlayer then
-            table.insert(options, plr.Name)
-        end
-    end
-    clothesDropDown:UpdateOptions(options)
-end
+-----------------------------THEMES-------------------------------------
 
-S.Players.PlayerAdded:Connect(ClothesPlayerList)
-S.Players.PlayerRemoving:Connect(ClothesPlayerList)
-ClothesPlayerList()
+    WindUI:AddTheme({
+    Name = "Hutao By Einzbern.", -- theme name
+    
+    Accent = Color3.fromHex("#18181b"),
+    Background = Color3.fromHex("#101010"), -- Accent
+    Outline = Color3.fromHex("#000000"),
+    Text = Color3.fromHex("#000000"),
+    Placeholder = Color3.fromHex("#000000"),
+    Button = Color3.fromHex("#c40b0b"),
+    Icon = Color3.fromHex("#e20505"),
+})
+
+WindUI:SetTheme("Hutao By Einzbern.")
+
+print("Executado com sucesso!")
