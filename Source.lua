@@ -321,10 +321,10 @@ if Window then
                     print("Continuando...")
                 end,
                 Variant = "Primary",
-            end
             }
         }
     })
+end
 --------------------------------------------Tema----------------------------------------------------------
 WindUI:AddTheme({
         Name = "Hutao By Einzbern.", -- theme name
@@ -403,8 +403,9 @@ if Window then
         Title = "Informações",
         Icon = "info",
     })
-    local FunçõesTab = Window:Tab({
--- Title = "Funções
+    local Button = ({
+-- Title = "Funções", 
+icon = "star", 
 ---------------------------------------Buttons--------------------------------------
 local Slider = PersonagemTab:Slider({
     Title = "Velocidade",
