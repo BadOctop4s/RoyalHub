@@ -213,6 +213,8 @@ local utilIcon = Icons.Icon("acessibility")
 local settingIcon = Icons.Icon("settings-gear")
 local UIcon = Icons.Icon("star")
 local eye_dashed = Icons.Icon("eye-dashed")
+local controller = icons.Icon("game-controller")
+local shieldCheck = icons.Icon("shield-check")
 
 --------------------------------------------------- Translations -----------------------------------------------------------
 -- CORRIGIDO: Fechando corretamente as tabelas
@@ -403,14 +405,54 @@ if Window then
         Title = "Informações",
         Icon = "info",
     })
-    local Button = ({
--- Title = "Funções", 
-icon = "star", 
+
+    local funçõesTab = Window:Tab({
+        Title = "Funções",
+        Icon = "controller",
+    
+    })
+
+    local 
+----------------------------------------------------WINDOW TAG----------------------------------------------
+Window;Tag({
+    Title = "Beta",
+    Icon = "shieldCheck",
+    Color = Color3.fromHex("#30ff6a"),
+    Radius = 0,
+})
+
+---------------------------------------------DropDown Temas----------------------------- { Disabled no momento. }
+--local DropDownTemas = InfoTab:DropDown({
+--    Title = "Selecione qual tema deseja usar",
+--    Desc = "",
+ --   Values = { }
+
+--})
+ ---------------------------------------------Sections-----------------------------
+ local movementSection = PersonagemTab:Section({
+    Title = "Movimento",
+    Box = true,
+    FontWeight = "SemiBold",
+    TextTransparency = 0.05,
+    TextAlignment = "Left",
+    TextSize = 17,
+    Opened = true,
+ })
+
+
+ local infoSection = InfoTab:Section({
+    Title = "Informações de desenvolvimento",
+    Box = true,
+    FontWeight = "SemiBold",
+    TextTransparency = 0.05
+    TextAlignment = "Left",
+    TextSize = 1,
+    Opened = True
+ })
 ---------------------------------------Buttons--------------------------------------
-local Slider = PersonagemTab:Slider({
+movementSection:Slider({
     Title = "Velocidade",
     Desc =  "Nada ainda",
-
     Step = 1,
     value = {
         Min = 20,
