@@ -393,8 +393,8 @@ if Window then
         Icon = "user",
     }) 
        -- Adicione mais elementos aqui...
-    Button:SetTitle("Settings"),
-    Button:SetDesc("False"),
+    Button:SetTitle("Settings")
+    Button:SetDesc("False")
     -- Button:Lock() -- Descomente se quiser travar
     
     -- Adicione mais tabs e elementos conforme necessário
