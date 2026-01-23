@@ -350,9 +350,9 @@ WindUI:AddTheme({
     Name = "Main Theme",
     Accent = Color3.fromHex("#000000"),
     Background = Color3.fromHex("#000000"),
-    Outline = Color3.fromHex("#000000"),
+    Outline = Color3.fromHex("#686868"),
     Text = Color3.fromHex("#fff4f4"),
-    Placeholder = Color3.fromHex("#ffffff"),
+    Placeholder = Color3.fromHex("#797777"),
     Button = Color3.fromHex("#000000"),
     Icon = Color3.fromHex("#fffcfc"),
 })
@@ -389,12 +389,12 @@ if Window then
     })
 
     local PersonagemTab = Window:Tab({
-        Title = "Personagem"
-        Icon = "user"
+        Title = "Personagem",
+        Icon = "user",
     }) 
        -- Adicione mais elementos aqui...
-    Button:SetTitle("Settings")
-    Button:SetDesc("False")
+    Button:SetTitle("Settings"),
+    Button:SetDesc("False"),
     -- Button:Lock() -- Descomente se quiser travar
     
     -- Adicione mais tabs e elementos conforme necessário
