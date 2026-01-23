@@ -349,12 +349,12 @@ WindUI:AddTheme({
 WindUI:AddTheme({
     Name = "Main Theme",
     Accent = Color3.fromHex("#000000"),
-    Background = Color3.fromHex("#000000), -- Accent
+    Background = Color3.fromHex("#000000"),
     Outline = Color3.fromHex("#000000"),
     Text = Color3.fromHex("#fff4f4"),
-    Placeholder = Color3.fromHex("#7a7a7a"),
-    Button = Color3.fromHex("#52525b"),
-    Icon = Color3.fromHex("#000000"),
+    Placeholder = Color3.fromHex("#ffffff"),
+    Button = Color3.fromHex("#000000"),
+    Icon = Color3.fromHex("#fffcfc"),
 })
 
 ------------------------------------------ Notificação---------------------------------------------------
