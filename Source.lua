@@ -404,10 +404,10 @@ if Window then
     })
 
     local Window = WindUI:CreateWindow({
-    Title = "",
-    Icon = "door-open", -- lucide icon
-    Author = "by .ftgs and .ftgs",
-    Folder = "MySuperHub",
+    Title = "Funções",
+    Icon = "Function", -- lucide icon
+
+    Folder = "",
     
     -- ↓ This all is Optional. You can remove it.
     Size = UDim2.fromOffset(580, 460),
@@ -464,8 +464,8 @@ if Window then
 })
 ---------------------------------------Buttons--------------------------------------
 local Slider = PersonagemTab:Slider({
-    Title = "Velocidade"
-    Desc =  "Nada ainda" 
+    Title = "Velocidade",
+    Desc =  "Nada ainda",
 
     Step = 1,
     value = {
