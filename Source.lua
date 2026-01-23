@@ -324,7 +324,6 @@ if Window then
             }
         }
     })
-end
 --------------------------------------------Tema----------------------------------------------------------
 WindUI:AddTheme({
         Name = "Hutao By Einzbern.", -- theme name
@@ -347,6 +346,16 @@ WindUI:AddTheme({
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#000000"),
     Icon = Color3.fromHex("#000000"),   
+})WindUI:AddTheme({
+    Name = "RGB Theme", -- theme name
+    
+    Accent = Color3.fromHex("#ee3355"),
+    Background = Color3.fromHex(#), -- Accent
+    Outline = Color3.fromHex("#FFFFFF"),
+    Text = Color3.fromHex("#FFFFFF"),
+    Placeholder = Color3.fromHex("#7a7a7a"),
+    Button = Color3.fromHex("#52525b"),
+    Icon = Color3.fromHex("#a1a1aa"),
 })
 })
 ------------------------------------------ Notificação---------------------------------------------------
