@@ -384,7 +384,6 @@ if Window then
         Desc = "Altere o tema da UI.",
         Locked = false,
         Callback = function()
-            print("Botão de configurações clicado"),
             WindUI:SetTheme("Hutao By Einzbern.")
         end
     })
