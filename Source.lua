@@ -327,7 +327,6 @@ if Window then
 --------------------------------------------Tema----------------------------------------------------------
 WindUI:AddTheme({
         Name = "Hutao By Einzbern.", -- theme name
-    
         Accent = Color3.fromHex("#18181b"),
         Background = Color3.fromHex("#101010"), -- Accent
         Outline = Color3.fromHex("#000000"),
@@ -335,10 +334,9 @@ WindUI:AddTheme({
         Placeholder = Color3.fromHex("#000000"),
         Button = Color3.fromHex("#c40b0b"),
         Icon = Color3.fromHex("#e20505"),
-
-    WindUI:AddTheme({
+})
+WindUI:AddTheme({
     Name = "Dark Theme", -- theme name
-    
     Accent = Color3.fromHex("#18181b"),
     Background = Color3.fromHex("#000000"), -- Accent
     Outline = Color3.fromHex("#020101"),
@@ -346,18 +344,19 @@ WindUI:AddTheme({
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#000000"),
     Icon = Color3.fromHex("#000000"),   
-})WindUI:AddTheme({
-    Name = "RGB Theme", -- theme name
-    
-    Accent = Color3.fromHex("#ee3355"),
-    Background = Color3.fromHex(#), -- Accent
-    Outline = Color3.fromHex("#FFFFFF"),
-    Text = Color3.fromHex("#FFFFFF"),
+})
+
+WindUI:AddTheme({
+    Name = "Main Theme",
+    Accent = Color3.fromHex("#000000"),
+    Background = Color3.fromHex("#000000), -- Accent
+    Outline = Color3.fromHex("#000000"),
+    Text = Color3.fromHex("#fff4f4"),
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#52525b"),
-    Icon = Color3.fromHex("#a1a1aa"),
+    Icon = Color3.fromHex("#000000"),
 })
-})
+
 ------------------------------------------ Notificação---------------------------------------------------
 -- CORRIGIDO: Sintaxe correta para a notificação
 if Window then
