@@ -415,8 +415,6 @@ local Slider = PersonagemTab:Slider({
              end
         end
 })
-
-})
     
     local infoSection = InfoTab:CreateSection("Informações do Servidor")
     infoSection:CreateLabel("Nome do Mapa: " .. placeName)
