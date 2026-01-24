@@ -1,46 +1,22 @@
--- RoyalHub Source.lua
--- GitHub: https://github.com/BadOctop4s/RoyalHub
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
-print("=== RoyalHub Carregando ===")
+WindUI:SetNotificationLower(true)
 
--- Detectar ambiente
-local RunService = game:GetService("RunService")
-local IsStudio = RunService:IsStudio()
-local testingMode = IsStudio
-
--- Configuração de usuário
-local Players = game:GetService("Players")
-local localPlayer
-local success, err = pcall(function()
-    localPlayer = Players.LocalPlayer
-end)
-
-if not success then
-    warn("Aguardando jogador...")
-    repeat wait() until Players.LocalPlayer
-    localPlayer = Players.LocalPlayer
-end
-
-local playerName = localPlayer.Name
-
--- Whitelist + modo teste
-local isWhitelisted = (playerName == "S1wlkrX" or playerName == "thenoctisblack78" or "DARK_ZINN")
-
-print("Usuário:", playerName)
-print("Whitelistado:", isWhitelisted)
-print("Modo Teste:", testingMode)
-
--- Carregar bibliotecas
-local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
-local Icons = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"))()
-
-Icons.SetIconsType("geist")
-
--- Configurações
-local PrimaryColor = Color3.fromHex("#ffffff")
-local SecondaryColor = Color3.fromHex("#315dff")
-
--------------------------------------------------------------SERVICES---------------------------------------------------------
+------------------------------Icones---------------------------------
+local Janela = "geist:window"
+local wrench = "geist:wrench"
+local Home = "geist:home"
+local InfoICO = "geist:asterisk"
+local Key = "geist:key"
+local discord = "geist:logo-discord"
+local box = "geist:box"
+local config = "geist:agents"
+local accessibility = "geist:accessibility"
+local bug = "geist:bug"
+local star = "geist:star" 
+local cloud = "geist:cloud"
+local shield = "geist:shield-check"
+------------------------------Serviços personagem--------------------
 local S = {
     Players = game:GetService("Players"),
     Tween = game:GetService("TweenService"),
@@ -51,7 +27,9 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
---------------------------------------------------- Funções do personagem------------------------------------------------------
+--local ESPEnabled = false  -- Toggle para ligar/desligar
+--local ESPObjects = {}
+------------------------------Functions personagem------------------
 local function setSpeed(value)
     local player = S.Players.LocalPlayer
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
@@ -68,418 +46,326 @@ local function setJumpPower(value)
     end
 end
 
--- Função de Teleporte
-local function teleportToPlayer(targetPlayer)
-    local player = S.Players.LocalPlayer
-    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
-    end
-end
+--local function createESP(player)
+ --   if player == LocalPlayer or not player.Character then return end
+ --   
+ --   local box = Drawing.new("Square")
+ --   box.Thickness = 2
+ --   box.Filled = false
+ --   box.Color = Color3.fromRGB(255, 0, 0)  -- Vermelho para inimigos
+ --   box.Transparency = 1
+ --   
+ --   local nameText = Drawing.new("Text")
+ --   nameText.Size = 16
+ --   nameText.Color = Color3.fromRGB(255, 255, 255)
+ --   nameText.Transparency = 1
+ --   nameText.Outline = true
+--    
+--    ESPObjects[player] = {box = box, text = nameText}
+-- end
 
-local function copySkin(targetPlayer)
-    local localPlayer = S.Players.LocalPlayer
-    local targetChar = targetPlayer.Character
-    local localChar = localPlayer.Character
+--local function updateESP()
+--    for player, objects in pairs(ESPObjects) do
+--        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+--            local root = player.Character.HumanoidRootPart
+--            local camera = workspace.CurrentCamera
+--            local screenPos, onScreen = camera:WorldToViewportPoint(root.Position)
+--            
+--            if onScreen then
+--                local headPos = camera:WorldToViewportPoint(player.Character.Head.Position)
+--                local legPos = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
+--                
+--                local height = math.abs(headPos.Y - legPos.Y)
+--                local width = height / 2
+--                
+--                objects.box.Size = Vector2.new(width, height)
+--               objects.box.Position = Vector2.new(screenPos.X - width / 2, screenPos.Y - height / 2)
+--               objects.box.Visible = true
+--                
+--                objects.text.Text = player.Name
+--                objects.text.Position = Vector2.new(screenPos.X, screenPos.Y - height / 2 - 20)
+--                objects.text.Visible = true
+--            else
+--                objects.box.Visible = false
+--                objects.text.Visible = false
+--            end
+--       else
+--           objects.box:Remove()
+--            objects.text:Remove()
+--            ESPObjects[player] = nil
+--        end
+--    end
+--end
+----------------------------------Temas-----------------------------
 
-    if not targetChar or not localChar then return end
-
-    -- Limpa roupas e acessórios atuais (opcional)
-    for _, item in pairs(localChar:GetChildren()) do
-        if item:IsA("Shirt") or item:IsA("Pants") or item:IsA("Accessory") then
-            item:Destroy()
-        end
-    end
-
-    -- Copia roupas e acessórios do jogador alvo
-    for _, item in pairs(targetChar:GetChildren()) do
-        if item:IsA("Shirt") or item:IsA("Pants") or item:IsA("Accessory") then
-            local clone = item:Clone()
-            clone.Parent = localChar
-        end
-    end
-end
-
------------------------------------------------------------Key-------------------------------------------------------
--- Função para criar a window baseada no status do usuário
-local function createWindow()
-    if isWhitelisted then
-        -- Se for usuário whitelistado ou modo teste
-        print("RoyalHub: Modo diretor ativado")
-        
-        local Window = WindUI:CreateWindow({
-            Title = "RoyalHub King Legacy",
-            Icon = "settings",
-            Author = "Einzbern, Eodraxkk",
-            Folder = "RoyalHub",
-            Size = UDim2.fromOffset(500, 460),
-            MinSize = Vector2.new(550, 350),
-            MaxSize = Vector2.new(850, 560),
-            Transparent = true,
-            Theme = "Dark",
-            Resizable = true,
-            SideBarWidth = 200,
-            BackgroundImageTransparency = 0.42,
-            HideSearchBar = true,
-            ScrollBarEnabled = true,
-            user = {
-                Enabled = true,
-                Anonymous = false,
-                Callback = function()
-                    print("RoyalHub inicializado.")
-                end
-            }
-        })
-        
-        return Window
-    else
-        -- Se não for whitelistado, usa o sistema de key
-        print("RoyalHub: Sistema de key ativado")
-        
-        local Window = WindUI:CreateWindow({
-            Title = "RoyalHub King Legacy",
-            Icon = "settings",
-            Author = "Einzbern",
-            Folder = "RoyalHub",
-            Size = UDim2.fromOffset(500, 460),
-            MinSize = Vector2.new(550, 350),
-            MaxSize = Vector2.new(850, 560),
-            Transparent = true,
-            Theme = "Dark",
-            Resizable = true,
-            SideBarWidth = 200,
-            BackgroundImageTransparency = 0.42,
-            HideSearchBar = true,
-            ScrollBarEnabled = true,
-            KeySystem = {                                                   
-                Note = "RoyalHub Key System",              
-                API = {                                                     
-                    { -- PlatoBoost
-                        Type = "platoboost",                                
-                        ServiceId = 19220,
-                        Secret = "b549aa50-d100-4cfa-a4b4-cb5503d207af",
-                    },                                                      
-                },                                                          
-            },
-            user = {
-                Enabled = true,
-                Anonymous = true,
-                Callback = function()
-                    print("RoyalHub inicializado com key.")
-                end
-            }
-        })
-        
-        -- Callback quando a key é validada
-        if Window and Window.OnKeyValidated then
-            Window:OnKeyValidated(function()
-                print("RoyalHub: Key validada com sucesso!")
-            end)
-        end
-        
-        return Window
-    end
-end
-
--- Cria a window
-local Window = createWindow()
-
---------------------------------------------------------------INFORMAÇÕES---------------------------------------------------------
-local MarketplaceService = game:GetService("MarketplaceService")
-
-local placeId = game.PlaceId
-
--- Obter nome do lugar (mapa) via MarketplaceService (pode falhar em alguns jogos)
-local placeName = "Carregando..."
-local success2, err2 = pcall(function()
-    placeName = MarketplaceService:GetProductInfo(placeId).Name
-end)
-if not success2 then
-    placeName = "Mapa Desconhecido"
-end
-
--- Tempo no servidor (atualizado a cada segundo)
-local startTime = os.time()
-local timeInServer = 0
-
--- Atualiza o tempo no servidor
-RunService.Heartbeat:Connect(function()
-    timeInServer = os.time() - startTime
-end)
-
-------------------------------------------------------- Icons --------------------------------------------------------------
-local InicioIcon = Icons.Icon("user")
-local trolIcon = Icons.Icon("crosshair")
-local utilIcon = Icons.Icon("acessibility")
-local settingIcon = Icons.Icon("settings-gear")
-local UIcon = Icons.Icon("star")
-local eye_dashed = Icons.Icon("eye-dashed")
-local controller = icons.Icon("game-controller")
-local shieldCheck = icons.Icon("shield-check")
-
---------------------------------------------------- Translations -----------------------------------------------------------
--- CORRIGIDO: Fechando corretamente as tabelas
-WindUI:Localization({
-    Enabled = true,
-    Prefix = "loc:",
-    DefaultLanguage = "pt",
-    Translations = {
-        ["ru"] = {
-            ["TittleHub"] = "RoyalHub",
-            ["Inicio"] = "You",
-            ["WELCOME"] = "Добро пожаловать в RoyalHub!",
-            ["LIB_DESC"] = "Библиотека для создания красивых интерфейсов",
-            ["SETTINGS"] = "Настройки",
-            ["APPEARANCE"] = "Внешний вид",
-            ["FEATURES"] = "Функционал",
-            ["UTILITIES"] = "Инструменты",
-            ["UI_ELEMENTS"] = "UI Элементы",
-            ["CONFIGURATION"] = "Конфигурация",
-            ["SAVE_CONFIG"] = "Сохранить конфигурацию",
-            ["LOAD_CONFIG"] = "Загрузить конфигурацию",
-            ["THEME_SELECT"] = "Выберите тему",
-        },
-        ["en"] = {
-            ["TittleHub"] = "RoyalHub demo",
-            ["Inicio"] = "You",
-            ["WELCOME"] = "Welcome to RoyalHub!",
-            ["LIB_DESC"] = "Best universal script for Roblox!",
-            ["SETTINGS"] = "Settings",
-            ["APPEARANCE"] = "Appearance",
-            ["ini_desc"] = "your profile description and etc",
-            ["FEATURES"] = "Features",
-            ["UTILITIES"] = "Utilities",
-            ["UI_ELEMENTS"] = "UI Elements",
-            ["CONFIGURATION"] = "Configuration",
-            ["SAVE_CONFIG"] = "Save Configuration",
-            ["LOAD_CONFIG"] = "Load Configuration",
-            ["THEME_SELECT"] = "Select Theme",
-        },
-        ["es"] = {
-            ["TittleHub"] = "RoyalHub demo",
-            ["Inicio"] = "Tu perfil",
-            ["WELCOME"] = "¡Bienvenido a RoyalHub!",
-            ["LIB_DESC"] = "¡Mejor script universal para Roblox!",
-            ["SETTINGS"] = "Configuraciones",
-            ["APPEARANCE"] = "Apariencia",
-            ["FEATURES"] = "Características",
-            ["UTILITIES"] = "Utilidades",
-            ["UI_ELEMENTS"] = "Elementos de UI",
-            ["CONFIGURATION"] = "Configuración",
-            ["SAVE_CONFIG"] = "Guardar Configuración",
-            ["LOAD_CONFIG"] = "Cargar Configuración",
-            ["THEME_SELECT"] = "Seleccionar Tema",
-        },
-        ["pt"] = {
-            ["TittleHub"] = "RoyalHub demo",
-            ["Inicio"] = "Seu perfil",
-            ["WELCOME"] = "Bem-vindo ao RoyalHub!",
-            ["LIB_DESC"] = "Melhor script universal para Roblox!",
-            ["SETTINGS"] = "Configuracões",
-            ["APPEARANCE"] = "Aparencia",
-            ["FEATURES"] = "Novidades",
-            ["UTILITIES"] = "Utilidades",
-            ["UI_ELEMENTS"] = "UI Elements",
-            ["CONFIGURATION"] = "Configurar",
-            ["SAVE_CONFIG"] = "Salvar Configuração",
-            ["LOAD_CONFIG"] = "Carregar Configuração",
-            ["THEME_SELECT"] = "Selecionar Tema",
-        }
-    }
-})
-
-WindUI.TransparencyValue = 0.2
-WindUI:SetTheme("Dark")
-
-local function gradient(text, startColor, endColor)
-    local result = ""
-    for i = 1, #text do
-        local t = (i - 1) / (#text - 1)
-        local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
-        local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
-        local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
-        result = result .. string.format('<font color="rgb(%d,%d,%d)">%s</font>', r, g, b, text:sub(i, i))
-    end
-    return result
-end
-
----------------------------------------------- Popup -------------------------------------------
--- CORRIGIDO: "Buttoms" para "Buttons"
-if Window then
-    WindUI:Popup({ 
-        Title = "Royal Hub King Legacy version",
-        Icon = "info",
-        Content = "Esta script está em desenvolvimento, pode ocorrer bugs!",
-        Buttons = { 
-            { 
-                Title = "Sair",
-                Callback = function() 
-                    print("Popup fechado")
-                end,
-                Variant = "Tertiary",
-            },
-            { 
-                Title = "Continuar mesmo assim",
-                Callback = function() 
-                    print("Continuando...")
-                end,
-                Variant = "Primary",
-            }
-        }
-    })
-end
---------------------------------------------Tema----------------------------------------------------------
 WindUI:AddTheme({
-        Name = "Hutao By Einzbern.", -- theme name
-        Accent = Color3.fromHex("#18181b"),
-        Background = Color3.fromHex("#101010"), -- Accent
-        Outline = Color3.fromHex("#000000"),
-        Text = Color3.fromHex("#f70000"),
-        Placeholder = Color3.fromHex("#000000"),
-        Button = Color3.fromHex("#c40b0b"),
-        Icon = Color3.fromHex("#e20505"),
-})
-WindUI:AddTheme({
-    Name = "Dark Theme", -- theme name
+    Name = "Hutao By Einzbern",
     Accent = Color3.fromHex("#18181b"),
-    Background = Color3.fromHex("#000000"), -- Accent
+    Background = Color3.fromHex("#101010"),
+    Outline = Color3.fromHex("#000000"),
+    Text = Color3.fromHex("#f70000"),
+    Placeholder = Color3.fromHex("#000000"),
+    Button = Color3.fromHex("#c40b0b"),
+    Icon = Color3.fromHex("#e20505"),
+})
+
+WindUI:AddTheme({
+    Name = "Dark Theme",
+    Accent = Color3.fromHex("#18181b"),
+    Background = Color3.fromHex("#000000"),
     Outline = Color3.fromHex("#020101"),
     Text = Color3.fromHex("#222222"),
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#000000"),
-    Icon = Color3.fromHex("#000000"),   
+    Icon = Color3.fromHex("#000000"),
 })
 
 WindUI:AddTheme({
     Name = "Main Theme",
-    Accent = Color3.fromHex("#000000"),
+    Accent = Color3.fromHex("#222121"),
     Background = Color3.fromHex("#000000"),
-    Outline = Color3.fromHex("#686868"),
+    Outline = Color3.fromHex("#a79e9e"),
     Text = Color3.fromHex("#fff4f4"),
     Placeholder = Color3.fromHex("#797777"),
-    Button = Color3.fromHex("#000000"),
-    Icon = Color3.fromHex("#fffcfc"),
+    Button = Color3.fromHex("#db0000"),
+    Icon = Color3.fromHex("#000000"),
 })
 
------------------------------------------- Notificação---------------------------------------------------
--- CORRIGIDO: Sintaxe correta para a notificação
-if Window then
-    WindUI:Notify({
-        Title = "Congratulations!",
-        Content = "Obrigado por testar esta script, boa jogatina!",
-        Duration = 3,
-        Icon = "accessibility"
-    })
-end
+----------------------------Notificação---------------------
 
--- Só cria as tabs se a Window existir
-if Window then
-    ------------------------------------------- Window ------------------------------------------------------
-    local Tab = Window:Tab({
-        Title = "Home",
-        Icon = "crosshair", 
-        Locked = false,
-    }) 
+WindUI:Notify({
+    Title = "Royal Hub - Aviso!",
+    Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
+    Duration = 8, -- 3 seconds
+    Icon = "bug",
+})
+wait(1)
+WindUI:Notify({
+	Title = "Verificação",
+	Content = "Verificando usuario...",
+	Duration = 3,
+	Icon = "user"
+})
+wait(3)
+WindUI:Notify({
+	Title = "Register",
+	Content = "Usuario registrado com sucesso!, carregando hub...",
+	Duration = 3,
+	Ico = "bug"
+})
+wait(4)
+----------------------------Janela principal----------------
+local Window = WindUI:CreateWindow({
+    Title = "Royal Hub - King Legacys",
+    Icon = "door-open", -- lucide icon
+    Author = "Eodraxkk & Einzbern",
+    Folder = "Royal Hub",
     
-    Tab:Select() -- Select Tab
+    -- ↓ Opcionais (Alterar apenas o tamanho das janelas)
+    Size = UDim2.fromOffset(580, 460),
+    MinSize = Vector2.new(560, 350),
+    MaxSize = Vector2.new(850, 560),
+    Transparent = true,
+    Theme = "Dark",
+    Resizable = true,
+    SideBarWidth = 200,
+    BackgroundImageTransparency = 0.42,
+    HideSearchBar = true,
+    ScrollBarEnabled = false,
+})
+---------------------------Aviso Keybind-----------------
+WindUI:Notify({
+    Title = "KeyBind",
+    Content = "Aperte H para esconder | Mostrar o menu",
+    Duration = 4,
+    Icon = "user"
+})
 
-    local Button = Tab:Button({
-        Title = "Tema",
-        Desc = "Altere o tema da UI.",
-        Locked = false,
-        Callback = function()
-            WindUI:SetTheme("Hutao By Einzbern.")
-        end
-    })
+print("===== Royal Hub carregado com sucesso! =====")
+print("E ali diante dos meus olhos estava um cavalo branco e seu cavaleiro segurou uma reverência. Ele recebeu uma coroa e partiu, conquistando e conquistar... E saiu outro cavalo, todo vermelho. Ao seu cavaleiro recebeu o poder de tirar a paz da terra e fazer os homens massacrarem um ao outro; e ele recebeu uma grande espada... E ali, enquanto eu olhava, estava um cavalo preto; e seu cavaleiro segurava em sua mão um par de balanças... E lá, enquanto eu olhava, estava outro cavalo, doente e pálido; e o nome do seu cavaleiro era Morte, e Hades veio logo atrás. A ele foi dado poder sobre um quarto da terra, com o direito de matar pela espada e pela fome, pela peste e feras selvagens.")
+print("Apocalipse 6:1-6")
 
-    local PersonagemTab = Window:Tab({
-        Title = "Personagem",
-        Icon = "user",
-    }) 
-       -- Adicione mais elementos aqui...
-    Button:SetTitle("Settings")
-    Button:SetDesc("False")
-    -- Button:Lock() -- Descomente se quiser travar
-    
-    -- Adicione mais tabs e elementos conforme necessário
-    local InfoTab = Window:Tab({
-        Title = "Informações",
-        Icon = "info",
-    })
+-------------------------------Tags-------------------------
 
-    local funçõesTab = Window:Tab({
-        Title = "Funções",
-        Icon = "controller",
-    
-    })
-
-    local 
-----------------------------------------------------WINDOW TAG----------------------------------------------
-Window;Tag({
-    Title = "Beta",
-    Icon = "shieldCheck",
+Window:Tag({
+    Title = "Royal Hub - 1.0",
+    Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
-    Radius = 0,
+    Radius = 13, -- from 0 to 13
 })
 
----------------------------------------------DropDown Temas----------------------------- { Disabled no momento. }
---local DropDownTemas = InfoTab:DropDown({
---    Title = "Selecione qual tema deseja usar",
---    Desc = "",
- --   Values = { }
+Window:Tag({
+	Title = "Secure",
+	Icon = "shield",
+	Color = Color3.fromHex("#30ff6a"),
+	Radius = 13
+})
+----------------------------KeyBinds--------------------
 
---})
- ---------------------------------------------Sections-----------------------------
- local movementSection = PersonagemTab:Section({
-    Title = "Movimento",
-    Box = true,
-    FontWeight = "SemiBold",
-    TextTransparency = 0.05,
-    TextAlignment = "Left",
-    TextSize = 17,
-    Opened = true,
- })
+Window:SetToggleKey(Enum.KeyCode.H)
+
+----------------------------Tabs-----------------------
+local Home = Window:Tab({
+    Title = "Inicio",
+    Icon = "Janela", -- optional
+    Locked = false,
+})
 
 
- local infoSection = InfoTab:Section({
-    Title = "Informações de desenvolvimento",
-    Box = true,
-    FontWeight = "SemiBold",
-    TextTransparency = 0.05
-    TextAlignment = "Left",
-    TextSize = 1,
-    Opened = True
- })
----------------------------------------Buttons--------------------------------------
-movementSection:Slider({
-    Title = "Velocidade",
-    Desc =  "Nada ainda",
+local TabPersonagem = Window:Tab({
+	Title = "Personagem",
+	Icon = "user",
+	Locked = false,
+})
+
+local TabFarm = Window:Tab({
+	Title = "Farm",
+	Icon = "star",
+	Locked = false,
+
+})
+
+local TabShopping = Window:Tab({
+	Title = "Loja",
+	Icon = "box",
+	Locked = false,
+
+})
+
+local TabTeleport Window:Tab({
+	Title = "TP & WBHK",
+	Icon = "cloud",
+	Locked = false,
+
+})
+
+local TabMisc = Window:Tab({ 
+	Title = "Misc",
+	Icon = "box",
+	Locked = false,
+
+})
+
+local TabSettings = Window:Tab({
+	Title = "Configurações",
+	Icon = "config",
+	Locked = false,
+})
+
+local TabInfo = Window:Tab({
+	Title = "Info",
+	Icon = "wrench",
+	Locked = false,
+})
+
+----------------------Buttons Settings--------------------
+
+local ChangeTheme = TabSettings:Button({
+    Title = "Alterar tema",
+    Desc = "Altera o tema da UI",
+    Locked = false,
+    Callback = function()
+        WindUI:SetTheme("Hutao By Einzbern")
+    end
+})
+
+local InputKey = TabSettings:Input({
+    Title = "Input",
+    Desc = "Altera a tecla de abrir e fechar o menu",
+    Value = "Default value",
+    InputIcon = "bird",
+    Type = "Input", -- or "Textarea"
+    Placeholder = "Enter text...",
+    Callback = function(input) 
+    end
+})
+
+----------------Buttons Personagem------------------------
+
+local SliderVelocidade = TabPersonagem:Slider({
+    Title = "Speed",
+    Desc = "Altera velocidade do jogador",
     Step = 1,
-    value = {
+    Value = {
         Min = 20,
-        Max = 500,
-        Default = 50,
+        Max = 999,
+        Default = 20,
     },
     Callback = function(value)
-         setSpeed(value)
+		setSpeed(value)
+        print("Velocidade alterada para:", value)
     end
-        
 })
-    
-    local infoSection = InfoTab:CreateSection("Informações do Servidor")
-    infoSection:CreateLabel("Nome do Mapa: " .. placeName)
-    infoSection:CreateLabel("ID do Mapa: " .. game.PlaceId)
-    infoSection:CreateLabel("Jogador: " .. playerName)
-    
-    -- Tempo no servidor
-    local timeLabel = infoSection:CreateLabel("Tempo no servidor: 0s")
-    
-    game:GetService("RunService").Heartbeat:Connect(function()
-        local currentTime = os.time() - startTime
-        local hours = math.floor(currentTime / 3600)
-        local minutes = math.floor((currentTime % 3600) / 60)
-        local seconds = currentTime % 60
-        timeLabel:SetText(string.format("Tempo no servidor: %02d:%02d:%02d", hours, minutes, seconds))
-    end)
-end
 
-print("=== RoyalHub Carregado ===")
+local SliderJump = TabPersonagem:Slider({
+	Title = "Altura do pulo",
+	Desc = "Aumenta a força do pulo",
+	Step = 1,
+	Value = { 
+		Min = 20,
+		Max = 999,
+		Default = 20,
+	},
+	Callback = function(value)
+		setJumpPower(value)
+		print("Valor do pulo alterado para:", value)
+	end
+})
+
+local Toggle = TabPersonagem:Toggle({
+    Title = "Esp",
+    Desc = "Players ficam visiveis atrás de paredes e marcados.",
+    Icon = "bird",
+    Type = "Checkbox",
+    Value = false, -- default value
+    Callback = function(state)
+	--	WindUI:Notify({
+	--		Title = "Aviso!",
+	--		Content = "Em desenvolvimento!",
+	--		Duration = 4,
+	--		Icon = "bug"
+	--	})
+        print("Esp status =" .. tostring(state))
+    end
+})
+
+
+----------------Buttons TP & WEBHOOK-------------------
+
+--local Dropdown = TabTeleport:Dropdown({
+--    Title = "Dropdown",
+--    Desc = "Dropdown Description",
+--    Values = { "Category A", "Category B", "Category C" },
+--    Value = "Category A",
+--   Callback = function(option) 
+--        print("Category selected: " .. option) 
+--    end
+--})
+
+-------------------Paragrafos-------------------------
+
+local Paragraph = TabInfo:Paragraph({
+    Title = "Teste paragrafo",
+    Desc = "???",
+    Color = "Red",
+    Image = "",
+    ImageSize = 30,
+    Thumbnail = "",
+    ThumbnailSize = 80,
+    Locked = false,
+    Buttons = {
+        {
+            Icon = "bird",
+            Title = "Button",
+            Callback = function()
+			print("Button registrado!")
+			WindUI:Notify({
+				Title = "Funcionando!",
+				Content = "Esta função foi executada corretamente!, aperte F9 para ver o log.",
+				Duration = 3,
+				Icon = "bug",
+			})
+		end,
+        }
+    }
+})
