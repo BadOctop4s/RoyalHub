@@ -433,6 +433,7 @@ end)
 local TabHome = Window:Tab({
     Title = "Inicio",
     Icon = "solar:home-2-bold",
+    Desc = "Funções principais do Royal Hub.",
     IconColor = DarkGray,
     IconShape = "Square",
     Border = true, 
@@ -443,6 +444,7 @@ local TabHome = Window:Tab({
 local TabPersonagem = Window:Tab({
 	Title = "Personagem",
 	Icon = "solar:user-bold",
+    Desc = "Modificações no personagem.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -451,6 +453,7 @@ local TabPersonagem = Window:Tab({
 local TabFarm = Window:Tab({
 	Title = "Farm",
 	Icon = "solar:black-hole-bold",
+    Desc = "Funções de farm automático.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -460,6 +463,7 @@ local TabFarm = Window:Tab({
 local TabShopping = Window:Tab({
 	Title = "Loja",
 	Icon = "solar:cart-large-bold",
+    Desc = "Compre itens automaticamente.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -469,6 +473,7 @@ local TabShopping = Window:Tab({
 local TabTeleport = Window:Tab({
 	Title = "TP and WBHK",
 	Icon = "solar:cloud-bold",
+    Desc = "Teleporte e WebHook.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -477,6 +482,7 @@ local TabTeleport = Window:Tab({
 
 local TabMisc = Window:Tab({ 
 	Title = "Misc",
+    Desc = "Funções diversas.",
 	Icon = "box",
     IconColor = DarkGray,
     IconShape = "Square",
@@ -487,6 +493,7 @@ local TabMisc = Window:Tab({
 local TabSettings = Window:Tab({
 	Title = "Configurações",
 	Icon = "solar:settings-minimalistic-bold",
+    Desc = "Configurações do Royal Hub.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -495,13 +502,14 @@ local TabSettings = Window:Tab({
 local TabInfo = Window:Tab({
 	Title = "Info",
 	Icon = "solar:info-circle-bold",
+    Desc = "Informações sobre o Royal Hub e Desenvolvedores.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
     Border = true,
 })
 
-
+TabHome:Select()
 -------------------------------* TabHome * -------------------------
 
 local SectionAimbot = TabHome:Section({
@@ -520,17 +528,26 @@ local SectionAimbot = TabHome:Section({
     DescTextTransparency = 0.4,
 })
 
-local AimBotM1 = SectionAimbot:Toggle({
-	Title = "Aimbot mode 1",
-	Desc = "Gruda a mira nos jogadores.",
-	Icon = "",
-	Locked = true,
-	LockedTitle = "Em desenvolvimento.",
-	Value = false,
-	Callback = function(state)
-		print("Em desenvolvimento.")	
-	end
-})
+  local OverviewGroup1 = SectionAimbot:Group({})
+    
+    OverviewGroup1:Toggle({ Title = "Aimbot comum", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 1") end })
+
+    OverviewGroup1:Space()
+
+    OverviewGroup1:Toggle({ Title = "Aimbot rage", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 2") end })
+
+
+-- local AimBotM1 = SectionAimbot:Toggle({
+-- 	Title = "Aimbot mode 1",
+-- 	Desc = "Gruda a mira nos jogadores.",
+-- 	Icon = "",
+-- 	Locked = true,
+-- 	LockedTitle = "Em desenvolvimento.",
+-- 	Value = false,
+-- 	Callback = function(state)
+-- 		print("Em desenvolvimento.")	
+-- 	end
+-- })
 
 -------------------------------* Buttons Settings *--------------------
 local ResetGravity
