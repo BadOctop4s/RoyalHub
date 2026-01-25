@@ -36,6 +36,16 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
+
+-------------------------------* Funções externas *-------------------------------
+
+-- local invitecode = "DmdTDgJc"
+local function tableToClipboard(luau_table, indent)
+    indent = indent or 4
+    local jsonString = parseJSON(luau_table, indent)
+    setclipboard(jsonString)
+    return jsonString
+end
 -------------------------------* Functions personagem *-------------------------------
 
 local function setSpeed(value)
@@ -469,29 +479,43 @@ local ResetGravity = TabPersonagem:Button({
 --})
 
 -------------------------------* Paragrafos *-------------------------------
+TabInfo:Section({
+    Title = "Nosso Discord",
+    TextSize = 24,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
 
 local Paragraph = TabInfo:Paragraph({
-    Title = "Teste paragrafo",
-    Desc = "???",
+    Title = "Link do Discord",
+    Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
     Color = "Red",
-    Image = "",
-    ImageSize = 30,
+    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons8-logo-discord-96.png",
+    ImageSize = 45,
     Thumbnail = "",
     ThumbnailSize = 80,
     Locked = false,
     Buttons = {
         {
-            Icon = "bird",
-            Title = "Button",
+            Icon = "",
+            Title = "Clique para copiar o link",
             Callback = function()
-			print("Button registrado!")
+                setclipboard("https://discord.gg/DmdTDgJc")
 			WindUI:Notify({
-				Title = "Funcionando!",
-				Content = "Esta função foi executada corretamente!, aperte F9 para ver o log.",
+				Title = "Clipboard",
+				Content = "Link do Discord copiado para a área de transferência!",
 				Duration = 3,
-				Icon = "bug",
+				Icon = "discord",
 			})
 		end,
         }
     }
 })
+
+TabInfo:Space({ Columns = 2 })
+
+TabInfo:Section({
+    Title = "Sobre o Royal Hub",
+    TextSize = 24,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
+
