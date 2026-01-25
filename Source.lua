@@ -22,6 +22,10 @@ local star = "geist:star"
 local cloud = "geist:cloud"
 local shield = "geist:shield-check"
 
+-------------------------------! Save da Configuração (Desativado no momento) !-------------------------------
+
+--! local ConfigMenu = Window.ConfigManager:Config("MyConfigFile")
+
 -------------------------------* Serviços personagem *-------------------------------
 local S = {
     Players = game:GetService("Players"),
@@ -351,7 +355,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.3.0",
+    Title = "v1.3.2",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8, -- from 0 to 13
@@ -436,6 +440,7 @@ local TabHome = Window:Tab({
     Desc = "Funções principais do Royal Hub.",
     IconColor = DarkGray,
     IconShape = "Square",
+   -- ShowTabTitle = true,
     Border = true, 
     Locked = false,
 })
@@ -528,26 +533,13 @@ local SectionAimbot = TabHome:Section({
     DescTextTransparency = 0.4,
 })
 
-  local OverviewGroup1 = SectionAimbot:Group({})
+  local GrupoAimbot = SectionAimbot:Group({})
     
-    OverviewGroup1:Toggle({ Title = "Aimbot comum", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 1") end })
+    GrupoAimbot:Toggle({ Title = "Aimbot comum", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 1") end })
 
-    OverviewGroup1:Space()
+    GrupoAimbot:Space()
 
-    OverviewGroup1:Toggle({ Title = "Aimbot rage", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 2") end })
-
-
--- local AimBotM1 = SectionAimbot:Toggle({
--- 	Title = "Aimbot mode 1",
--- 	Desc = "Gruda a mira nos jogadores.",
--- 	Icon = "",
--- 	Locked = true,
--- 	LockedTitle = "Em desenvolvimento.",
--- 	Value = false,
--- 	Callback = function(state)
--- 		print("Em desenvolvimento.")	
--- 	end
--- })
+    GrupoAimbot:Toggle({ Title = "Aimbot rage", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 2") end })
 
 -------------------------------* Buttons Settings *--------------------
 local ResetGravity
@@ -591,6 +583,7 @@ ButtonBypass = SectionConfig:Button({
 local DropdownTemas = SectionConfig:Dropdown({
     Title = "Temas",
     Desc = "Altera o tema do Royal Hub",
+    Flag = "tema_selecionado",
     Values = {
         {
             Title = "Dark Amoled ( Default )",
