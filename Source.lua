@@ -93,29 +93,99 @@ local function TeleporteToPlayer(playerName)
     end
 end
 
+local localPlayer = Players.LocalPlayer
+-- Estado
+local espEnabled = false
+local espObjects = {}
+
+--------------------------------------------------
+-- Remove ESP de um player
+--------------------------------------------------
+local function removeESP(player)
+    if espObjects[player] then
+        for _, obj in pairs(espObjects[player]) do
+            if obj and obj.Destroy then
+                obj:Destroy()
+            end
+        end
+        espObjects[player] = nil
+    end
+end
+--------------------------------------------------
+-- Remove ESP de todos
+--------------------------------------------------
+local function removeAllESP()
+    for player, _ in pairs(espObjects) do
+        removeESP(player)
+    end
+end
+--------------------------------------------------
+-- Cria ESP (Highlight + Nome)
+--------------------------------------------------
 local function createESP(player)
-	if player == localPlayer then return end
-    if not player.Character then return end
+    if player == LocalPlayer then return end
+    if espObjects[player] then return end
+
+    local character = player.Character
+    if not character then return end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+
+    espObjects[player] = {}
+
+    -- 🔶 Highlight
     local highlight = Instance.new("Highlight")
-    highlight.Name = "ESPHighlight"
-    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+    highlight.Name = "ESP_Highlight"
+    highlight.Adornee = character
+    highlight.FillColor = Color3.fromRGB(255, 80, 80)
     highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
     highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    highlight.Adornee = player.Character
-    highlight.Parent = game.CoreGui
+    highlight.Parent = character
 
-    espObjects[player] = highlight
+    table.insert(espObjects[player], highlight)
+-- 🏷️ Nome em cima
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "ESP_Name"
+    billboard.Adornee = humanoidRootPart
+    billboard.Size = UDim2.new(0, 200, 0, 40)
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = humanoidRootPart
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Text = player.Name
+    textLabel.TextColor3 = Color3.new(1, 1, 1)
+    textLabel.TextStrokeTransparency = 0
+    textLabel.TextScaled = true
+    textLabel.Font = Enum.Font.GothamBold
+    textLabel.Parent = billboard
+
+    table.insert(espObjects[player], billboard)
 end
 
-local function removeAllESP()
-	for _, esp in pairs(espObjects) do
-		if esp then
-			esp:Destroy()
-		end
-	end
-	table.clear(espObjects)
-end
+--------------------------------------------------
+-- Atualiza ESP quando player entra
+--------------------------------------------------
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        task.wait(1)
+        if espEnabled then
+            createESP(player)
+        end
+    end)
+end)
+
+--------------------------------------------------
+-- Remove ESP quando player sai
+--------------------------------------------------
+Players.PlayerRemoving:Connect(function(player)
+    removeESP(player)
+end)
 -------------------------------* Temas *-------------------------------
 
 WindUI:AddTheme({
@@ -215,13 +285,13 @@ wait(2)
 
 local Window = WindUI:CreateWindow({
     Title = "Royal Hub",
-    Author = "Eodraxkk & Einzbern  ",
+    Author = "Eodraxkk & Einzbern      ",
     Folder = "RoyalHub",
     Icon = "solar:crown-minimalistic-bold",
     Theme = "Dark Amoled ( Default )",
     IconSize = 12*2,
     NewElements = true,
-    Size = UDim2.fromOffset(700,500),
+    Size = UDim2.fromOffset(800,500),
     
     HideSearchBar = false,
     
@@ -360,7 +430,7 @@ end)
  Window:SetToggleKey(Enum.KeyCode.H)
 
 -------------------------------* Tabs *-------------------------------
-local Home = Window:Tab({
+local TabHome = Window:Tab({
     Title = "Inicio",
     Icon = "solar:home-2-bold",
     IconColor = DarkGray,
@@ -432,30 +502,35 @@ local TabInfo = Window:Tab({
 })
 
 
-------------- *! | Sections | --> Por algum motivo está crashando o jogo, não descomente. ! -------------
+-------------------------------* TabHome * -------------------------
 
---! local infoSection = TabInfo:Section({
---! 	Title = "Sobre Royal Hub",
---! })
+local SectionAimbot = TabHome:Section({
+	Title = "Aimbot",
+	Desc = "",
+	Icon = "solar:home-2-bold",
+	IconColor = "Green" ,
+	TextSize = 19, -- title text size. optional
+    TextXAlignment = "Left", -- "Left", "Center", "Right". optional
+    Box = true, -- show box around section. optional
+    BoxBorder = true, -- show border on box. optional
+    Opened = true, -- section expanded by default. optional
+    FontWeight = Enum.FontWeight.SemiBold, -- title font weight. optional
+    DescFontWeight = Enum.FontWeight.Medium, -- description font weight. optional
+    TextTransparency = 0.05, -- title transparency. optional
+    DescTextTransparency = 0.4,
+})
 
---! infoSection:Space({ Columns = 3})
-
---! infoSection:Section({
---! 	Title = "Oque é Royal Hub",
---! 	TexSize = 24,
---! 	FontWeight = Enum.FontWeight.SemiBold, 
---! })
-
---! infoSection:Space({ Columns = 3 })
-
---! infoSectio:Section({
---! 	Title ="TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
---! 	TextSize = 18,
---! 	TextTransparency = 0.35,
---! 	FontWeight = Enum.FontWeigth.Medium,
---! })
-
---! TabInfo:Space({ Columns = 4 })
+local AimBotM1 = SectionAimbot:Toggle({
+	Title = "Aimbot mode 1",
+	Desc = "Gruda a mira nos jogadores.",
+	Icon = "",
+	Locked = true,
+	LockedTitle = "Em desenvolvimento.",
+	Value = false,
+	Callback = function(state)
+		print("Em desenvolvimento.")	
+	end
+})
 
 -------------------------------* Buttons Settings *--------------------
 local ResetGravity
@@ -651,7 +726,7 @@ TabPersonagem:Section({
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
-local Toggle = TabPersonagem:Toggle({
+local ToggleESP = TabPersonagem:Toggle({
     Title = "Esp",
     Desc = "Players ficam visiveis atrás de paredes e marcados.",
     Icon = "solar:eye-bold",
@@ -661,21 +736,23 @@ local Toggle = TabPersonagem:Toggle({
     Value = false, -- default value
     Callback = function(state)
 		espEnabled = state
-    
-		if state == false then
+
+		if not espEnabled then
 			removeAllESP()
 			return
 		end
- 	for _, plr in ipairs(Players:GetPlayers()) do
-		 createESP(plr)
-	 end
-end
+
+		for _, player in ipairs(Players:GetPlayers()) do
+			createESP(player)
+		end
+	end
 })
 
 ResetGravity = TabPersonagem:Button({
         Title = "Reset Gravity",
         Desc = "Reseta a gravidade para o valor padrão (196.2)",
-        Locked = false,
+        Locked = true,
+		LockedTitle = "Em desenvolvimento.",
         Callback = function()
             ResetGravity:Highlight()
             WindUI:Notify({
@@ -718,6 +795,19 @@ local DropDownPlayersTP = SectionTP:Dropdown({
     end
 })
 
+SectionTP:Space({ Columns = 1 })
+
+local LoopTP = SectionTP:Toggle({
+	Title = "Loop TP",
+	Desc = "Teleporta infinitamente no jogado que foi selecionado acima.",
+	Icon = "",
+	Locked = true,
+	LockedTitle = "Em desenvolvimento.",
+	Value = false,
+	Callback = function(state)
+		print("Em desenvolvimento.")	
+	end
+})
 -------------------------------! Buttons TP & WEBHOOK (Desativado até resolver o bug. !-------------------------------
 
 --local Dropdown = TabTeleport:Dropdown({
