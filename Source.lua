@@ -71,6 +71,7 @@ end
 
 WindUI:AddTheme({
     Name = "Hutao By Einzbern",
+    Background = ""
     Accent = Color3.fromHex("#18181b"),
     Background = Color3.fromHex("#101010"),
     Outline = Color3.fromHex("#000000"),
@@ -174,7 +175,7 @@ local Window = WindUI:CreateWindow({
     IconSize = 12*2,
     NewElements = true,
     Size = UDim2.fromOffset(700,500),
-    Background = "",
+    -- Background = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Space_background.jpg",
     
     HideSearchBar = false,
     
