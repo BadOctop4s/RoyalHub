@@ -54,6 +54,10 @@ local function setJumpPower(value)
     end
 end
 
+local function setGravity(value)
+    local Workspace = S.Workspace
+    S.Workspace.Gravity = value
+end
 -------------------------------* Temas *-------------------------------
 
 WindUI:AddTheme({
@@ -290,14 +294,7 @@ local TabInfo = Window:Tab({
 
 -------------------------------* Buttons Settings *--------------------
 
-local ChangeTheme = TabSettings:Button({
-    Title = "Alterar tema",
-    Desc = "Altera o tema da UI",
-    Locked = false,
-    Callback = function()
-        WindUI:SetTheme("White")
-    end
-})
+
 
 -------------------------------* DropDown Settings *-------------------------------
 
@@ -360,6 +357,11 @@ local DropDownKeyBind = TabSettings:Dropdown({
     end
 })
 -------------------------------* Buttons TabPersonagem *------------------------
+TabPersonagem:Section({
+    Title = "Movimento",
+    TextSize = 20,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
 
 local SliderVelocidade = TabPersonagem:Slider({
     Title = "Speed",
@@ -391,6 +393,37 @@ local SliderJump = TabPersonagem:Slider({
 	end
 })
 
+TabPersonagem:Space({ Columns = 2 })
+
+TabPersonagem:Section({
+    Title = "Gravidade",
+    TextSize = 20,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
+
+local SliderGravity = TabPersonagem:Slider({
+    Title = "Gravity",
+    Desc = "Altera a gravidade do jogo",
+    Step = 1,
+    Value = {
+        Min = 0,
+        Max = 500,
+        Default = 196.2,
+    },
+    Callback = function(value)
+        setGravity(value)
+        print("Gravidade alterada para:", value)
+    end
+})
+
+TabPersonagem:Space({ Columns = 2 })
+
+TabPersonagem:Section({
+    Title = "Outros",
+    TextSize = 20,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
+
 local Toggle = TabPersonagem:Toggle({
     Title = "Esp",
     Desc = "Players ficam visiveis atrás de paredes e marcados.",
@@ -408,7 +441,21 @@ local Toggle = TabPersonagem:Toggle({
     end
 })
 
-
+local ResetGravity = TabPersonagem:Button({
+    Title = "Reset Gravity",
+    Desc = "Reseta a gravidade para o valor padrão (196.2)",
+    Locked = false,
+    Callback = function()
+        WindUI:Notify({
+            Title = "Gravidade resetada!",
+            Content = "A gravidade foi resetada para o valor padrão (196.2)",
+            Duration = 3,
+            Icon = "shield-check"
+        })
+        setGravity(196.2)
+        print("Gravidade resetada para 196.2")
+    end
+})
 -------------------------------! Buttons TP & WEBHOOK (Desativado até resolver o bug. !-------------------------------
 
 --local Dropdown = TabTeleport:Dropdown({
