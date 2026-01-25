@@ -351,7 +351,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.0.9",
+    Title = "v1.3.0",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8, -- from 0 to 13
@@ -808,18 +808,9 @@ local LoopTP = SectionTP:Toggle({
 		print("Em desenvolvimento.")	
 	end
 })
--------------------------------! Buttons TP & WEBHOOK (Desativado até resolver o bug. !-------------------------------
 
---local Dropdown = TabTeleport:Dropdown({
---    Title = "Dropdown",
---    Desc = "Dropdown Description",
---    Values = { "Category A", "Category B", "Category C" },
---    Value = "Category A",
---   Callback = function(option) 
---        print("Category selected: " .. option) 
---    end
---})
 -------------------------------* Paragrafos *-------------------------------
+
 TabInfo:Section({
     Title = "Nosso Discord",
     TextSize = 24,
