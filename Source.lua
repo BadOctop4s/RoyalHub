@@ -10,21 +10,20 @@ local Green = Color3.fromHex("#10C550")
 local Grey = Color3.fromHex("#83889E")
 local Blue = Color3.fromHex("#257AF7")
 local Red = Color3.fromHex("#EF4F1D")
+local Gray = Color3.fromHex("#2C2F38")
+local DarkGray = Color3.fromHex("#1B1C20")
 
 -------------------------------* Icones *---------------------------------
-local Janela = "geist:window"
-local wrench = "geist:wrench"
-local Home = "geist:home"
-local InfoICO = "geist:asterisk"
+
 local Key = "geist:key"
-local discord = "geist:logo-discord"
 local box = "geist:box"
-local config = "geist:agents"
-local accessibility = "geist:accessibility"
 local bug = "geist:bug"
 local star = "geist:star" 
 local cloud = "geist:cloud"
 local shield = "geist:shield-check"
+
+-------------------------------* KEY SYSTEM *-------------------------------
+
 -------------------------------* Serviços personagem *-------------------------------
 local S = {
     Players = game:GetService("Players"),
@@ -130,39 +129,51 @@ WindUI:AddTheme({
     
 })
 
+WindUI:AddTheme({
+    Name = "CyberPunk",
+    Accent = WindUI:Gradient({
+    ["0"] = { Color = Color3.fromHex("#1f1f23"), Transparency = 0 },
+    ["100"]   = { Color = Color3.fromHex("#bbb815"), Transparency = 0 },
+    }, { 
+        Rotation = 0,
+    }),
+})
+
 -------------------------------* Notificação *-------------------------------
 
-WindUI:Notify({
-    Title = "Royal Hub - Aviso!",
-    Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
-    Duration = 8, -- 3 seconds
-    Icon = "bug",
-})
-wait(1)
-WindUI:Notify({
-	Title = "Verificação",
-	Content = "Verificando usuario...",
-	Duration = 3,
-	Icon = "user"
-})
-wait(3)
-WindUI:Notify({
-	Title = "Register",
-	Content = "Usuario registrado com sucesso!, carregando hub...",
-	Duration = 3,
-	Ico = "bug"
-})
-wait(4)
+-- WindUI:Notify({
+--     Title = "Royal Hub - Aviso!",
+--     Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
+--     Duration = 8, -- 3 seconds
+--     Icon = "bug",
+-- })
+-- wait(1)
+-- WindUI:Notify({
+-- 	Title = "Verificação",
+-- 	Content = "Verificando usuario...",
+-- 	Duration = 3,
+-- 	Icon = "user"
+-- })
+-- wait(3)
+-- WindUI:Notify({
+-- 	Title = "Register",
+-- 	Content = "Usuario registrado com sucesso!, carregando hub...",
+-- 	Duration = 3,
+-- 	Ico = "bug"
+-- })
+-- wait(4)
+
+-------------------------------* Verifica se ja existe uma janela *-------------------------------
 
 -------------------------------* Janela principal *-------------------------------
 
 local Window = WindUI:CreateWindow({
-    Title = "Royal Hub - King Legacy",
-    Author = "Eodraxkk • Einzbern",
+    Title = "Royal Hub",
+    Author = "Eodraxkk & Einzbern        ",
     Folder = "RoyalHub",
     Icon = "solar:crown-minimalistic-bold",
     Theme = "Dark Amoled ( Default )",
-    --IconSize = 22*2,
+    IconSize = 12*2,
     NewElements = true,
     Size = UDim2.fromOffset(700,500),
     
@@ -186,7 +197,18 @@ local Window = WindUI:CreateWindow({
         Height = 44,
         ButtonsType = "Mac", -- Default or Mac
     },
+KeySystem = {                                                   
+        Note = "É necessário uma key para utilizar o Royal Hub.", -- note under the textbox         
+        API = {                                                     
+            { -- PlatoBoost
+                Type = "platoboost",                                
+                ServiceId = 19220, -- service id
+                Secret = "b549aa50-d100-4cfa-a4b4-cb5503d207af", -- platoboost secret
+            },                                                      
+        },                                                          
+    },                                                              
 })
+
 
 -------------------------------* Aviso Keybind *-------------------------------
 
@@ -204,17 +226,17 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "Royal Hub - 1.0",
+    Title = "v1.0.6",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
-    Radius = 13, -- from 0 to 13
+    Radius = 8, -- from 0 to 13
 })
 
 Window:Tag({
 	Title = "Secure",
 	Icon = "shield",
 	Color = Color3.fromHex("#30ff6a"),
-	Radius = 13
+	Radius = 8,
 })
 
 -------------------------------* KeyBinds *-------------------------------
@@ -327,6 +349,9 @@ local DropdownTemas = TabSettings:Dropdown({
         {
             Title = "Main Theme",
         },
+        {
+            Title = "CyberPunk",
+        }
     },
     Value = "Dark Amoled ( Default )",
     Callback = function(option)
@@ -335,37 +360,37 @@ local DropdownTemas = TabSettings:Dropdown({
     end
 })
 
-local DropDownKeyBind = TabSettings:Dropdown({
-    Title = "KeyBinds",
-    Desc = "Altera a tecla que esconde | Mostra o menu!",
-    Values = {
-        {
-            Title = "RightShift",
-        },
-        {
-            Title = "H",
-        },
-        {
-            Title = "RightCtrl",
-        },
-        {
-            Title = "F1",
-        },
-        {
-            Title = "RightAlt",
-        },
+-- local DropDownKeyBind = TabSettings:Dropdown({
+--     Title = "KeyBinds",
+--     Desc = "Altera a tecla que esconde | Mostra o menu!",
+--     Values = {
+--         {
+--             Title = "RightShift",
+--         },
+--         {
+--             Title = "H",
+--         },
+--         {
+--             Title = "RightCtrl",
+--         },
+--         {
+--             Title = "F1",
+--         },
+--         {
+--             Title = "RightAlt",
+--         },
 
-    },
-    Value = "RightShift",
-    Callback = function(option)
-        WindUI:Notify({
-            Title = "Aviso!",
-            Content = "Função indisponivel no momento!",
-            Duration = 3,
-            Icon = "bug"
-        })
-    end
-})
+--     },
+--     Value = "RightShift",
+--     Callback = function(option)
+--         WindUI:Notify({
+--             Title = "Aviso!",
+--             Content = "Função indisponivel no momento!",
+--             Duration = 3,
+--             Icon = "bug"
+--         })
+--     end
+-- })
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
     Title = "Movimento",
@@ -477,7 +502,6 @@ local ResetGravity = TabPersonagem:Button({
 --        print("Category selected: " .. option) 
 --    end
 --})
-
 -------------------------------* Paragrafos *-------------------------------
 TabInfo:Section({
     Title = "Nosso Discord",
@@ -488,7 +512,7 @@ TabInfo:Section({
 local Paragraph = TabInfo:Paragraph({
     Title = "Link do Discord",
     Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
-    Color = "Red",
+    Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons8-logo-discord-96.png",
     ImageSize = 45,
     Thumbnail = "",
@@ -519,3 +543,9 @@ TabInfo:Section({
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
+TabInfo:Section({
+        Title = "Royal Hub é um script feito para o Roblox, Criado apenas por dois desenvolvedores e focado em entregar uma experiência completa e segura para os jogadores. Com uma variedade de funcionalidades, desde melhorias no personagem até opções de farm automatizado, o Royal Hub visa facilitar a jogabilidade e proporcionar vantagens estratégicas dentro do jogo. Desenvolvido com atenção à segurança, o script busca garantir que os usuários possam aproveitar suas funcionalidades sem comprometer a integridade de suas contas. Seja você um jogador casual ou um entusiasta dedicado, o Royal Hub oferece ferramentas que podem aprimorar sua experiência em diversos jogos.",
+        TextSize = 18,
+        TextTransparency = .35,
+        FontWeight = Enum.FontWeight.Medium,
+    })
