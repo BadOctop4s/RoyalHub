@@ -9,7 +9,7 @@ local Yellow = Color3.fromHex("#ECA201")
 local Green = Color3.fromHex("#10C550")
 local Grey = Color3.fromHex("#83889E")
 local Blue = Color3.fromHex("#257AF7")
-local Red = Color3.fromHex("#EF4F1D")
+local Red = Color3.fromHex("#ea0909")
 local Gray = Color3.fromHex("#2C2F38")
 local DarkGray = Color3.fromHex("#1B1C20")
 
@@ -35,6 +35,7 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
+------------------------------* Dialog DestroyGUI *-------------------------------
 
 -------------------------------* Funções externas *-------------------------------
 
@@ -71,9 +72,7 @@ end
 
 WindUI:AddTheme({
     Name = "Hutao By Einzbern",
-    Background = ""
     Accent = Color3.fromHex("#18181b"),
-    Background = Color3.fromHex("#101010"),
     Outline = Color3.fromHex("#000000"),
     Text = Color3.fromHex("#f70000"),
     Placeholder = Color3.fromHex("#000000"),
@@ -168,14 +167,13 @@ wait(2)
 
 local Window = WindUI:CreateWindow({
     Title = "Royal Hub",
-    Author = "Eodraxkk & Einzbern        ",
+    Author = "Eodraxkk & Einzbern  ",
     Folder = "RoyalHub",
     Icon = "solar:crown-minimalistic-bold",
     Theme = "Dark Amoled ( Default )",
     IconSize = 12*2,
     NewElements = true,
     Size = UDim2.fromOffset(700,500),
-    -- Background = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Space_background.jpg",
     
     HideSearchBar = false,
     
@@ -235,7 +233,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.0.6",
+    Title = "v1.0.9",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8, -- from 0 to 13
@@ -395,10 +393,26 @@ local TabInfo = Window:Tab({
 --! TabInfo:Space({ Columns = 4 })
 
 -------------------------------* Buttons Settings *--------------------
-
+local ResetGravity
 local ButtonBypass
 
-ButtonBypass = TabSettings:Button({
+local SectionConfig = TabSettings:Section({
+    Title = "General Settings",
+    Desc = "Configurações de tema, keybind e etc.", -- optional
+    Icon = "settings", -- lucide icon or "rbxassetid://". optional
+    IconColor = Color3.fromRGB(100, 100, 255), -- custom icon color. optional
+    TextSize = 19, -- title text size. optional
+    TextXAlignment = "Left", -- "Left", "Center", "Right". optional
+    Box = true, -- show box around section. optional
+    BoxBorder = true, -- show border on box. optional
+    Opened = true, -- section expanded by default. optional
+    FontWeight = Enum.FontWeight.SemiBold, -- title font weight. optional
+    DescFontWeight = Enum.FontWeight.Medium, -- description font weight. optional
+    TextTransparency = 0.05, -- title transparency. optional
+    DescTextTransparency = 0.4, -- description transparency. optional
+})
+
+ButtonBypass = SectionConfig:Button({
         Title = "Bypass Anti-Cheat",
         Desc = "Tenta burlar o sistema anti-cheat do jogo.",
         Locked = false,
@@ -414,9 +428,9 @@ ButtonBypass = TabSettings:Button({
         end
 })
 
--------------------------------* DropDown Settings *-------------------------------
+-------------------------------* Buttons/Dropdown Settings *-------------------------------
 
-local DropdownTemas = TabSettings:Dropdown({
+local DropdownTemas = SectionConfig:Dropdown({
     Title = "Temas",
     Desc = "Altera o tema do Royal Hub",
     Values = {
@@ -442,41 +456,58 @@ local DropdownTemas = TabSettings:Dropdown({
     Value = "Dark Amoled ( Default )",
     Callback = function(option)
         WindUI:SetTheme(option.Title)
-        print("Category selected: " .. option.Title) 
     end
 })
 
--- local DropDownKeyBind = TabSettings:Dropdown({
---     Title = "KeyBinds",
---     Desc = "Altera a tecla que esconde | Mostra o menu!",
---     Values = {
---         {
---             Title = "RightShift",
---         },
---         {
---             Title = "H",
---         },
---         {
---             Title = "RightCtrl",
---         },
---         {
---             Title = "F1",
---         },
---         {
---             Title = "RightAlt",
---         },
+local Keybind = SectionConfig:Keybind({
+    Title = "Toggle UI",
+    Desc = "Altera a tecla que mostra | esconde o menu.", -- optional
+    Value = "H", -- default key. optional
+    Locked = false, -- disable keybind. optional
+    Flag = "toggle_ui_key", -- for config saving. optional
+    Callback = function(key)
+	Window:SetToggleKey(Enum.KeyCode[key])
+        print("Keybind activated, key:", key)
+    end
+})
 
---     },
---     Value = "RightShift",
---     Callback = function(option)
---         WindUI:Notify({
---             Title = "Aviso!",
---             Content = "Função indisponivel no momento!",
---             Duration = 3,
---             Icon = "bug"
---         })
---     end
--- })
+SectionConfig:Space({ Columns = 1 })
+
+local DestruirHub = SectionConfig:Button({
+	Title = "Ejetar script",
+	Desc = "Ejeta a script do jogo.",
+	Icon = "",
+	Color = "Red",
+	Callback = function()
+		local Dialog = Window:Dialog({
+    Icon = "alert-circle", -- lucide icon or "rbxassetid://". optional
+    Title = "Confirm Delete",
+    IconThemed = true, -- use theme colors for icon. optional
+    Content = "This action cannot be undone.",
+    Buttons = {
+        {
+            Title = "Cancelar",
+            Icon = "x", -- button icon. optional
+            Variant = "secondary", -- "Primary", "Secondary", "Destructive", "Tertiary". optional
+            Callback = function()
+				Destroy(Window)
+                print("Ejetado")
+            end
+        },
+        {
+            Title = "Ejetar",
+            Icon = "trash-2", -- optional
+            Variant = "Destructive", -- optional
+            Callback = function()
+			Window:Destroy()
+                print("Ejetado")
+            end
+        }
+    }
+})
+
+	end
+})
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
     Title = "Movimento",
@@ -562,7 +593,6 @@ local Toggle = TabPersonagem:Toggle({
     end
 })
 
-local ResetGravity
 ResetGravity = TabPersonagem:Button({
         Title = "Reset Gravity",
         Desc = "Reseta a gravidade para o valor padrão (196.2)",
@@ -636,4 +666,4 @@ TabInfo:Section({
         TextSize = 18,
         TextTransparency = .35,
         FontWeight = Enum.FontWeight.Medium,
-    })
+ })
