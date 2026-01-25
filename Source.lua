@@ -2,7 +2,16 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 WindUI:SetNotificationLower(true)
 
-------------------------------Icones---------------------------------
+-------------------------------* Cores *--------------------------
+
+local Purple = Color3.fromHex("#7775F2")
+local Yellow = Color3.fromHex("#ECA201")
+local Green = Color3.fromHex("#10C550")
+local Grey = Color3.fromHex("#83889E")
+local Blue = Color3.fromHex("#257AF7")
+local Red = Color3.fromHex("#EF4F1D")
+
+-------------------------------* Icones *---------------------------------
 local Janela = "geist:window"
 local wrench = "geist:wrench"
 local Home = "geist:home"
@@ -16,7 +25,7 @@ local bug = "geist:bug"
 local star = "geist:star" 
 local cloud = "geist:cloud"
 local shield = "geist:shield-check"
-------------------------------Serviços personagem--------------------
+-------------------------------* Serviços personagem *-------------------------------
 local S = {
     Players = game:GetService("Players"),
     Tween = game:GetService("TweenService"),
@@ -27,9 +36,8 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
---local ESPEnabled = false  -- Toggle para ligar/desligar
---local ESPObjects = {}
-------------------------------Functions personagem------------------
+-------------------------------* Functions personagem *-------------------------------
+
 local function setSpeed(value)
     local player = S.Players.LocalPlayer
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
@@ -46,57 +54,7 @@ local function setJumpPower(value)
     end
 end
 
---local function createESP(player)
- --   if player == LocalPlayer or not player.Character then return end
- --   
- --   local box = Drawing.new("Square")
- --   box.Thickness = 2
- --   box.Filled = false
- --   box.Color = Color3.fromRGB(255, 0, 0)  -- Vermelho para inimigos
- --   box.Transparency = 1
- --   
- --   local nameText = Drawing.new("Text")
- --   nameText.Size = 16
- --   nameText.Color = Color3.fromRGB(255, 255, 255)
- --   nameText.Transparency = 1
- --   nameText.Outline = true
---    
---    ESPObjects[player] = {box = box, text = nameText}
--- end
-
---local function updateESP()
---    for player, objects in pairs(ESPObjects) do
---        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
---            local root = player.Character.HumanoidRootPart
---            local camera = workspace.CurrentCamera
---            local screenPos, onScreen = camera:WorldToViewportPoint(root.Position)
---            
---            if onScreen then
---                local headPos = camera:WorldToViewportPoint(player.Character.Head.Position)
---                local legPos = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
---                
---                local height = math.abs(headPos.Y - legPos.Y)
---                local width = height / 2
---                
---                objects.box.Size = Vector2.new(width, height)
---               objects.box.Position = Vector2.new(screenPos.X - width / 2, screenPos.Y - height / 2)
---               objects.box.Visible = true
---                
---                objects.text.Text = player.Name
---                objects.text.Position = Vector2.new(screenPos.X, screenPos.Y - height / 2 - 20)
---                objects.text.Visible = true
---            else
---                objects.box.Visible = false
---                objects.text.Visible = false
---            end
---       else
---           objects.box:Remove()
---            objects.text:Remove()
---            ESPObjects[player] = nil
---        end
---    end
---end
-----------------------------------Temas-----------------------------
+-------------------------------* Temas *-------------------------------
 
 WindUI:AddTheme({
     Name = "Hutao By Einzbern",
@@ -110,11 +68,11 @@ WindUI:AddTheme({
 })
 
 WindUI:AddTheme({
-    Name = "Dark Theme",
-    Accent = Color3.fromHex("#18181b"),
-    Background = Color3.fromHex("#000000"),
+    Name = "White",
+    Accent = Color3.fromHex("#646466"),
+    Background = Color3.fromHex("#bba7a7"),
     Outline = Color3.fromHex("#020101"),
-    Text = Color3.fromHex("#222222"),
+    Text = Color3.fromHex("#000000"),
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#000000"),
     Icon = Color3.fromHex("#000000"),
@@ -128,10 +86,37 @@ WindUI:AddTheme({
     Text = Color3.fromHex("#fff4f4"),
     Placeholder = Color3.fromHex("#797777"),
     Button = Color3.fromHex("#db0000"),
-    Icon = Color3.fromHex("#000000"),
+    Icon = Color3.fromHex("#a18e8e"),
 })
 
-----------------------------Notificação---------------------
+WindUI:AddTheme({
+    Name = "RedX Hub",
+    Accent = WindUI:Gradient({                                                      
+        ["0"] = { Color = Color3.fromHex("#000000"), Transparency = 0 },
+
+        ["60"] = { Color = Color3.fromHex("#0152c3"), Transparency = 0 },
+
+        ["100"]   = { Color = Color3.fromHex("#b30303"), Transparency = 0 },
+             
+    }, {                                                                            
+        Rotation = 80,                                                               
+    }),                                                                             
+    
+})
+
+WindUI:AddTheme({   
+    Name = "Dark Amoled ( Default )",
+    Accent = WindUI:Gradient({                                                      
+        ["0"] = { Color = Color3.fromHex("#000000"), Transparency = 0 },
+        ["100"]   = { Color = Color3.fromHex("#000000"), Transparency = 0 },
+             
+    }, {                                                                            
+        Rotation = 80,                                               
+    }),                                                                             
+    
+})
+
+-------------------------------* Notificação *-------------------------------
 
 WindUI:Notify({
     Title = "Royal Hub - Aviso!",
@@ -154,38 +139,55 @@ WindUI:Notify({
 	Ico = "bug"
 })
 wait(4)
-----------------------------Janela principal----------------
+
+-------------------------------* Janela principal *-------------------------------
+
 local Window = WindUI:CreateWindow({
-    Title = "Royal Hub - King Legacys",
-    Icon = "door-open", -- lucide icon
-    Author = "Eodraxkk & Einzbern",
-    Folder = "Royal Hub",
+    Title = "Royal Hub - King Legacy",
+    Author = "Eodraxkk • Einzbern",
+    Folder = "RoyalHub",
+    Icon = "solar:crown-minimalistic-bold",
+    Theme = "Dark Amoled ( Default )",
+    --IconSize = 22*2,
+    NewElements = true,
+    Size = UDim2.fromOffset(700,500),
     
-    -- ↓ Opcionais (Alterar apenas o tamanho das janelas)
-    Size = UDim2.fromOffset(580, 460),
-    MinSize = Vector2.new(560, 350),
-    MaxSize = Vector2.new(850, 560),
-    Transparent = true,
-    Theme = "Dark",
-    Resizable = true,
-    SideBarWidth = 200,
-    BackgroundImageTransparency = 0.42,
-    HideSearchBar = true,
-    ScrollBarEnabled = false,
+    HideSearchBar = false,
+    
+    OpenButton = {
+        Title = "Open Royal Hub", 
+        CornerRadius = UDim.new(1,0), 
+        StrokeThickness = 3, -- remove outline
+        Enabled = true, -- Ativa ou desativa o openbutton
+        Draggable = true,
+        OnlyMobile = true,
+        Scale = 0.5,
+        
+        Color = ColorSequence.new( -- gradient
+            Color3.fromHex("#30FF6A"), 
+            Color3.fromHex("#e7ff2f")
+        )
+    },
+    Topbar = {
+        Height = 44,
+        ButtonsType = "Mac", -- Default or Mac
+    },
 })
----------------------------Aviso Keybind-----------------
+
+-------------------------------* Aviso Keybind *-------------------------------
+
 WindUI:Notify({
     Title = "KeyBind",
-    Content = "Aperte H para esconder | Mostrar o menu",
+    Content = "Aperte Shift Direito para esconder | Mostrar o menu",
     Duration = 4,
     Icon = "user"
 })
-
+-------------------------------* PRINT CONSOLE LOADED *-------------------------------
 print("===== Royal Hub carregado com sucesso! =====")
 print("E ali diante dos meus olhos estava um cavalo branco e seu cavaleiro segurou uma reverência. Ele recebeu uma coroa e partiu, conquistando e conquistar... E saiu outro cavalo, todo vermelho. Ao seu cavaleiro recebeu o poder de tirar a paz da terra e fazer os homens massacrarem um ao outro; e ele recebeu uma grande espada... E ali, enquanto eu olhava, estava um cavalo preto; e seu cavaleiro segurava em sua mão um par de balanças... E lá, enquanto eu olhava, estava outro cavalo, doente e pálido; e o nome do seu cavaleiro era Morte, e Hades veio logo atrás. A ele foi dado poder sobre um quarto da terra, com o direito de matar pela espada e pela fome, pela peste e feras selvagens.")
-print("Apocalipse 6:1-6")
+print(" ========================= Apocalipse 6:1-6 =========================")
 
--------------------------------Tags-------------------------
+-------------------------------* Tags *-------------------------------
 
 Window:Tag({
     Title = "Royal Hub - 1.0",
@@ -200,41 +202,42 @@ Window:Tag({
 	Color = Color3.fromHex("#30ff6a"),
 	Radius = 13
 })
-----------------------------KeyBinds--------------------
 
-Window:SetToggleKey(Enum.KeyCode.H)
+-------------------------------* KeyBinds *-------------------------------
+
+ Window:SetToggleKey(Enum.KeyCode.RightShift)
 
 ----------------------------Tabs-----------------------
 local Home = Window:Tab({
     Title = "Inicio",
-    Icon = "Janela", -- optional
+    Icon = "solar:home-bold", -- optional
     Locked = false,
 })
 
 
 local TabPersonagem = Window:Tab({
 	Title = "Personagem",
-	Icon = "user",
+	Icon = "solar:user-bold",
 	Locked = false,
 })
 
 local TabFarm = Window:Tab({
 	Title = "Farm",
-	Icon = "star",
+	Icon = "solar:black-hole-bold",
 	Locked = false,
 
 })
 
 local TabShopping = Window:Tab({
 	Title = "Loja",
-	Icon = "box",
+	Icon = "solar:cart-large-bold",
 	Locked = false,
 
 })
 
 local TabTeleport Window:Tab({
 	Title = "TP & WBHK",
-	Icon = "cloud",
+	Icon = "solar:cloud-bold",
 	Locked = false,
 
 })
@@ -248,39 +251,115 @@ local TabMisc = Window:Tab({
 
 local TabSettings = Window:Tab({
 	Title = "Configurações",
-	Icon = "config",
+	Icon = "solar:settings-minimalistic-bold",
 	Locked = false,
 })
 
 local TabInfo = Window:Tab({
 	Title = "Info",
-	Icon = "wrench",
+	Icon = "solar:info-circle-bold",
 	Locked = false,
+    Border = true,
 })
 
-----------------------Buttons Settings--------------------
+
+------------- *! | Sections | --> Por algum motivo está crashando o jogo, não descomente. ! -------------
+
+--! local infoSection = TabInfo:Section({
+--! 	Title = "Sobre Royal Hub",
+--! })
+
+--! infoSection:Space({ Columns = 3})
+
+--! infoSection:Section({
+--! 	Title = "Oque é Royal Hub",
+--! 	TexSize = 24,
+--! 	FontWeight = Enum.FontWeight.SemiBold, 
+--! })
+
+--! infoSection:Space({ Columns = 3 })
+
+--! infoSectio:Section({
+--! 	Title ="TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
+--! 	TextSize = 18,
+--! 	TextTransparency = 0.35,
+--! 	FontWeight = Enum.FontWeigth.Medium,
+--! })
+
+--! TabInfo:Space({ Columns = 4 })
+
+-------------------------------* Buttons Settings *--------------------
 
 local ChangeTheme = TabSettings:Button({
     Title = "Alterar tema",
     Desc = "Altera o tema da UI",
     Locked = false,
     Callback = function()
-        WindUI:SetTheme("Hutao By Einzbern")
+        WindUI:SetTheme("White")
     end
 })
 
-local InputKey = TabSettings:Input({
-    Title = "Input",
-    Desc = "Altera a tecla de abrir e fechar o menu",
-    Value = "Default value",
-    InputIcon = "bird",
-    Type = "Input", -- or "Textarea"
-    Placeholder = "Enter text...",
-    Callback = function(input) 
+-------------------------------* DropDown Settings *-------------------------------
+
+local DropdownTemas = TabSettings:Dropdown({
+    Title = "Temas",
+    Desc = "Altera o tema do Royal Hub",
+    Values = {
+        {
+            Title = "Dark Amoled ( Default )",
+        },
+        {
+            Title = "Hutao By Einzbern",
+        },
+        {
+            Title = "RedX Hub",
+        },
+        {
+            Title = "White",
+        },
+        {
+            Title = "Main Theme",
+        },
+    },
+    Value = "Dark Amoled ( Default )",
+    Callback = function(option)
+        WindUI:SetTheme(option.Title)
+        print("Category selected: " .. option.Title) 
     end
 })
 
-----------------Buttons Personagem------------------------
+local DropDownKeyBind = TabSettings:Dropdown({
+    Title = "KeyBinds",
+    Desc = "Altera a tecla que esconde | Mostra o menu!",
+    Values = {
+        {
+            Title = "RightShift",
+        },
+        {
+            Title = "H",
+        },
+        {
+            Title = "RightCtrl",
+        },
+        {
+            Title = "F1",
+        },
+        {
+            Title = "RightAlt",
+        },
+
+    },
+    Value = "RightShift",
+    Callback = function(option)
+        WindUI:Notify({
+            Title = "Aviso!",
+            Content = "Função indisponivel no momento!",
+            Duration = 3,
+            Icon = "bug"
+        })
+    end
+})
+-------------------------------* Buttons TabPersonagem *------------------------
 
 local SliderVelocidade = TabPersonagem:Slider({
     Title = "Speed",
@@ -298,7 +377,7 @@ local SliderVelocidade = TabPersonagem:Slider({
 })
 
 local SliderJump = TabPersonagem:Slider({
-	Title = "Altura do pulo",
+	Title = "Jump",
 	Desc = "Aumenta a força do pulo",
 	Step = 1,
 	Value = { 
@@ -330,7 +409,7 @@ local Toggle = TabPersonagem:Toggle({
 })
 
 
-----------------Buttons TP & WEBHOOK-------------------
+-------------------------------! Buttons TP & WEBHOOK (Desativado até resolver o bug. !-------------------------------
 
 --local Dropdown = TabTeleport:Dropdown({
 --    Title = "Dropdown",
@@ -342,7 +421,7 @@ local Toggle = TabPersonagem:Toggle({
 --    end
 --})
 
--------------------Paragrafos-------------------------
+-------------------------------* Paragrafos *-------------------------------
 
 local Paragraph = TabInfo:Paragraph({
     Title = "Teste paragrafo",
