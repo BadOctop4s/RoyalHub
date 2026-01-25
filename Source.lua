@@ -157,7 +157,7 @@ WindUI:Notify({
 wait(3)
 WindUI:Notify({
 	Title = "Register",
-	Content = "Usuario verificado com sucesso!, será necessario uma Key para usar a script.",
+	Content = "Usuario verificado com sucesso!, será necessario uma Key para usar a script caso não tenha usado alguma anteriormente.",
 	Duration = 3,
 	Ico = "bug"
 })
@@ -195,6 +195,14 @@ local Window = WindUI:CreateWindow({
         Height = 44,
         ButtonsType = "Mac", -- Default or Mac
     },
+User = {
+        Enabled = true,
+        Anonymous = false,
+        Callback = function()
+            print("clicked")
+        end,
+    },
+
 KeySystem = {                                                   
         Note = "É necessário uma key para utilizar o Royal Hub.", -- note under the textbox         
         API = {                                                     
@@ -240,9 +248,9 @@ Window:Tag({
 
 -------------------------------* KeyBinds *-------------------------------
 
- Window:SetToggleKey(Enum.KeyCode.RightShift)
+ Window:SetToggleKey(Enum.KeyCode.H)
 
-----------------------------Tabs-----------------------
+-------------------------------* Tabs *-------------------------------
 local Home = Window:Tab({
     Title = "Inicio",
     Icon = "solar:home-bold", -- optional
@@ -325,7 +333,23 @@ local TabInfo = Window:Tab({
 
 -------------------------------* Buttons Settings *--------------------
 
+local ButtonBypass
 
+ButtonBypass = TabSettings:Button({
+        Title = "Bypass Anti-Cheat",
+        Desc = "Tenta burlar o sistema anti-cheat do jogo.",
+        Locked = false,
+         Callback = function()
+            ButtonBypass:Highlight()
+            WindUI:Notify({
+                Title = "Aviso!",
+                Content = "Bypass ativado com sucesso! (Funcionalidade em desenvolvimento)",
+                Duration = 3,
+                Icon = "shield-check"
+            })
+            print("Bypass Anti-Cheat acionado")
+        end
+})
 
 -------------------------------* DropDown Settings *-------------------------------
 
@@ -461,7 +485,7 @@ TabPersonagem:Section({
 local Toggle = TabPersonagem:Toggle({
     Title = "Esp",
     Desc = "Players ficam visiveis atrás de paredes e marcados.",
-    Icon = "bird",
+    Icon = "solar:eye-bold",
     Type = "Checkbox",
     Value = false, -- default value
     Callback = function(state)
@@ -475,19 +499,21 @@ local Toggle = TabPersonagem:Toggle({
     end
 })
 
-local ResetGravity = TabPersonagem:Button({
-    Title = "Reset Gravity",
-    Desc = "Reseta a gravidade para o valor padrão (196.2)",
-    Locked = false,
-    Callback = function()
-        WindUI:Notify({
-            Title = "Gravidade resetada!",
-            Content = "A gravidade foi resetada para o valor padrão (196.2)",
-            Duration = 3,
-            Icon = "shield-check"
-        })
-        setGravity(196.2)
-        print("Gravidade resetada para 196.2")
+local ResetGravity
+ResetGravity = TabPersonagem:Button({
+        Title = "Reset Gravity",
+        Desc = "Reseta a gravidade para o valor padrão (196.2)",
+        Locked = false,
+        Callback = function()
+            ResetGravity:Highlight()
+            WindUI:Notify({
+                Title = "Gravidade resetada!",
+                Content = "A gravidade foi resetada para o valor padrão (196.2)",
+                Duration = 3,
+                Icon = "shield-check"
+            })
+            setGravity(196.2)
+            print("Gravidade resetada para 196.2")
     end
 })
 -------------------------------! Buttons TP & WEBHOOK (Desativado até resolver o bug. !-------------------------------
