@@ -22,8 +22,6 @@ local star = "geist:star"
 local cloud = "geist:cloud"
 local shield = "geist:shield-check"
 
--------------------------------* KEY SYSTEM *-------------------------------
-
 -------------------------------* Serviços personagem *-------------------------------
 local S = {
     Players = game:GetService("Players"),
@@ -35,17 +33,15 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
-------------------------------* Dialog DestroyGUI *-------------------------------
-
 -------------------------------* Funções externas *-------------------------------
 
--- local invitecode = "DmdTDgJc"
 local function tableToClipboard(luau_table, indent)
     indent = indent or 4
     local jsonString = parseJSON(luau_table, indent)
     setclipboard(jsonString)
     return jsonString
 end
+
 -------------------------------* Functions personagem *-------------------------------
 
 local function setSpeed(value)
@@ -67,6 +63,58 @@ end
 local function setGravity(value)
     local Workspace = S.Workspace
     S.Workspace.Gravity = value
+end
+
+local Players = game:GetService("Players")
+
+local playerValues = {}
+
+for _, plr in ipairs(Players:GetPlayers()) do
+    table.insert(playerValues, {
+        Title = plr.Name,
+        Player = plr
+    })
+end
+
+
+local function TeleporteToPlayer(playerName)
+    local player = S.Players:FindFirstChild(playerName)
+    local localPlayer = S.Players.LocalPlayer
+    if player and player.Character and localPlayer.Character then
+        local targetPosition = player.Character:FindFirstChild("HumanoidRootPart").Position
+        localPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(targetPosition + Vector3.new(0, 5, 0))
+    else
+        WindUI:Notify({
+            Title = "Erro",
+            Content = "Jogador não encontrado ou sem personagem.",
+            Duration = 3,
+            Icon = "alert-circle"
+        })
+    end
+end
+
+local function createESP(player)
+	if player == localPlayer then return end
+    if not player.Character then return end
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "ESPHighlight"
+    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+    highlight.FillTransparency = 0.5
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.Adornee = player.Character
+    highlight.Parent = game.CoreGui
+
+    espObjects[player] = highlight
+end
+
+local function removeAllESP()
+	for _, esp in pairs(espObjects) do
+		if esp then
+			esp:Destroy()
+		end
+	end
+	table.clear(espObjects)
 end
 -------------------------------* Temas *-------------------------------
 
@@ -348,8 +396,8 @@ local TabShopping = Window:Tab({
 
 })
 
-local TabTeleport Window:Tab({
-	Title = "TP & WBHK",
+local TabTeleport = Window:Tab({
+	Title = "TP and WBHK",
 	Icon = "solar:cloud-bold",
     IconColor = DarkGray,
     IconShape = "Square",
@@ -435,13 +483,14 @@ ButtonBypass = SectionConfig:Button({
         Locked = false,
          Callback = function()
             ButtonBypass:Highlight()
+			wait(2)
             WindUI:Notify({
                 Title = "Aviso!",
                 Content = "Bypass ativado com sucesso! (Funcionalidade em desenvolvimento)",
                 Duration = 3,
                 Icon = "shield-check"
             })
-            print("Bypass Anti-Cheat acionado")
+            print("Bypass Anti-Cheat ativado")
         end
 })
 
@@ -606,19 +655,21 @@ local Toggle = TabPersonagem:Toggle({
     Title = "Esp",
     Desc = "Players ficam visiveis atrás de paredes e marcados.",
     Icon = "solar:eye-bold",
-    Type = "Checkbox",
-    Locked = true,
+    --Type = "Checkbox",
+    Locked = false,
     LockedTitle = "Em desenvolvimento",
     Value = false, -- default value
     Callback = function(state)
-	--	WindUI:Notify({
-	--		Title = "Aviso!",
-	--		Content = "Em desenvolvimento!",
-	--		Duration = 4,
-	--		Icon = "bug"
-	--	})
-        print("Esp status =" .. tostring(state))
-    end
+		espEnabled = state
+    
+		if state == false then
+			removeAllESP()
+			return
+		end
+ 	for _, plr in ipairs(Players:GetPlayers()) do
+		 createESP(plr)
+	 end
+end
 })
 
 ResetGravity = TabPersonagem:Button({
@@ -637,6 +688,36 @@ ResetGravity = TabPersonagem:Button({
             print("Gravidade resetada para 196.2")
     end
 })
+
+-------------------------------* Buttons TabTeleport *-------------------------------
+local SectionTP = TabTeleport:Section({
+    Title = "Teleport ",
+    Desc = "Permite teleportar até outros jogadores.", -- optional
+    Icon = "bird", -- lucide icon or "rbxassetid://". optional
+    IconColor = Color3.fromRGB(100, 100, 255), -- custom icon color. optional
+    TextSize = 19, -- title text size. optional
+    TextXAlignment = "Left", -- "Left", "Center", "Right". optional
+    Box = true, -- show box around section. optional
+    BoxBorder = true, -- show border on box. optional
+    Opened = true, -- section expanded by default. optional
+    FontWeight = Enum.FontWeight.SemiBold, -- title font weight. optional
+    DescFontWeight = Enum.FontWeight.Medium, -- description font weight. optional
+    TextTransparency = 0.05, -- title transparency. optional
+    DescTextTransparency = 0.4, -- description transparency. optional
+})
+
+local DropDownPlayersTP = SectionTP:Dropdown({
+	Title = "Teleportar até jogador",
+    Desc = "Teleporta até o jogador selecionado",
+    Values = playerValues,
+    Value = playerValues[0],
+    Callback = function(option)
+		TeleporteToPlayer(option.Title)
+        print("Selecionado:", option.Title)
+        print("Player:", option.Player)
+    end
+})
+
 -------------------------------! Buttons TP & WEBHOOK (Desativado até resolver o bug. !-------------------------------
 
 --local Dropdown = TabTeleport:Dropdown({
