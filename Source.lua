@@ -141,29 +141,27 @@ WindUI:AddTheme({
 
 -------------------------------* Notificação *-------------------------------
 
--- WindUI:Notify({
---     Title = "Royal Hub - Aviso!",
---     Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
---     Duration = 8, -- 3 seconds
---     Icon = "bug",
--- })
--- wait(1)
--- WindUI:Notify({
--- 	Title = "Verificação",
--- 	Content = "Verificando usuario...",
--- 	Duration = 3,
--- 	Icon = "user"
--- })
--- wait(3)
--- WindUI:Notify({
--- 	Title = "Register",
--- 	Content = "Usuario registrado com sucesso!, carregando hub...",
--- 	Duration = 3,
--- 	Ico = "bug"
--- })
--- wait(4)
-
--------------------------------* Verifica se ja existe uma janela *-------------------------------
+ WindUI:Notify({
+    Title = "Royal Hub - Aviso!",
+    Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
+    Duration = 6, -- 3 seconds
+    Icon = "bug",
+})
+wait(1)
+WindUI:Notify({
+	Title = "Verificação",
+	Content = "Verificando usuario...",
+	Duration = 3,
+	Icon = "user"
+})
+wait(3)
+WindUI:Notify({
+	Title = "Register",
+	Content = "Usuario verificado com sucesso!, será necessario uma Key para usar a script.",
+	Duration = 3,
+	Ico = "bug"
+})
+wait(2)
 
 -------------------------------* Janela principal *-------------------------------
 
@@ -203,7 +201,8 @@ KeySystem = {
             { -- PlatoBoost
                 Type = "platoboost",                                
                 ServiceId = 19220, -- service id
-                Secret = "b549aa50-d100-4cfa-a4b4-cb5503d207af", -- platoboost secret
+                Secret = "b549aa50-d100-4cfa-a4b4-cb5503d207af",
+                SaveKey = true, -- platoboost secret
             },                                                      
         },                                                          
     },                                                              
