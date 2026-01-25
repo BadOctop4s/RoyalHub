@@ -88,7 +88,7 @@ WindUI:AddTheme({
     Text = Color3.fromHex("#000000"),
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#000000"),
-    Icon = Color3.fromHex("#000000"),
+    Icon = Color3.fromHex("#c5b1b1"),
 })
 
 WindUI:AddTheme({
@@ -314,7 +314,10 @@ end)
 -------------------------------* Tabs *-------------------------------
 local Home = Window:Tab({
     Title = "Inicio",
-    Icon = "solar:home-bold", -- optional
+    Icon = "solar:home-2-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
+    Border = true, 
     Locked = false,
 })
 
@@ -322,12 +325,16 @@ local Home = Window:Tab({
 local TabPersonagem = Window:Tab({
 	Title = "Personagem",
 	Icon = "solar:user-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
 })
 
 local TabFarm = Window:Tab({
 	Title = "Farm",
 	Icon = "solar:black-hole-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
 
 })
@@ -335,6 +342,8 @@ local TabFarm = Window:Tab({
 local TabShopping = Window:Tab({
 	Title = "Loja",
 	Icon = "solar:cart-large-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
 
 })
@@ -342,6 +351,8 @@ local TabShopping = Window:Tab({
 local TabTeleport Window:Tab({
 	Title = "TP & WBHK",
 	Icon = "solar:cloud-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
 
 })
@@ -349,6 +360,8 @@ local TabTeleport Window:Tab({
 local TabMisc = Window:Tab({ 
 	Title = "Misc",
 	Icon = "box",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
 
 })
@@ -356,12 +369,16 @@ local TabMisc = Window:Tab({
 local TabSettings = Window:Tab({
 	Title = "Configurações",
 	Icon = "solar:settings-minimalistic-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
 })
 
 local TabInfo = Window:Tab({
 	Title = "Info",
 	Icon = "solar:info-circle-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
 	Locked = false,
     Border = true,
 })
@@ -518,6 +535,9 @@ TabPersonagem:Section({
 local SliderVelocidade = TabPersonagem:Slider({
     Title = "Speed",
     Desc = "Altera velocidade do jogador",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
     Step = 1,
     Value = {
         Min = 20,
@@ -533,6 +553,9 @@ local SliderVelocidade = TabPersonagem:Slider({
 local SliderJump = TabPersonagem:Slider({
 	Title = "Jump",
 	Desc = "Aumenta a força do pulo",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
 	Step = 1,
 	Value = { 
 		Min = 20,
@@ -556,6 +579,9 @@ TabPersonagem:Section({
 local SliderGravity = TabPersonagem:Slider({
     Title = "Gravity",
     Desc = "Altera a gravidade do jogo",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
     Step = 1,
     Value = {
         Min = 0,
@@ -581,6 +607,8 @@ local Toggle = TabPersonagem:Toggle({
     Desc = "Players ficam visiveis atrás de paredes e marcados.",
     Icon = "solar:eye-bold",
     Type = "Checkbox",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento",
     Value = false, -- default value
     Callback = function(state)
 	--	WindUI:Notify({
