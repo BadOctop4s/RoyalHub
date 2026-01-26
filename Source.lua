@@ -866,10 +866,10 @@ TabPersonagem:Section({
 local SliderVelocidade = TabPersonagem:Slider({
     Title = "Speed",
     Desc = "Altera velocidade do jogador",
-    icons = {
-        From = "",
-        To = "",
-    }
+    Icons = {
+        From = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Turtle_100x100_White.png",
+        To = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/icons8-coelho-100",
+    },
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
