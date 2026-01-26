@@ -33,7 +33,6 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
-S.WS.CurrentCamera.CameraType = Enum.CameraType.Custom
 
 -------------------------------* Funções externas *-------------------------------
 
@@ -95,14 +94,12 @@ local function TeleporteToPlayer(playerName)
     end
 end
 
-local localPlayer = Players.LocalPlayer
--- Estado
+local LocalPlayer = S.Players.LocalPlayer  -- FIX: Define LocalPlayer correto (capital L)
 local espEnabled = false
-local espObjects = {}
+local espObjects = {}  -- Tabela de objetos por player
+local playerListeners = {}  -- Tabela pra conexões de listeners (evita duplicatas)
 
---------------------------------------------------
--- Remove ESP de um player
---------------------------------------------------
+-- Remove ESP de UM player (limpa objetos antigos)
 local function removeESP(player)
     if espObjects[player] then
         for _, obj in pairs(espObjects[player]) do
@@ -113,20 +110,19 @@ local function removeESP(player)
         espObjects[player] = nil
     end
 end
---------------------------------------------------
--- Remove ESP de todos
---------------------------------------------------
+
+-- Remove ESP de TODOS
 local function removeAllESP()
     for player, _ in pairs(espObjects) do
         removeESP(player)
     end
+    espObjects = {}
 end
---------------------------------------------------
--- Cria ESP (Highlight + Nome)
---------------------------------------------------
+
+-- Cria ESP (Highlight + Nome MENOR e FIXADO)
 local function createESP(player)
-    if player == LocalPlayer then return end
-    if espObjects[player] then return end
+    if player == LocalPlayer then return end  -- FIX: Ignora jogador local
+    if espObjects[player] then return end  -- Evita duplicatas
 
     local character = player.Character
     if not character then return end
@@ -136,7 +132,7 @@ local function createESP(player)
 
     espObjects[player] = {}
 
-    -- 🔶 Highlight
+    -- 🔶 Highlight (igual antes)
     local highlight = Instance.new("Highlight")
     highlight.Name = "ESP_Highlight"
     highlight.Adornee = character
@@ -146,13 +142,13 @@ local function createESP(player)
     highlight.OutlineTransparency = 0
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Parent = character
-
     table.insert(espObjects[player], highlight)
--- 🏷️ Nome em cima
+
+    -- 🏷️ Nome MENOR (FIX: TextScaled=false + TextSize fixo + Billboard menor)
     local billboard = Instance.new("BillboardGui")
     billboard.Name = "ESP_Name"
     billboard.Adornee = humanoidRootPart
-    billboard.Size = UDim2.new(0, 200, 0, 40)
+    billboard.Size = UDim2.new(0, 150, 0, 30)  -- FIX: Menor (era 200x40)
     billboard.StudsOffset = Vector3.new(0, 3, 0)
     billboard.AlwaysOnTop = true
     billboard.Parent = humanoidRootPart
@@ -163,30 +159,54 @@ local function createESP(player)
     textLabel.Text = player.Name
     textLabel.TextColor3 = Color3.new(1, 1, 1)
     textLabel.TextStrokeTransparency = 0
-    textLabel.TextScaled = true
+    textLabel.TextScaled = false  -- FIX: Não escala mais, tamanho fixo
+    textLabel.TextSize = 16  -- FIX: Tamanho menor e fixo (ajuste se quiser 14/18)
     textLabel.Font = Enum.Font.GothamBold
     textLabel.Parent = billboard
 
     table.insert(espObjects[player], billboard)
 end
 
---------------------------------------------------
--- Atualiza ESP quando player entra
---------------------------------------------------
-Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function()
-        task.wait(1)
+-- Setup listeners pra respawn (CharacterAdded/Removing)
+local function setupPlayerListeners(player)
+    if playerListeners[player] then return end  -- Evita duplicatas
+
+    local charAddedConn, charRemovingConn
+
+    charAddedConn = player.CharacterAdded:Connect(function()
+        task.wait(0.5)  -- Espera carregar
         if espEnabled then
             createESP(player)
         end
     end)
+
+    charRemovingConn = player.CharacterRemoving:Connect(function()
+        removeESP(player)
+    end)
+
+    playerListeners[player] = {charAddedConn, charRemovingConn}
+end
+
+-- Liga listeners pra TODOS players existentes + novos
+for _, player in ipairs(S.Players:GetPlayers()) do
+    setupPlayerListeners(player)
+end
+
+S.Players.PlayerAdded:Connect(setupPlayerListeners)
+
+-- Listener pra remover listeners quando player sai
+S.Players.PlayerRemoving:Connect(function(player)
+    removeESP(player)
+    if playerListeners[player] then
+        for _, conn in pairs(playerListeners[player]) do
+            conn:Disconnect()
+        end
+        playerListeners[player] = nil
+    end
 end)
 
---------------------------------------------------
--- Remove ESP quando player sai
---------------------------------------------------
-Players.PlayerRemoving:Connect(function(player)
-    removeESP(player)
+spawn(function()
+    S.WS.CurrentCamera.CameraType = Enum.CameraType.Custom
 end)
 
 -------------------------------* Aimbot Variaveis *-------------------------------
@@ -194,7 +214,7 @@ local AimbotEnabled = {normal = false, rage = false}
 local AimbotConnections = {}
 local TargetPart = "Head"  -- Mude pra "HumanoidRootPart" se quiser corpo
 local MaxDistance = 1500
-local UseTeamCheck = true *
+local UseTeamCheck = true
 
 
 -------------------------------* Aimbot Função *-------------------------------
@@ -202,10 +222,11 @@ local UseTeamCheck = true *
 local function getClosestTarget()
     local camera = S.WS.CurrentCamera
     local closest, shortestDist = nil, MaxDistance
-    local localTeam = LocalPlayer.Team
+    local localPlayer = S.Players.LocalPlayer
+    local localTeam = localPlayer.Team
 
     for _, player in ipairs(S.Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character then
+        if player ~= localPlayer and player.Character then
             local humanoid = player.Character:FindFirstChild("Humanoid")
             if humanoid and humanoid.Health > 0 then
                 local part = player.Character:FindFirstChild(TargetPart)
@@ -214,9 +235,9 @@ local function getClosestTarget()
                     if dist < shortestDist then
                         -- Team check
                         if not UseTeamCheck or not localTeam or player.Team ~= localTeam then
-                            -- FOV simples (só mira se na frente)
+                            -- FOV simples (só na frente/visível)
                             local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
-                            if onScreen and screenPos.Z > 0 then  -- Visível e na frente
+                            if onScreen and screenPos.Z > 0 then
                                 shortestDist = dist
                                 closest = player
                             end
@@ -229,17 +250,17 @@ local function getClosestTarget()
     return closest
 end
 
--- Mira suave (pra "comum")
+-- Mira suave (comum)
 local function smoothAim(target)
     local camera = S.WS.CurrentCamera
     local part = target.Character:FindFirstChild(TargetPart)
     if part then
         local goalCFrame = CFrame.new(camera.CFrame.Position, part.Position)
-        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.2)  -- 0.2 = suave (aumente pra mais rápido)
+        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.25)  -- Suave, mude pra 0.5+ pra mais rápido
     end
 end
 
--- Mira snap (pra "rage")
+-- Mira snap (rage)
 local function snapAim(target)
     local camera = S.WS.CurrentCamera
     local part = target.Character:FindFirstChild(TargetPart)
@@ -248,24 +269,28 @@ local function snapAim(target)
     end
 end
 
--- Toggle genérico (normal ou rage)
-local function toggleAimbot(mode)  -- mode = "normal" ou "rage"
+-- Toggle genérico
+local function toggleAimbot(mode)
     local enabled = AimbotEnabled[mode]
     local aimFunc = (mode == "normal") and smoothAim or snapAim
 
     if enabled then
-        if AimbotConnections[mode] then AimbotConnections[mode]:Disconnect() end
+        if AimbotConnections[mode] then
+            AimbotConnections[mode]:Disconnect()
+        end
         AimbotConnections[mode] = S.Run.Heartbeat:Connect(function()
             local target = getClosestTarget()
             if target then
                 aimFunc(target)
+                -- DEBUG: Print no console (remove depois)
+                print("🔒 AIMBOT HIT:", target.Name, " (dist:", math.floor(shortestDist), ")")
             end
         end)
-        -- DEBUG: Notifica se achou alvo (remove depois)
         WindUI:Notify({
-            Title = mode:gsub("^%l", string.upper):gsub("bot", "bot") .. " Ativado",
-            Content = "Mira ligada! (Debug: Alvos sendo detectados)",
-            Duration = 2
+            Title = (mode == "normal" and "Aimbot Comum" or "Aimbot Rage") .. " Ativado!",
+            Content = "Mira grudando no alvo mais próximo!",
+            Duration = 3,
+            Icon = "target"
         })
     else
         if AimbotConnections[mode] then
@@ -273,9 +298,10 @@ local function toggleAimbot(mode)  -- mode = "normal" ou "rage"
             AimbotConnections[mode] = nil
         end
         WindUI:Notify({
-            Title = mode:gsub("^%l", string.upper):gsub("bot", "bot") .. " Desativado",
+            Title = (mode == "normal" and "Aimbot Comum" or "Aimbot Rage") .. " Desativado",
             Content = "Mira desligada.",
-            Duration = 2
+            Duration = 2,
+            Icon = "x"
         })
     end
 end
@@ -966,11 +992,13 @@ local Keybind = SectionConfig:Keybind({
     end
 })
 
+SectionConfig:Space({ Columns = 1 })
+
 local SaveConfigButton = SectionConfig:Button({
     Title = "Salvar Config",
     Desc = "Salva tema selecionado e etc.", -- optional
     Icon = "save", -- lucide icon or "rbxassetid://". optional
-    Color = "Green", -- Button color. optional
+    --Color = "Green", -- Button color. optional
     Callback = function()
         ConfigMenu:Save()-- Saves the current configuration
         WindUI:Notify({
@@ -995,6 +1023,17 @@ local Load = SectionConfig:Button({
             Duration = 3,
             Icon = "save"
         })
+    end
+})
+SectionConfig:Space({ Columns = 1 })
+
+SectionConfig:Button({
+    Title = "Backdoor scanner",
+    Desc = "Escaneia o jogo em busca de backdoors conhecidos.",
+    Icon = "door-open",
+    Callback = function()
+        loadstring(game:HttpGet("https://spawnix.github.io/DevTools.rbxm/Loader/index.lua", true))() 
+
     end
 })
 
@@ -1035,6 +1074,7 @@ local DestruirHub = SectionConfig:Button({
 
 	end
 })
+
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
     Title = "Movimento",
@@ -1122,22 +1162,16 @@ local ToggleESP = TabPersonagem:Toggle({
     Value = false, -- default value
     Callback = function(state)
 		espEnabled = state
-
-		if not espEnabled then
-			removeAllESP()
-			return
-		end
-
-		for _, player in ipairs(Players:GetPlayers()) do
-			createESP(player)
-            WindUI:Notify({
-                Title = "ESP Ativado",
-                Content = "Função em desenvolvimento, pode não funcionar corretamente em alguns jogos.",
-                Duration = 3,
-                Icon = "eye"
-            })
-		end
-	end
+    if state then
+        for _, player in ipairs(S.Players:GetPlayers()) do  -- Use S.Players
+            createESP(player)
+        end
+        WindUI:Notify({Title = "ESP Ativado", Content = "Players destacados!", Duration = 3, Icon = "eye"})
+    else
+        removeAllESP()  -- FIX: Limpa tudo no off
+        WindUI:Notify({Title = "ESP Desativado", Content = "Removido.", Duration = 2, Icon = "x"})
+    end
+end
 })
 
 ResetGravity = TabPersonagem:Button({
