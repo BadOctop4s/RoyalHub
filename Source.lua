@@ -1168,7 +1168,7 @@ local DevParagraph = TabInfo:Paragraph({
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
     ImageSize = 60,
-    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.jpg",
+    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.png",
     ThumbnailSize = 80,
     Locked = false,
 })
