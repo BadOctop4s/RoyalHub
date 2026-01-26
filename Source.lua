@@ -1164,32 +1164,33 @@ local Info = TabInfo:Section({
 
 local DevParagraph = TabInfo:Paragraph({
     Title = "Eodraxkk",
-    Desc = ".",
+    Desc = "Developer principal do Royal Hub, responsável por grande parte das funcionalidades e pela manutenção do script.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
-    ImageSize = 45,
-    Thumbnail = "",
+    ImageSize = 60,
+    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.jpg",
     ThumbnailSize = 80,
     Locked = false,
 })
 
 local Dev2Paragraph = TabInfo:Paragraph({
     Title = "Einzbern",
-    Desc = ".",
+    Desc = "Developer secundário do Royal Hub, responsável por diversas funcionalidades e pela criação de temas personalizados para o script.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
-    ImageSize = 45,
-    Thumbnail = "",
+    ImageSize = 60,
+    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/mikazuchi,png",
     ThumbnailSize = 80,
     Locked = false,
 })
+TabInfo:Space({ Columns = 2 })
 
-local Paragraph = TabInfo:Paragraph({
+local ParagraphLink = TabInfo:Paragraph({
     Title = "Link do Discord",
     Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Discord.png",
-    ImageSize = 45,
+    ImageSize = 40,
     Thumbnail = "",
     ThumbnailSize = 80,
     Locked = false,
