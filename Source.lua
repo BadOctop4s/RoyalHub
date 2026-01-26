@@ -33,6 +33,8 @@ local S = {
     Sound = game:GetService("SoundService"),
 }
 
+S.WS.CurrentCamera.CameraType = Enum.CameraType.Custom
+
 -------------------------------* Funções externas *-------------------------------
 
 local function tableToClipboard(luau_table, indent)
@@ -186,6 +188,98 @@ end)
 Players.PlayerRemoving:Connect(function(player)
     removeESP(player)
 end)
+
+-------------------------------* Aimbot Variaveis *-------------------------------
+local AimbotEnabled = {normal = false, rage = false}
+local AimbotConnections = {}
+local TargetPart = "Head"  -- Mude pra "HumanoidRootPart" se quiser corpo
+local MaxDistance = 1500
+local UseTeamCheck = true *
+
+
+-------------------------------* Aimbot Função *-------------------------------
+
+local function getClosestTarget()
+    local camera = S.WS.CurrentCamera
+    local closest, shortestDist = nil, MaxDistance
+    local localTeam = LocalPlayer.Team
+
+    for _, player in ipairs(S.Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local humanoid = player.Character:FindFirstChild("Humanoid")
+            if humanoid and humanoid.Health > 0 then
+                local part = player.Character:FindFirstChild(TargetPart)
+                if part then
+                    local dist = (camera.CFrame.Position - part.Position).Magnitude
+                    if dist < shortestDist then
+                        -- Team check
+                        if not UseTeamCheck or not localTeam or player.Team ~= localTeam then
+                            -- FOV simples (só mira se na frente)
+                            local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
+                            if onScreen and screenPos.Z > 0 then  -- Visível e na frente
+                                shortestDist = dist
+                                closest = player
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return closest
+end
+
+-- Mira suave (pra "comum")
+local function smoothAim(target)
+    local camera = S.WS.CurrentCamera
+    local part = target.Character:FindFirstChild(TargetPart)
+    if part then
+        local goalCFrame = CFrame.new(camera.CFrame.Position, part.Position)
+        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.2)  -- 0.2 = suave (aumente pra mais rápido)
+    end
+end
+
+-- Mira snap (pra "rage")
+local function snapAim(target)
+    local camera = S.WS.CurrentCamera
+    local part = target.Character:FindFirstChild(TargetPart)
+    if part then
+        camera.CFrame = CFrame.new(camera.CFrame.Position, part.Position)
+    end
+end
+
+-- Toggle genérico (normal ou rage)
+local function toggleAimbot(mode)  -- mode = "normal" ou "rage"
+    local enabled = AimbotEnabled[mode]
+    local aimFunc = (mode == "normal") and smoothAim or snapAim
+
+    if enabled then
+        if AimbotConnections[mode] then AimbotConnections[mode]:Disconnect() end
+        AimbotConnections[mode] = S.Run.Heartbeat:Connect(function()
+            local target = getClosestTarget()
+            if target then
+                aimFunc(target)
+            end
+        end)
+        -- DEBUG: Notifica se achou alvo (remove depois)
+        WindUI:Notify({
+            Title = mode:gsub("^%l", string.upper):gsub("bot", "bot") .. " Ativado",
+            Content = "Mira ligada! (Debug: Alvos sendo detectados)",
+            Duration = 2
+        })
+    else
+        if AimbotConnections[mode] then
+            AimbotConnections[mode]:Disconnect()
+            AimbotConnections[mode] = nil
+        end
+        WindUI:Notify({
+            Title = mode:gsub("^%l", string.upper):gsub("bot", "bot") .. " Desativado",
+            Content = "Mira desligada.",
+            Duration = 2
+        })
+    end
+end
+
 -------------------------------* Temas *-------------------------------
 
 WindUI:AddTheme({
@@ -577,13 +671,40 @@ local SectionAimbot = TabHome:Section({
     DescTextTransparency = 0.4,
 })
 
-  local GrupoAimbot = SectionAimbot:Group({})
+local GrupoAimbot = SectionAimbot:Group({})
     
-    GrupoAimbot:Toggle({ Title = "Aimbot comum", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 1") end })
+GrupoAimbot:Toggle({
+    Title = "Aimbot comum",
+    Default = false,
+    -- Locked = true,  <-- COMENTE OU APAGUE ESSA LINHA
+    Callback = function(enabled)
+        AimbotEnabled.normal = enabled
+        toggleAimbot("normal")
+    end
+})
 
-    GrupoAimbot:Space()
+GrupoAimbot:Space()
 
-    GrupoAimbot:Toggle({ Title = "Aimbot rage", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 2") end })
+GrupoAimbot:Toggle({
+    Title = "Aimbot rage",
+    Default = false,
+    -- Locked = true,  <-- COMENTE OU APAGUE ESSA LINHA
+    Callback = function(enabled)
+        AimbotEnabled.rage = enabled
+        toggleAimbot("rage")
+    end
+})
+
+GrupoAimbot:Space()
+
+GrupoAimbot:Toggle({
+    Title = "Ignorar Aliados (Team Check)",
+    Default = true,
+    Callback = function(enabled)
+        UseTeamCheck = enabled
+        WindUI:Notify({Title = "Team Check", Content = enabled and "Ligado" or "Desligado", Duration = 2})
+    end
+})
 
 TabHome:Space({ Columns = 2 })
 
