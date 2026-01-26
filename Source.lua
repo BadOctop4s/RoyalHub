@@ -1164,25 +1164,28 @@ local Info = TabInfo:Section({
 
 local DevParagraph = TabInfo:Paragraph({
     Title = "Eodraxkk",
-    Desc = "Developer principal do Royal Hub, responsável por grande parte das funcionalidades e pela manutenção do script.",
+    Desc = "Desenvolvedor principal, criador do Royal Hub e desenvolvedor de maior parte das funções do script & bugs testing",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
     ImageSize = 60,
-    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk.jpg",
+    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.jpg",
     ThumbnailSize = 60,
     Locked = false,
 })
 
-local Dev2Paragraph = TabInfo:Paragraph({
+TabInfo:Space({ Columns = 1 })
+
+local DevParagraph2 = TabInfo:Paragraph({
     Title = "Einzbern",
-    Desc = "Developer secundário do Royal Hub, responsável por diversas funcionalidades e pela criação de temas personalizados para o script.",
+    Desc = "Desenvolvedor secundário, criador do tema 'Hutao By Einzbern' e ajudante na criação de funções do Royal Hub & ideias.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
-    ImageSize = 60,
+    ImageSize = 50,
     Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/mikazuchi.jpg",
-    ThumbnailSize = 60,
+    ThumbnailSize = 80,
     Locked = false,
 })
+
 TabInfo:Space({ Columns = 2 })
 
 local ParagraphLink = TabInfo:Paragraph({
