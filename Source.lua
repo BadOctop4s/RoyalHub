@@ -22,10 +22,6 @@ local star = "geist:star"
 local cloud = "geist:cloud"
 local shield = "geist:shield-check"
 
--------------------------------! Save da Configuração (Desativado no momento) !-------------------------------
-
---! local ConfigMenu = Window.ConfigManager:Config("MyConfigFile")
-
 -------------------------------* Serviços personagem *-------------------------------
 local S = {
     Players = game:GetService("Players"),
@@ -338,6 +334,8 @@ KeySystem = {
     },                                                              
 })
 
+local ConfigMenu = Window.ConfigManager:Config("RoyalHub_Config")
+
 
 -------------------------------* Aviso Keybind *-------------------------------
 
@@ -429,7 +427,7 @@ task.spawn(function()
         task.wait(2)
     end
 end)
--------------------------------* KeyBinds *-------------------------------
+-------------------------------* KeyBind Padrão *-------------------------------
 
  Window:SetToggleKey(Enum.KeyCode.H)
 
@@ -514,6 +512,7 @@ local TabInfo = Window:Tab({
     Border = true,
 })
 
+
 TabHome:Select()
 -------------------------------* TabHome * -------------------------
 
@@ -541,7 +540,175 @@ local SectionAimbot = TabHome:Section({
 
     GrupoAimbot:Toggle({ Title = "Aimbot rage", Locked = true, LockedTitle = "Em desenvolvimento.", Callback = function() print("clicked button 2") end })
 
--------------------------------* Buttons Settings *--------------------
+TabHome:Space({ Columns = 2 })
+
+-------------------------------* Auto Farm Level *-------------------------------
+
+local SectionAutofarmLevel = TabFarm:Section({
+    Title = "Auto Farm Level",
+    Desc = "Farma automaticamente seu level ( se não estiver no maximo )",
+    Icon = "geist:crosshair",
+    IconColor = "Green" ,
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4,
+})
+
+local AutoFarmToggle = SectionAutofarmLevel:Toggle({
+    Title = "Ativar Auto Farm Level",
+    Desc = "Ativa o farm automático de level.",
+    Icon = "geist:crosshair",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Value = false, 
+    Callback = function(state)
+        if state then
+            WindUI:Notify({
+                Title = "Auto Farm Level",
+                Content = "Auto Farm Level ativado!",
+                Duration = 3,
+                Icon = "solar:check-circle-bold"
+            })
+        else
+            WindUI:Notify({
+                Title = "Auto Farm Level",
+                Content = "Auto Farm Level desativado!",
+                Duration = 3,
+                Icon = "x"
+            })
+        end
+        print("Auto Farm Level:", state)
+    end
+})
+
+TabFarm:Space({ Columns = 2 })
+-------------------------------* Auto Farm Materials *-------------------------------
+
+local SectionAutoF = TabFarm:Section({
+    Title = "Auto Farm Materials",
+    Desc = "Farma automaticamente materiais do jogo.",
+    Icon = "solar:pickaxe-bold",
+    IconColor = "Green" ,
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4,
+})  
+
+local AutoFarmM = SectionAutoF:Toggle({
+    Title = "Ativar Auto Farm Materials",
+    Desc = "Ativa o farm automático de materiais.",
+    Icon = "solar:check-circle-bold",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Value = false, 
+    Callback = function(state)
+        if state then
+            WindUI:Notify({
+                Title = "Auto Farm Materials",
+                Content = "Auto Farm Materials ativado!",
+                Duration = 3,
+                Icon = "solar:check-circle-bold"
+            })
+        else
+            WindUI:Notify({
+                Title = "Auto Farm Materials",
+                Content = "Auto Farm Materials desativado!",
+                Duration = 3,
+                Icon = "x"
+            })
+        end
+        print("Auto Farm Materials:", state)
+    end
+})
+SectionAutoF:Space({ Columns = 1 })
+
+local MaterialSelect = SectionAutoF:Dropdown({
+    Title = "Selecionar Material",
+    Desc = "Seleciona o material que deseja farmar automaticamente.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Values = {
+        { Title = "Material 1" },
+        { Title = "Material 2" },
+        { Title = "Material 3" },
+    },
+    Value = "Material 1",
+    Callback = function(option)
+        print("Selecionado:", option.Title)
+    end
+})
+-------------------------------* Auto Buy Itens ( TAB SHOPPING ) *-------------------------------
+local SectionLoja = TabShopping:Section({
+    Title = "Auto Buy",
+    Desc = "Compra itens automaticamente do blackmarket.",
+    Icon = "solar:cart-large-bold",
+    IconColor = "Green" ,
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4,
+})
+
+local AutoBuySelectItem = SectionLoja:Dropdown({
+    Title = "Selecionar Item",
+    Desc = "Seleciona o item que deseja comprar automaticamente.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Values = {
+        { Title = "Item 1" },
+        { Title = "Item 2" },
+        { Title = "Item 3" },
+    },
+    Value = "Item 1",
+    Callback = function(option)
+        print("Selecionado:", option.Title)
+    end
+})
+local AutoBuyToggle = SectionLoja:Toggle({
+    Title = "Ativar Auto Buy",
+    Desc = "Ativa a compra automática do item selecionado acima.",
+    Icon = "solar:cart-large-bold",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Value = false, 
+    Callback = function(state)
+        if state then
+            WindUI:Notify({
+                Title = "Auto Buy",
+                Content = "Auto Buy ativado!",
+                Duration = 3,
+                Icon = "solar:check-circle-bold"
+            })
+        else
+            WindUI:Notify({
+                Title = "Auto Buy",
+                Content = "Auto Buy desativado!",
+                Duration = 3,
+                Icon = "x"
+            })
+        end
+        print("Auto Buy:", state)
+    end
+})
+
+-------------------------------* Buttons/Dropdowns TabSettings *--------------------
 local ResetGravity
 local ButtonBypass
 
@@ -577,8 +744,6 @@ ButtonBypass = SectionConfig:Button({
             print("Bypass Anti-Cheat ativado")
         end
 })
-
--------------------------------* Buttons/Dropdown Settings *-------------------------------
 
 local DropdownTemas = SectionConfig:Dropdown({
     Title = "Temas",
@@ -619,6 +784,38 @@ local Keybind = SectionConfig:Keybind({
     Callback = function(key)
 	Window:SetToggleKey(Enum.KeyCode[key])
         print("Keybind activated, key:", key)
+    end
+})
+
+local SaveConfigButton = SectionConfig:Button({
+    Title = "Salvar Config",
+    Desc = "Salva tema selecionado e etc.", -- optional
+    Icon = "save", -- lucide icon or "rbxassetid://". optional
+    Color = "Green", -- Button color. optional
+    Callback = function()
+        ConfigMenu:Save()-- Saves the current configuration
+        WindUI:Notify({
+            Title = "Configuration Saved",
+            Content = "Your configuration has been saved successfully.",
+            Duration = 3,
+            Icon = "save"
+        })
+        print("Configuration saved.")
+    end
+})
+
+local Load = SectionConfig:Button({
+    Title = "Carregar config",
+    Desc = "Carrega a configuração salva anteriormente.",
+    Icon = "save",
+    Callback = function()
+        ConfigMenu:Load()
+        WindUI:Notify({
+            Title = "Configuration Loaded",
+            Content = "Your configuration has been loaded successfully.",
+            Duration = 3,
+            Icon = "save"
+        })
     end
 })
 
@@ -754,6 +951,12 @@ local ToggleESP = TabPersonagem:Toggle({
 
 		for _, player in ipairs(Players:GetPlayers()) do
 			createESP(player)
+            WindUI:Notify({
+                Title = "ESP Ativado",
+                Content = "Função em desenvolvimento, pode não funcionar corretamente em alguns jogos.",
+                Duration = 3,
+                Icon = "eye"
+            })
 		end
 	end
 })
@@ -777,20 +980,21 @@ ResetGravity = TabPersonagem:Button({
 })
 
 -------------------------------* Buttons TabTeleport *-------------------------------
+
 local SectionTP = TabTeleport:Section({
     Title = "Teleport ",
-    Desc = "Permite teleportar até outros jogadores.", -- optional
-    Icon = "bird", -- lucide icon or "rbxassetid://". optional
-    IconColor = Color3.fromRGB(100, 100, 255), -- custom icon color. optional
-    TextSize = 19, -- title text size. optional
-    TextXAlignment = "Left", -- "Left", "Center", "Right". optional
-    Box = true, -- show box around section. optional
-    BoxBorder = true, -- show border on box. optional
-    Opened = true, -- section expanded by default. optional
-    FontWeight = Enum.FontWeight.SemiBold, -- title font weight. optional
-    DescFontWeight = Enum.FontWeight.Medium, -- description font weight. optional
-    TextTransparency = 0.05, -- title transparency. optional
-    DescTextTransparency = 0.4, -- description transparency. optional
+    Desc = "Permite teleportar até outros jogadores.", 
+    Icon = "bird", 
+    IconColor = Color3.fromRGB(100, 100, 255), 
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4, 
 })
 
 local DropDownPlayersTP = SectionTP:Dropdown({
@@ -819,14 +1023,171 @@ local LoopTP = SectionTP:Toggle({
 	end
 })
 
+TabTeleport:Space({ Columns = 2 })
+
+local SectionTeleportToIsland = TabTeleport:Section({
+    Title = "Teleport to Islands",
+    Desc = "Teleporta para as ilhas principais do jogo.", 
+    Icon = "solar:map-pin-bold", 
+    IconColor = Color3.fromRGB(100, 100, 255), 
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4, 
+})
+
+local DropDownIslandsTP = SectionTeleportToIsland:Dropdown({
+    Title = "Teleporte para ilha",
+    Desc = "Teleporta para a ilha selecionada.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Values = {
+        { Title = "Starter Island" },
+        { Title = "Forest Island" },
+        { Title = "Desert Island" },
+        { Title = "Snow Island" },
+        { Title = "Volcano Island" },
+        { Title = "Sky Island" },
+    },
+    Value = "Starter Island",
+    Callback = function(option)
+        print("Selecionado:", option.Title)
+    end
+})
+
+
+-------------------------------* TabMisc *-------------------------------
+
+local SectionMisc = TabMisc:Section({
+    Title = "Miscellaneous",
+    Desc = "Funções diversas do Royal Hub.", 
+    Icon = "solar:settings-bold", 
+    IconColor = Color3.fromRGB(100, 100, 255), 
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4, 
+})
+
+local ButtonRejoin = SectionMisc:Button({
+    Title = "Rejoin",
+    Desc = "Reentra na partida atual.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Callback = function()
+        print("Rejoining...")
+    end
+})
+
+SectionMisc:Space({ Columns = 1 })
+
+local ButtonServerHop = SectionMisc:Button({
+    Title = "Server Hop",
+    Desc = "Entra em outro servidor da partida atual.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Callback = function()
+        print("Server Hopping...")
+    end
+})
+
+SectionMisc:Space({ Columns = 1 })
+
+local ButtonRedeemCodes = SectionMisc:Button({
+    Title = "Redeem Codes",
+    Desc = "Resgata códigos automaticamente.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Callback = function()
+        print("Redeeming Codes...")
+    end
+})
+
+SectionMisc:Space({ Columns = 1 })
+
+local ButtonCollectRewards = SectionMisc:Button({
+    Title = "Collect Rewards",
+    Desc = "Coleta recompensas diárias automaticamente.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Callback = function()
+        print("Collecting Rewards...")
+    end
+})
+
+SectionMisc:Space({ Columns = 1 })
+
+local SectionFun = TabMisc:Section({
+    Title = "Fun",
+    Desc = "Funções divertidas do Royal Hub.", 
+    Icon = "geist:smile-plus", 
+    IconColor = Color3.fromRGB(100, 100, 255), 
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4, 
+})
+
+local FunFunctions = SectionFun:Toggle({
+    Title = "Spin",
+    Desc = "Faz o personagem girar infinitamente.",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Value = false,
+    Callback = function(state)
+        print("Spin toggled:", state)
+    end
+})
+
 -------------------------------* Paragrafos *-------------------------------
 
 TabInfo:Section({
-    Title = "Nosso Discord",
+    Title = "Info",
     TextSize = 24,
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
+
+local GroupDevImages = TabInfo:Group({
+    Title = "Desenvolvedores",
+    Icon = "solar:users-bold",
+    IconColor = "Grey",
+})
+
+GroupDevImages:Image({
+    Title = "Eodraxkk",
+    Desc = "Desenvolvedor principal do Royal Hub.",
+    Image = "https://i.imgur.com/1Xq3Z3g.png",
+    ImageSize = 100,
+    Thumbnail = "",
+    ThumbnailSize = 80,
+    Locked = false,
+})
+
+GroupDevImages:Image({
+    Title = "Einzbern",
+    Desc = "Co-desenvolvedor do Royal Hub.",
+    Image = "https://i.imgur.com/3b0KX1T.png",
+    ImageSize = 100,
+    Thumbnail = "",
+    ThumbnailSize = 80,
+    Locked = false,
+})
 local Paragraph = TabInfo:Paragraph({
     Title = "Link do Discord",
     Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
@@ -855,15 +1216,16 @@ local Paragraph = TabInfo:Paragraph({
 
 TabInfo:Space({ Columns = 2 })
 
-TabInfo:Section({
+local SobreRoyalHub = TabInfo:Section({
     Title = "Sobre o Royal Hub",
     TextSize = 24,
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
-TabInfo:Section({
+SobreRoyalHub:Section({
         Title = "Royal Hub é um script feito para o Roblox, Criado apenas por dois desenvolvedores e focado em entregar uma experiência completa e segura para os jogadores. Com uma variedade de funcionalidades, desde melhorias no personagem até opções de farm automatizado, o Royal Hub visa facilitar a jogabilidade e proporcionar vantagens estratégicas dentro do jogo. Desenvolvido com atenção à segurança, o script busca garantir que os usuários possam aproveitar suas funcionalidades sem comprometer a integridade de suas contas. Seja você um jogador casual ou um entusiasta dedicado, o Royal Hub oferece ferramentas que podem aprimorar sua experiência em diversos jogos.",
         TextSize = 18,
         TextTransparency = .35,
         FontWeight = Enum.FontWeight.Medium,
  })
+
