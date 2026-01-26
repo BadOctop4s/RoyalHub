@@ -1168,8 +1168,8 @@ local DevParagraph = TabInfo:Paragraph({
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
     ImageSize = 60,
-    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.png",
-    ThumbnailSize = 80,
+    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk.jpg",
+    ThumbnailSize = 60,
     Locked = false,
 })
 
@@ -1179,8 +1179,8 @@ local Dev2Paragraph = TabInfo:Paragraph({
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
     ImageSize = 60,
-    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/mikazuchi,png",
-    ThumbnailSize = 80,
+    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/mikazuchi.jpg",
+    ThumbnailSize = 60,
     Locked = false,
 })
 TabInfo:Space({ Columns = 2 })
