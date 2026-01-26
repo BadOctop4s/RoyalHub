@@ -346,14 +346,14 @@ WindUI:Notify({
     Icon = "user"
 })
 -------------------------------* PRINT CONSOLE LOADED *-------------------------------
-print("===== Royal Hub carregado com sucesso! =====")
+print("========================= Royal Hub carregado com sucesso! =========================")
 print("E ali diante dos meus olhos estava um cavalo branco e seu cavaleiro segurou uma reverência. Ele recebeu uma coroa e partiu, conquistando e conquistar... E saiu outro cavalo, todo vermelho. Ao seu cavaleiro recebeu o poder de tirar a paz da terra e fazer os homens massacrarem um ao outro; e ele recebeu uma grande espada... E ali, enquanto eu olhava, estava um cavalo preto; e seu cavaleiro segurava em sua mão um par de balanças... E lá, enquanto eu olhava, estava outro cavalo, doente e pálido; e o nome do seu cavaleiro era Morte, e Hades veio logo atrás. A ele foi dado poder sobre um quarto da terra, com o direito de matar pela espada e pela fome, pela peste e feras selvagens.")
 print(" ========================= Apocalipse 6:1-6 =========================")
 
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.3.2",
+    Title = "v1.3.6",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8, -- from 0 to 13
@@ -361,7 +361,7 @@ Window:Tag({
 
 Window:Tag({
 	Title = "Secure",
-	Icon = "shield",
+	Icon = "solar:shield-check-bold",
 	Color = Color3.fromHex("#30ff6a"),
 	Radius = 8,
 })
@@ -518,9 +518,9 @@ TabHome:Select()
 
 local SectionAimbot = TabHome:Section({
 	Title = "Aimbot",
-	Desc = "",
-	Icon = "solar:home-2-bold",
-	IconColor = "Green" ,
+	Desc = "Função de aimbot para facilitar seus tiros & Ataques.",
+	Icon = "geist:crosshair",
+	--IconColor = "Green" ,
 	TextSize = 19, -- title text size. optional
     TextXAlignment = "Left", -- "Left", "Center", "Right". optional
     Box = true, -- show box around section. optional
@@ -545,10 +545,11 @@ TabHome:Space({ Columns = 2 })
 -------------------------------* Auto Farm Level *-------------------------------
 
 local SectionAutofarmLevel = TabFarm:Section({
+    Icon = "solar:info-circle-bold",
     Title = "Auto Farm Level",
     Desc = "Farma automaticamente seu level ( se não estiver no maximo )",
-    Icon = "geist:crosshair",
-    IconColor = "Green" ,
+    Icon = "geist:sparkles",
+   -- IconColor = "Green" ,
     TextSize = 19, 
     TextXAlignment = "Left", 
     Box = true, 
@@ -563,7 +564,7 @@ local SectionAutofarmLevel = TabFarm:Section({
 local AutoFarmToggle = SectionAutofarmLevel:Toggle({
     Title = "Ativar Auto Farm Level",
     Desc = "Ativa o farm automático de level.",
-    Icon = "geist:crosshair",
+    Icon = "",
     Locked = true,
     LockedTitle = "Em desenvolvimento.",
     Value = false, 
@@ -593,7 +594,7 @@ TabFarm:Space({ Columns = 2 })
 local SectionAutoF = TabFarm:Section({
     Title = "Auto Farm Materials",
     Desc = "Farma automaticamente materiais do jogo.",
-    Icon = "solar:pickaxe-bold",
+    Icon = "solar:backpack-bold",
     IconColor = "Green" ,
     TextSize = 19, 
     TextXAlignment = "Left", 
@@ -844,7 +845,7 @@ local DestruirHub = SectionConfig:Button({
         },
         {
             Title = "Ejetar",
-            Icon = "trash-2", -- optional
+            Icon = "geist:rotate-clockwise", -- optional
             Variant = "Destructive", -- optional
             Callback = function()
 			Window:Destroy()
@@ -866,10 +867,6 @@ TabPersonagem:Section({
 local SliderVelocidade = TabPersonagem:Slider({
     Title = "Speed",
     Desc = "Altera velocidade do jogador",
-    Icons = {
-        From = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Turtle_100x100_White.png",
-        To = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/icons8-coelho-100",
-    },
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -1032,7 +1029,7 @@ TabTeleport:Space({ Columns = 2 })
 local SectionTeleportToIsland = TabTeleport:Section({
     Title = "Teleport to Islands",
     Desc = "Teleporta para as ilhas principais do jogo.", 
-    Icon = "solar:map-pin-bold", 
+    Icon = "solar:map-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
     TextSize = 19, 
     TextXAlignment = "Left", 
@@ -1134,7 +1131,7 @@ SectionMisc:Space({ Columns = 1 })
 local SectionFun = TabMisc:Section({
     Title = "Fun",
     Desc = "Funções divertidas do Royal Hub.", 
-    Icon = "geist:smile-plus", 
+    Icon = "solar:emoji-funny-circle-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
     TextSize = 19, 
     TextXAlignment = "Left", 
@@ -1160,8 +1157,9 @@ local FunFunctions = SectionFun:Toggle({
 
 -------------------------------* Paragrafos *-------------------------------
 
-local Info = TabInfo:Section({
-    Title = "Info",
+local SectionInfo = TabInfo:Section({
+    Title = "Informações",
+    Icon = "solar:info-circle-bold",
     TextSize = 24,
     FontWeight = Enum.FontWeight.SemiBold,
 })
