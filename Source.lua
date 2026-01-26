@@ -209,24 +209,225 @@ spawn(function()
     S.WS.CurrentCamera.CameraType = Enum.CameraType.Custom
 end)
 
+------------------------------* Rejoin & ServerHope Function *-------------------------------
+
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local function RejoinServer()
+    if not LocalPlayer then return end
+    
+    local placeId = game.PlaceId
+    local jobId = game.JobId
+    
+    if jobId == "" then
+        WindUI:Notify({
+            Title = "Rejoin",
+            Content = "Não foi possível pegar o JobId atual. Tente novamente.",
+            Duration = 4,
+            Icon = "alert-circle"
+        })
+        return
+    end
+    
+    WindUI:Notify({
+        Title = "Rejoin",
+        Content = "Voltando pro mesmo servidor...",
+        Duration = 3,
+        Icon = "refresh-cw"
+    })
+    
+    TeleportService:TeleportToPlaceInstance(placeId, jobId, LocalPlayer)
+end
+
+-- ===== FIX SERVER HOP: Substitua a função atual por essa (melhor debug + pcall pra teleport) =====
+local AlreadyJoined = {}  -- Evita hop infinito
+
+local function ServerHop()
+    local placeId = game.PlaceId
+    local cursor = ""
+    local servers = {}
+    
+    WindUI:Notify({
+        Title = "Server Hop",
+        Content = "Buscando servidores... (aguarde 5-10s)",
+        Duration = 5,
+        Icon = "refresh-cw"
+    })
+    
+    -- Loop pra pegar TODOS servers públicos
+    repeat
+        local success, response = pcall(function()
+            local url = "https://games.roblox.com/v1/games/" .. placeId .. "/servers/Public?sortOrder=Asc&limit=100"
+            if cursor ~= "" then url = url .. "&cursor=" .. cursor end
+            return HttpService:JSONDecode(game:HttpGet(url))
+        end)
+        
+        if not success then
+            WindUI:Notify({Title = "Erro Hop", Content = "Falha no HttpGet: " .. tostring(response), Duration = 5, Icon = "x"})
+            return
+        end
+        
+        if response and response.data then
+            for _, server in ipairs(response.data) do
+                if server.playing < server.maxPlayers and server.id ~= game.JobId and not AlreadyJoined[server.id] then
+                    table.insert(servers, server.id)
+                end
+            end
+            cursor = response.nextPageCursor or ""
+        else
+            cursor = ""
+        end
+    until cursor == ""
+    
+    if #servers == 0 then
+        WindUI:Notify({Title = "Sem Servidores", Content = "Nenhum server disponível agora. Tente de novo ou em outro jogo.", Duration = 5, Icon = "alert-circle"})
+        return
+    end
+    
+    local randomServer = servers[math.random(1, #servers)]
+    AlreadyJoined[randomServer] = true
+    
+    WindUI:Notify({Title = "Hop!", Content = "Teleportando pro server: " .. randomServer, Duration = 3, Icon = "server"})
+    
+    -- FIX: pcall no teleport (evita crash se falhar)
+    local success, err = pcall(function()
+        TeleportService:TeleportToPlaceInstance(placeId, randomServer, LocalPlayer)
+    end)
+    
+    if not success then
+        WindUI:Notify({Title = "Teleport Falhou", Content = "Erro: " .. tostring(err) .. ". Verifique executor/anti-cheat.", Duration = 5, Icon = "x"})
+    end
+end
+
+
+------------------------------* Spin function *-------------------------------
+
+local SpinEnabled = false
+local SpinConnection
+
+local function toggleSpin(enabled)
+    SpinEnabled = enabled
+    if enabled then
+        local char = LocalPlayer.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            if SpinConnection then SpinConnection:Disconnect() end
+            SpinConnection = S.Run.Heartbeat:Connect(function(delta)
+                local root = char.HumanoidRootPart
+                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)  -- Gira 360°/seg (ajuste se quiser mais lento)
+            end)
+            WindUI:Notify({Title = "Spin", Content = "Girando! (Desative pra parar)", Duration = 3, Icon = "rotate-cw"})
+        else
+            WindUI:Notify({Title = "Erro Spin", Content = "Personagem não carregado.", Duration = 2, Icon = "x"})
+            toggleSpin(false)  -- Desliga se falhar
+        end
+    else
+        if SpinConnection then
+            SpinConnection:Disconnect()
+            SpinConnection = nil
+        end
+        WindUI:Notify({Title = "Spin", Content = "Parou de girar.", Duration = 2, Icon = "x"})
+    end
+end
+
+-- Listener pra respawn (spin continua após morte)
+LocalPlayer.CharacterAdded:Connect(function(char)
+    if SpinEnabled then
+        task.wait(0.5)  -- Espera load
+        toggleSpin(true)  -- Reativa
+    end
+end)
+
+-------------------------------* Fly function *-------------------------------
+
+local FlyEnabled = false
+local FlySpeed = 50  -- Velocidade inicial (ajuste no slider)
+local FlyConnection
+local FlyBodyVelocity
+local FlyBodyGyro
+
+local function toggleFly(enabled)
+    FlyEnabled = enabled
+    local char = LocalPlayer.Character
+    if not char or not char:FindFirstChild("HumanoidRootPart") then
+        WindUI:Notify({Title = "Fly", Content = "Personagem não carregado.", Duration = 3, Icon = "x"})
+        return
+    end
+
+    local root = char.HumanoidRootPart
+
+    if enabled then
+        -- Cria BodyVelocity e BodyGyro
+        FlyBodyVelocity = Instance.new("BodyVelocity")
+        FlyBodyVelocity.MaxForce = Vector3.new(1e9, 1e9, 1e9)
+        FlyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        FlyBodyVelocity.Parent = root
+
+        FlyBodyGyro = Instance.new("BodyGyro")
+        FlyBodyGyro.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
+        FlyBodyGyro.CFrame = root.CFrame
+        FlyBodyGyro.P = 9e4
+        FlyBodyGyro.Parent = root
+
+        -- Loop de controle (WASD + Space/Ctrl pra subir/descer)
+        if FlyConnection then FlyConnection:Disconnect() end
+        FlyConnection = S.Run.RenderStepped:Connect(function()
+            if not FlyEnabled then return end
+            local cam = S.WS.CurrentCamera
+            local moveDir = Vector3.new(0, 0, 0)
+
+            if S.UI:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + cam.CFrame.LookVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - cam.CFrame.LookVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - cam.CFrame.RightVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + cam.CFrame.RightVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+            if S.UI:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+
+            if moveDir.Magnitude > 0 then
+                moveDir = moveDir.Unit * FlySpeed
+            end
+
+            FlyBodyVelocity.Velocity = moveDir
+            FlyBodyGyro.CFrame = cam.CFrame
+        end)
+
+        WindUI:Notify({Title = "Fly", Content = "Voo ativado! (WASD + Space/Ctrl)", Duration = 4, Icon = "plane"})
+    else
+        -- Limpa
+        if FlyBodyVelocity then FlyBodyVelocity:Destroy() FlyBodyVelocity = nil end
+        if FlyBodyGyro then FlyBodyGyro:Destroy() FlyBodyGyro = nil end
+        if FlyConnection then FlyConnection:Disconnect() FlyConnection = nil end
+        WindUI:Notify({Title = "Fly", Content = "Voo desativado.", Duration = 2, Icon = "x"})
+    end
+end
+
+-- Reativa fly após respawn
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(0.5)
+    if FlyEnabled then toggleFly(true) end
+end)
+
+
 -------------------------------* Aimbot Variaveis *-------------------------------
 local AimbotEnabled = {normal = false, rage = false}
 local AimbotConnections = {}
 local TargetPart = "Head"  -- Mude pra "HumanoidRootPart" se quiser corpo
 local MaxDistance = 1500
 local UseTeamCheck = true
-
+local UseWallCheck = true  -- Toggle pra ligar/desligar
 
 -------------------------------* Aimbot Função *-------------------------------
 
 local function getClosestTarget()
     local camera = S.WS.CurrentCamera
     local closest, shortestDist = nil, MaxDistance
-    local localPlayer = S.Players.LocalPlayer
-    local localTeam = localPlayer.Team
+    local localTeam = LocalPlayer.Team
+    local origin = camera.CFrame.Position  -- Origem do raycast (câmera)
 
     for _, player in ipairs(S.Players:GetPlayers()) do
-        if player ~= localPlayer and player.Character then
+        if player ~= LocalPlayer and player.Character then
             local humanoid = player.Character:FindFirstChild("Humanoid")
             if humanoid and humanoid.Health > 0 then
                 local part = player.Character:FindFirstChild(TargetPart)
@@ -235,11 +436,28 @@ local function getClosestTarget()
                     if dist < shortestDist then
                         -- Team check
                         if not UseTeamCheck or not localTeam or player.Team ~= localTeam then
-                            -- FOV simples (só na frente/visível)
+                            -- FOV simples
                             local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
                             if onScreen and screenPos.Z > 0 then
-                                shortestDist = dist
-                                closest = player
+                                -- WallCheck com Raycast
+                                if not UseWallCheck then
+                                    shortestDist = dist
+                                    closest = player
+                                else
+                                    local direction = (part.Position - origin).Unit
+                                    local rayParams = RaycastParams.new()
+                                    rayParams.FilterType = Enum.RaycastFilterType.Exclude
+                                    rayParams.FilterDescendantsInstances = {LocalPlayer.Character or {}}
+                                    rayParams.IgnoreWater = true
+
+                                    local rayResult = workspace:Raycast(origin, direction * dist, rayParams)
+
+                                    if rayResult and rayResult.Instance:IsDescendantOf(player.Character) then
+                                        -- Ray bateu direto no alvo (sem parede)
+                                        shortestDist = dist
+                                        closest = player
+                                    end
+                                end
                             end
                         end
                     end
@@ -518,7 +736,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.3.6",
+    Title = "v1.3.9",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8, -- from 0 to 13
@@ -699,38 +917,17 @@ local SectionAimbot = TabHome:Section({
 
 local GrupoAimbot = SectionAimbot:Group({})
     
-GrupoAimbot:Toggle({
-    Title = "Aimbot comum",
-    Default = false,
-    -- Locked = true,  <-- COMENTE OU APAGUE ESSA LINHA
-    Callback = function(enabled)
-        AimbotEnabled.normal = enabled
-        toggleAimbot("normal")
-    end
-})
+GrupoAimbot:Toggle({ Title = "Aimbot comum", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.normal = enabled toggleAimbot("normal") end })
 
 GrupoAimbot:Space()
 
-GrupoAimbot:Toggle({
-    Title = "Aimbot rage",
-    Default = false,
-    -- Locked = true,  <-- COMENTE OU APAGUE ESSA LINHA
-    Callback = function(enabled)
-        AimbotEnabled.rage = enabled
-        toggleAimbot("rage")
-    end
-})
+GrupoAimbot:Toggle({ Title = "Aimbot rage", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.rage = enabled toggleAimbot("rage") end })
 
-GrupoAimbot:Space()
+SectionAimbot:Space()
 
-GrupoAimbot:Toggle({
-    Title = "Ignorar Aliados (Team Check)",
-    Default = true,
-    Callback = function(enabled)
-        UseTeamCheck = enabled
-        WindUI:Notify({Title = "Team Check", Content = enabled and "Ligado" or "Desligado", Duration = 2})
-    end
-})
+SectionAimbot:Toggle({ Title = "Ignorar Aliados (Team Check)", Default = true, Callback = function(enabled) UseTeamCheck = enabled WindUI:Notify({Title = "Team Check", Content = enabled and "Ligado" or "Desligado", Duration = 2}) end })
+
+SectionAimbot:Toggle({ Title = "Wall Check (Ignorar Paredes)", Default = true, Callback = function(enabled) UseWallCheck = enabled WindUI:Notify({Title = "Wall Check", Content = enabled and "Ligado (só mira visível)" or "Desligado (mira através)", Duration = 2}) end })
 
 TabHome:Space({ Columns = 2 })
 
@@ -1025,6 +1222,7 @@ local Load = SectionConfig:Button({
         })
     end
 })
+
 SectionConfig:Space({ Columns = 1 })
 
 SectionConfig:Button({
@@ -1049,7 +1247,7 @@ local DestruirHub = SectionConfig:Button({
     Icon = "alert-circle", -- lucide icon or "rbxassetid://". optional
     Title = "Confirm Delete",
     IconThemed = true, -- use theme colors for icon. optional
-    Content = "This action cannot be undone.",
+    Content = "Esta ação não pode ser desfeita.",
     Buttons = {
         {
             Title = "Cancelar",
@@ -1074,6 +1272,7 @@ local DestruirHub = SectionConfig:Button({
 
 	end
 })
+
 
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
@@ -1116,6 +1315,34 @@ local SliderJump = TabPersonagem:Slider({
 		setJumpPower(value)
 		print("Valor do pulo alterado para:", value)
 	end
+})
+
+TabPersonagem:Space({ Columns = 1 })
+
+local FlyToggle = TabPersonagem:Toggle({
+    Title = "Fly",
+    Desc = "Ativa o modo de voo",
+    Icon = "solar:rocket-bold",
+    Locked = false,
+    LockedTitle = "Em desenvolvimento.",
+    Value = false, -- default value
+    Callback = function(state)
+        toggleFly(state)
+    end
+})
+
+local SliderFlySpeed = TabPersonagem:Slider({
+    Title = "Velocidade do Fly",
+    Desc = "Ajuste a velocidade do voo (quanto maior, mais rápido).",
+    Step = 5,
+    Value = { Min = 20, Max = 200, Default = 50 },
+    Callback = function(value)
+        FlySpeed = value
+        if FlyEnabled and FlyBodyVelocity then
+            FlyBodyVelocity.Velocity = FlyBodyVelocity.Velocity.Unit * value
+        end
+        print("Fly Speed:", value)
+    end
 })
 
 TabPersonagem:Space({ Columns = 2 })
@@ -1177,9 +1404,10 @@ end
 ResetGravity = TabPersonagem:Button({
         Title = "Reset Gravity",
         Desc = "Reseta a gravidade para o valor padrão (196.2)",
-        Locked = true,
+        Locked = false,
 		LockedTitle = "Em desenvolvimento.",
         Callback = function()
+            setGravity(196.2)
             ResetGravity:Highlight()
             WindUI:Notify({
                 Title = "Gravidade resetada!",
@@ -1187,7 +1415,6 @@ ResetGravity = TabPersonagem:Button({
                 Duration = 3,
                 Icon = "shield-check"
             })
-            setGravity(196.2)
             print("Gravidade resetada para 196.2")
     end
 })
@@ -1295,9 +1522,10 @@ local SectionMisc = TabMisc:Section({
 local ButtonRejoin = SectionMisc:Button({
     Title = "Rejoin",
     Desc = "Reentra na partida atual.",
-    Locked = true,
+    Locked = false,
     LockedTitle = "Em desenvolvimento.",
     Callback = function()
+        RejoinServer()
         print("Rejoining...")
     end
 })
@@ -1307,9 +1535,10 @@ SectionMisc:Space({ Columns = 1 })
 local ButtonServerHop = SectionMisc:Button({
     Title = "Server Hop",
     Desc = "Entra em outro servidor da partida atual.",
-    Locked = true,
+    Locked = false,
     LockedTitle = "Em desenvolvimento.",
     Callback = function()
+        ServerHop()
         print("Server Hopping...")
     end
 })
@@ -1359,10 +1588,11 @@ local SectionFun = TabMisc:Section({
 local FunFunctions = SectionFun:Toggle({
     Title = "Spin",
     Desc = "Faz o personagem girar infinitamente.",
-    Locked = true,
+    Locked = false,
     LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
+        toggleSpin(state)
         print("Spin toggled:", state)
     end
 })
