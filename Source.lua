@@ -1156,43 +1156,28 @@ local FunFunctions = SectionFun:Toggle({
 
 -------------------------------* Paragrafos *-------------------------------
 
-TabInfo:Section({
+local Info = TabInfo:Section({
     Title = "Info",
     TextSize = 24,
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
-
-local GroupDevImages = TabInfo:Group({
-    Title = "Desenvolvedores",
-    Icon = "solar:users-bold",
-    IconColor = "Grey",
-})
-
-GroupDevImages:Image({
+local DevParagraph = TabInfo:Paragraph({
     Title = "Eodraxkk",
-    Desc = "Desenvolvedor principal do Royal Hub.",
-    Image = "https://i.imgur.com/1Xq3Z3g.png",
-    ImageSize = 100,
+    Desc = ".",
+    Color = "Grey",
+    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Developer.png",
+    ImageSize = 45,
     Thumbnail = "",
     ThumbnailSize = 80,
     Locked = false,
 })
 
-GroupDevImages:Image({
-    Title = "Einzbern",
-    Desc = "Co-desenvolvedor do Royal Hub.",
-    Image = "https://i.imgur.com/3b0KX1T.png",
-    ImageSize = 100,
-    Thumbnail = "",
-    ThumbnailSize = 80,
-    Locked = false,
-})
 local Paragraph = TabInfo:Paragraph({
     Title = "Link do Discord",
     Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
     Color = "Grey",
-    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons8-logo-discord-96.png",
+    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Discord.png",
     ImageSize = 45,
     Thumbnail = "",
     ThumbnailSize = 80,
