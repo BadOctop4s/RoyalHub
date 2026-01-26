@@ -257,6 +257,51 @@ WindUI:AddTheme({
     }),
 })
 
+WindUI:AddTheme({
+    Name = "Solar Theme",
+    Accent = WindUI:Gradient{
+        ["0"] = { Color = Color3.fromHex("#ff6a30"), Transparency = 0 },
+        ["100"]  = { Color = Color3.fromHex("ffe72f"), Transparency = 0 },
+    }, {
+        Rotation = 80,
+    }   
+})
+
+WindUI:AddTheme({
+  Name = "Midnight",
+  
+  Accent = Color3.fromHex("#1e3a8a"),
+  Background = Color3.fromHex("#0c1e42"),
+  Outline = Color3.fromHex("#bfdbff"),
+  Text = Color3.fromHex("#dbeafe"),
+  Placeholder = Color3.fromHex("#2f74d1"),
+  Button = Color3.fromHex("#2563eb"),
+  Icon = Color3.fromHex("#5591f4"),
+})
+WindUI:AddTheme({
+  Name = "Crimson",
+  
+  Accent = Color3.fromHex("#b91c1c"),
+  Background = Color3.fromHex("#0c0404"),
+  Outline = Color3.fromHex("#161616"),
+  Text = Color3.fromHex("#fef2f2"),
+  Placeholder = Color3.fromHex("#6f757b"),
+  Button = Color3.fromHex("#991b1b"),
+  Icon = Color3.fromHex("#dc2626"),
+  
+})
+WindUI:AddTheme({
+  Name = "Snow",
+  
+  Accent = Color3.fromHex("#18181b"),
+  Background = Color3.fromHex("#eeeeee"),
+  Outline = Color3.fromHex("#FFFFFF"),
+  Text = Color3.fromHex("#aca1a1"),
+  Placeholder = Color3.fromHex("#7a7a7a"),
+  Button = Color3.fromHex("#52525b"),
+  Icon = Color3.fromHex("#a1a1aa"),
+})
+
 -------------------------------* Notificação *-------------------------------
 
  WindUI:Notify({
@@ -768,7 +813,19 @@ local DropdownTemas = SectionConfig:Dropdown({
         },
         {
             Title = "CyberPunk",
-        }
+        },
+        {
+            Title = "Solar Theme",
+        },
+        {
+            Title = "Midnight",
+        },
+        {
+            Title = "Crimson",
+        },
+        {
+            Title = "Snow",
+        },
     },
     Value = "Dark Amoled ( Default )",
     Callback = function(option)
