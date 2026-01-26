@@ -1166,7 +1166,18 @@ local DevParagraph = TabInfo:Paragraph({
     Title = "Eodraxkk",
     Desc = ".",
     Color = "Grey",
-    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Developer.png",
+    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
+    ImageSize = 45,
+    Thumbnail = "",
+    ThumbnailSize = 80,
+    Locked = false,
+})
+
+local Dev2Paragraph = TabInfo:Paragraph({
+    Title = "Einzbern",
+    Desc = ".",
+    Color = "Grey",
+    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
     ImageSize = 45,
     Thumbnail = "",
     ThumbnailSize = 80,
