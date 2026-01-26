@@ -866,6 +866,10 @@ TabPersonagem:Section({
 local SliderVelocidade = TabPersonagem:Slider({
     Title = "Speed",
     Desc = "Altera velocidade do jogador",
+    icons = {
+        From = "",
+        To = "",
+    }
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -1164,12 +1168,12 @@ local Info = TabInfo:Section({
 
 local DevParagraph = TabInfo:Paragraph({
     Title = "Eodraxkk",
-    Desc = "Desenvolvedor principal, criador do Royal Hub e desenvolvedor de maior parte das funções do script & bugs testing",
+    Desc = "Desenvolvedor principal do Royal Hub, focado em programação e segurança.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
     ImageSize = 60,
-    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.jpg",
-    ThumbnailSize = 60,
+    --Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEodraxkk2.jpg",
+    --ThumbnailSize = 60,
     Locked = false,
 })
 
@@ -1177,12 +1181,12 @@ TabInfo:Space({ Columns = 1 })
 
 local DevParagraph2 = TabInfo:Paragraph({
     Title = "Einzbern",
-    Desc = "Desenvolvedor secundário, criador do tema 'Hutao By Einzbern' e ajudante na criação de funções do Royal Hub & ideias.",
+    Desc = "Co-desenvolvedor do Royal Hub, focado em design e ideias de funções.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
-    ImageSize = 50,
-    Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/mikazuchi.jpg",
-    ThumbnailSize = 80,
+    ImageSize = 60,
+    --Thumbnail = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/BannerEinzbern.jpg",
+    --ThumbnailSize = 60,
     Locked = false,
 })
 
@@ -1192,14 +1196,14 @@ local ParagraphLink = TabInfo:Paragraph({
     Title = "Link do Discord",
     Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
     Color = "Grey",
-    Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/icons/Discord.png",
+    Image = "geist:logo-discord",
     ImageSize = 40,
-    Thumbnail = "",
-    ThumbnailSize = 80,
+   -- Thumbnail = "",
+    --ThumbnailSize = 80,
     Locked = false,
     Buttons = {
         {
-            Icon = "",
+            Icon = "solar:clipboard-bold",
             Title = "Clique para copiar o link",
             Callback = function()
                 setclipboard("https://discord.gg/DmdTDgJc")
