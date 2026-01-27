@@ -2491,7 +2491,7 @@ local DropdownSelectPlayerFling = SectionExploits:Dropdown({
     Title = "Selecione Jogador",
     Values = playerValues,
     Locked = true,
-    LockedTitle = "Parou de funcionar.",
+    LockedTitle = "Em manutenção.",
     Multi = false,
     Default = nil,
     Callback = function(selected)
@@ -2503,7 +2503,7 @@ local flingButton = SectionExploits:Button({
     Title = "Fling Player",
     Desc = "Faz o jogador selecionado voar pelo mapa.",
     Locked = true,
-    LockedTitle = "Parou de funcionar.",
+    LockedTitle = "Em manutenção.",
     Callback = flingPlayer
 })
 
@@ -2511,9 +2511,9 @@ TabMisc:Space({ Columns = 1 })
 
 local spyToggle = SectionExploits:Toggle({
     Title = "SpyChat",
-    locked = true,
-    LockedTitle = "Parou de funcionar.",
     Desc = "Espiona TODOS chats privados/DMs.",
+    locked = true,
+    LockedTitle = "Em manutenção.",
     Icon = "solar:eye-bold",
     Value = false,
     Callback = toggleSpyChat
