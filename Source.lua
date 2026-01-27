@@ -974,57 +974,24 @@ local emoteValues = getEmoteValues()
 
 
 ------------------------------* FLING Function *-------------------------------
-local FlingTargetName = nil 
+local FlingTargetPlayer = nil
+local FlingPower = 1000
 
-
-local function flingPlayer()
-    if not FlingTargetName then
-        WindUI:Notify({
-            Title = "Fling",
-            Content = "Selecione um jogador primeiro!",
-            Duration = 4,
-            Icon = "alert-circle"
-        })
-        return
-    end
+local function Fling(targetPlayer, flingPower, direction)
+    flingPower = flingPower or 1000
+    direction = direction or Vector3.new(math.random(-1,1), 1, math.random(-1,1)).Unit * 50  -- Direção aleatória para cima
     
-    local target = S.Players:FindFirstChild(FlingTargetName)
-    if not target or not target.Character then
-        WindUI:Notify({
-            Title = "Fling",
-            Content = "Player sumiu!",
-            Duration = 3,
-            Icon = "x"
-        })
-        return
-    end
-    
-    local root = target.Character:FindFirstChild("HumanoidRootPart")
-    if not root then return end
-    
-    local conn
-    conn = S.Run.Heartbeat:Connect(function()
-        root.AssemblyLinearVelocity = Vector3.new(
-            math.random(-5000000, 5000000),
-            999999,
-            math.random(-5000000, 5000000)
-        )
-        root.AssemblyAngularVelocity = Vector3.new(math.random(-50000,50000), 0, math.random(-50000,50000))
-    end)
-    
-    task.spawn(function()
-        task.wait(1)
-        if conn then
-            conn:Disconnect()
+    if targetPlayer and targetPlayer.Character then
+        local humanoidRootPart = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+        local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+        
+        if humanoidRootPart and humanoid and humanoid.Health > 0 then
+            humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+            humanoidRootPart.Velocity = direction * flingPower
+            task.wait(0.1)
+            humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
         end
-    end)
-    
-    WindUI:Notify({
-        Title = "Fling",
-        Content = FlingTargetName .. " foi FLINGADO pro VOID! 🚀",
-        Duration = 4,
-        Icon = "zap"
-    })
+    end
 end
 
 -------------------------------* SpyChat ( Talvez não funcione. ) *-------------------------------
@@ -1121,6 +1088,57 @@ end
 --     end
 -- end
 
+-------------------------------* Audio Function *-------------------------------
+
+-- local currentAudioId = 1839246711  -- Default vine boom
+-- local currentVolume = 10
+
+-- local function playGlobalMusicRemote(id, volume)
+--     id = tonumber(id) or currentAudioId
+--     volume = tonumber(volume) or currentVolume
+    
+--     local rs = game:GetService("ReplicatedStorage")
+--     local remote = rs.Remotes:FindFirstChild("ClientMusicFamily")  -- Do seu dump
+    
+--     if not remote or not remote:IsA("RemoteEvent") then
+--         print("ClientMusicFamily não encontrado!")
+--         game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Erro", Text = "Remote ClientMusicFamily não achado", Duration = 5})
+--         return
+--     end
+    
+--     print("Firing ClientMusicFamily:", remote:GetFullName())
+    
+--     -- Args comuns pra music remotes em Brookhaven (testados em scripts 2025)
+--     local attempts = {
+--         {"rbxassetid://" .. id, volume},  -- ID + volume (mais comum)
+--         {id, volume},                     -- Número ID + vol
+--         {"rbxassetid://" .. id, volume, true},  -- + bool pra loop?
+--         {game.Players.LocalPlayer, "rbxassetid://" .. id, volume},  -- Player + ID + vol
+--     }
+    
+--     for i, args in ipairs(attempts) do
+--         print("  Tentativa " .. i .. ":", unpack(args))
+--         pcall(remote.FireServer, remote, unpack(args))
+--         task.wait(0.5)
+--     end
+    
+--     game:GetService("StarterGui"):SetCore("SendNotification", {
+--         Title = "🎵 Música Global Tentada",
+--         Text = "Enviado pro ClientMusicFamily! (Deve tocar pra todos se for carro/música)",
+--         Duration = 5
+--     })
+-- end
+
+-- -- =============================================
+-- -- IDs TROLL PRONTOS pro Brookhaven (earrape como "tiro")
+-- local trollAudios = {
+--     {Title = "Vine Boom", id = 1839246711},
+--     {Title = "Earrape Scream", id = 1848354535},
+--     {Title = "Among Us Drip", id = 9047050072},
+--     {Title = "Troll Face", id = 12222058},
+--     {Title = "Airhorn", id = 4595066905},
+--     {Title = "Rick Roll (alto)", id = 1848354535},
+-- }
 
 -------------------------------* Temas *-------------------------------
 
@@ -2501,21 +2519,84 @@ local SectionExploits = TabMisc:Section({
 local DropdownSelectPlayerFling = SectionExploits:Dropdown({
     Title = "Selecione Jogador",
     Values = playerValues,
-    Locked = true,
+    Locked = false,
     LockedTitle = "Em manutenção.",
     Multi = false,
     Default = nil,
     Callback = function(selected)
-       FlingTargetName = selected.Title
+       FlingTargetPlayer = selected.Player
+    end
+})
+
+local SliderFling = SectionExploits:Slider({
+    Title = "Fling Power",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 1,
+    Value = {
+    Min = 0,
+    Max = 5000,
+    Default = 0,
+    },
+    Callback = function(value)
+        FlingPower = value
+    end
+})
+
+local LoopFling = SectionExploits:Toggle({
+    Title = "Loop Fling",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento",
+    Default = false,
+    Callback = function(enabled)
+        LoopFlingEnabled = enabled
+        if enabled then
+            if not FlingTargetPlayer then
+                WindUI:Notify({Title = "Erro", Content = "Selecione um alvo!", Duration = 3})
+                return false
+            end
+            LoopFlingConnection = S.Run.Heartbeat:Connect(function()
+                if LoopFlingEnabled then
+                    Fling(FlingTargetPlayer, FlingPower)
+                end
+            end)
+        else
+            if LoopFlingConnection then
+                LoopFlingConnection:Disconnect()
+                LoopFlingConnection = nil
+            end
+        end
     end
 })
 
 local flingButton = SectionExploits:Button({
     Title = "Fling Player",
-    Desc = "Faz o jogador selecionado voar pelo mapa.",
     Locked = true,
+    LockedTitle = "Em desenvolvimento.",
+    Desc = "Faz o jogador selecionado voar pelo mapa.",
+    Locked = false,
     LockedTitle = "Em manutenção.",
-    Callback = flingPlayer
+    Callback = function()
+        if FlingTargetPlayer then
+            Fling(FlingTargetPlayer, FlingPower)
+            WindUI:Notify({
+                Title = "Fling",
+                Content = "Arremessado: " .. FlingTargetPlayer.Name,
+                Duration = 3,
+                Icon = "wind"
+            })
+        else
+            WindUI:Notify({
+                Title = "Erro",
+                Content = "Selecione um alvo primeiro!",
+                Duration = 3,
+                Icon = "alert-circle"
+            })
+        end
+    end
 })
 
 TabMisc:Space({ Columns = 1 })
@@ -2559,7 +2640,7 @@ local ToggleSpin = SectionFun:Toggle({
     end
 })
 
-TabMisc:Space({ Columns = 1 })
+SectionFun:Space({ Columns = 1 })
 
 local orbitDropdown = SectionFun:Dropdown({
     Title = "Selecione Jogador",
@@ -2590,6 +2671,53 @@ local orbitSlider = SectionFun:Slider({
     Default = 1,
     },
     Callback = setOrbitSpeed
+})
+
+SectionFun:Space({ Columns = 1 })
+
+local trollDropdown = SectionFun:Dropdown({
+    Title = "IDs Troll Prontos",
+    Locked = true,
+    LockedTitle = "Em manutenção",
+    Values = trollAudios,  -- Agora correto!
+    Multi = false,
+    Default = nil,  -- ou {trollAudios[1]} se quiser default
+    Callback = function(selected)
+        if selected and selected.id then
+            currentAudioId = selected.id
+            WindUI:Notify({
+                Title = "Troll Selecionado",
+                Content = "Carregado: " .. selected.Title .. " (ID: " .. selected.id .. ")",
+                Duration = 3,
+                Icon = "zap"
+            })
+        end
+    end
+})
+
+local volumeSlider = SectionFun:Slider({
+    Title = "Volume",
+    Locked = true,
+    LockedTitle = "Em manutenção.",
+    Value = {
+        Min = 1,
+        Max = 20,
+        Default = 5
+    },
+    Callback = function(value)
+        currentVolume = value
+        -- Opcional: print("Volume atual:", currentVolume)
+    end
+})
+
+local PlayAudio = SectionFun:Button({
+    Title = "Tocar Global",
+    locked = true,
+    LockedTitle = "Em manutenção.",
+    Callback = function()
+        playGlobalAudioRemote(currentAudio, currentVolume)
+        game:GetService("ReplicatedStorage").Remotes:FindFirstChild("BuyMusicPass"):FireServer()  -- Tenta bypass (pode não funcionar)
+    end
 })
 
 SectionFun:Space({ Columns = 1 })
