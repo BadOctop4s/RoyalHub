@@ -2512,7 +2512,7 @@ TabMisc:Space({ Columns = 1 })
 local spyToggle = SectionExploits:Toggle({
     Title = "SpyChat",
     Desc = "Espiona TODOS chats privados/DMs.",
-    locked = true,
+    Locked = true,
     LockedTitle = "Em manutenção.",
     Icon = "solar:eye-bold",
     Value = false,
@@ -2566,13 +2566,18 @@ local orbitToggle = SectionFun:Toggle({
     Callback = toggleOrbit
 })
 
--- Slider para velocidade
+
 local orbitSlider = SectionFun:Slider({
     Title = "Velocidade Rotação",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 1,
+    Value = {
     Min = 0.1,
     Max = 10,
     Default = 1,
-    Decimals = 1,
+    },
     Callback = setOrbitSpeed
 })
 
