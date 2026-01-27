@@ -77,6 +77,7 @@ for _, plr in ipairs(Players:GetPlayers()) do
     })
 end
 
+-------------------------------* Teleporte To Player Function *-------------------------------
 
 local function TeleporteToPlayer(playerName)
     local player = S.Players:FindFirstChild(playerName)
@@ -94,12 +95,89 @@ local function TeleporteToPlayer(playerName)
     end
 end
 
-local LocalPlayer = S.Players.LocalPlayer  -- FIX: Define LocalPlayer correto (capital L)
-local espEnabled = false
-local espObjects = {}  -- Tabela de objetos por player
-local playerListeners = {}  -- Tabela pra conexões de listeners (evita duplicatas)
+-------------------------------* LOOP TP *------------------------------
 
--- Remove ESP de UM player (limpa objetos antigos)
+-- ===== LOOP TP VARIABLES =====
+local LoopTPEnabled = false
+local LoopTPTargetName = nil  -- Nome do jogador selecionado no dropdown
+local LoopTPDelay = 1  -- Segundos entre cada TP (ajuste no slider se quiser)
+local LoopTPConnection = nil
+
+-- Função principal do Loop TP
+local function startLoopTP()
+    if LoopTPConnection then LoopTPConnection:Disconnect() end
+    
+    LoopTPConnection = S.Run.Heartbeat:Connect(function()
+        if not LoopTPEnabled then return end
+        if not LoopTPTargetName then return end
+        
+        -- Tenta teleportar
+        TeleporteToPlayer(LoopTPTargetName)
+        
+        -- Opcional: Check se alvo ainda existe (evita spam de erro)
+        local target = S.Players:FindFirstChild(LoopTPTargetName)
+        if not target or not target.Character then
+            WindUI:Notify({
+                Title = "Loop TP",
+                Content = "Alvo sumiu ou morreu. Loop parado.",
+                Duration = 4,
+                Icon = "alert-circle"
+            })
+            LoopTPEnabled = false
+            if LoopTPConnection then
+                LoopTPConnection:Disconnect()
+                LoopTPConnection = nil
+            end
+        end
+    end)
+end
+
+-- Toggle function
+local function toggleLoopTP(enabled)
+    LoopTPEnabled = enabled
+    
+    if enabled then
+        if not LoopTPTargetName then
+            WindUI:Notify({
+                Title = "Loop TP",
+                Content = "Selecione um jogador no dropdown primeiro!",
+                Duration = 4,
+                Icon = "alert-circle"
+            })
+            LoopTPEnabled = false  -- Desliga se não tiver alvo
+            return
+        end
+        
+        WindUI:Notify({
+            Title = "Loop TP",
+            Content = "Iniciando loop no jogador: " .. LoopTPTargetName .. " (delay: " .. LoopTPDelay .. "s)",
+            Duration = 4,
+            Icon = "repeat"
+        })
+        
+        startLoopTP()
+    else
+        if LoopTPConnection then
+            LoopTPConnection:Disconnect()
+            LoopTPConnection = nil
+        end
+        WindUI:Notify({
+            Title = "Loop TP",
+            Content = "Loop desativado.",
+            Duration = 3,
+            Icon = "x"
+        })
+    end
+end
+
+------------------------------* ESP Function *-------------------------------
+
+local LocalPlayer = S.Players.LocalPlayer
+local espEnabled = false
+local espObjects = {}  
+local playerListeners = {}  
+
+-- Remove ESP de UM player
 local function removeESP(player)
     if espObjects[player] then
         for _, obj in pairs(espObjects[player]) do
@@ -119,7 +197,7 @@ local function removeAllESP()
     espObjects = {}
 end
 
--- Cria ESP (Highlight + Nome MENOR e FIXADO)
+-- Cria ESP
 local function createESP(player)
     if player == LocalPlayer then return end  -- FIX: Ignora jogador local
     if espObjects[player] then return end  -- Evita duplicatas
@@ -132,7 +210,7 @@ local function createESP(player)
 
     espObjects[player] = {}
 
-    -- 🔶 Highlight (igual antes)
+    -- 🔶 Highlight
     local highlight = Instance.new("Highlight")
     highlight.Name = "ESP_Highlight"
     highlight.Adornee = character
@@ -144,7 +222,7 @@ local function createESP(player)
     highlight.Parent = character
     table.insert(espObjects[player], highlight)
 
-    -- 🏷️ Nome MENOR (FIX: TextScaled=false + TextSize fixo + Billboard menor)
+    -- 🏷️ NameTag
     local billboard = Instance.new("BillboardGui")
     billboard.Name = "ESP_Name"
     billboard.Adornee = humanoidRootPart
@@ -160,14 +238,13 @@ local function createESP(player)
     textLabel.TextColor3 = Color3.new(1, 1, 1)
     textLabel.TextStrokeTransparency = 0
     textLabel.TextScaled = false  -- FIX: Não escala mais, tamanho fixo
-    textLabel.TextSize = 16  -- FIX: Tamanho menor e fixo (ajuste se quiser 14/18)
+    textLabel.TextSize = 16  -- FIX: Tamanho menor e fixo
     textLabel.Font = Enum.Font.GothamBold
     textLabel.Parent = billboard
 
     table.insert(espObjects[player], billboard)
 end
 
--- Setup listeners pra respawn (CharacterAdded/Removing)
 local function setupPlayerListeners(player)
     if playerListeners[player] then return end  -- Evita duplicatas
 
@@ -187,14 +264,12 @@ local function setupPlayerListeners(player)
     playerListeners[player] = {charAddedConn, charRemovingConn}
 end
 
--- Liga listeners pra TODOS players existentes + novos
 for _, player in ipairs(S.Players:GetPlayers()) do
     setupPlayerListeners(player)
 end
 
 S.Players.PlayerAdded:Connect(setupPlayerListeners)
 
--- Listener pra remover listeners quando player sai
 S.Players.PlayerRemoving:Connect(function(player)
     removeESP(player)
     if playerListeners[player] then
@@ -242,8 +317,9 @@ local function RejoinServer()
     TeleportService:TeleportToPlaceInstance(placeId, jobId, LocalPlayer)
 end
 
--- ===== FIX SERVER HOP: Substitua a função atual por essa (melhor debug + pcall pra teleport) =====
-local AlreadyJoined = {}  -- Evita hop infinito
+-------------------------* FIX SERVER HOP FUNCTION *------------------------- 
+
+local AlreadyJoined = {}
 
 local function ServerHop()
     local placeId = game.PlaceId
@@ -257,7 +333,6 @@ local function ServerHop()
         Icon = "refresh-cw"
     })
     
-    -- Loop pra pegar TODOS servers públicos
     repeat
         local success, response = pcall(function()
             local url = "https://games.roblox.com/v1/games/" .. placeId .. "/servers/Public?sortOrder=Asc&limit=100"
@@ -292,7 +367,6 @@ local function ServerHop()
     
     WindUI:Notify({Title = "Hop!", Content = "Teleportando pro server: " .. randomServer, Duration = 3, Icon = "server"})
     
-    -- FIX: pcall no teleport (evita crash se falhar)
     local success, err = pcall(function()
         TeleportService:TeleportToPlaceInstance(placeId, randomServer, LocalPlayer)
     end)
@@ -316,12 +390,12 @@ local function toggleSpin(enabled)
             if SpinConnection then SpinConnection:Disconnect() end
             SpinConnection = S.Run.Heartbeat:Connect(function(delta)
                 local root = char.HumanoidRootPart
-                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)  -- Gira 360°/seg (ajuste se quiser mais lento)
+                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)  -- Gira 360°/seg
             end)
             WindUI:Notify({Title = "Spin", Content = "Girando! (Desative pra parar)", Duration = 3, Icon = "rotate-cw"})
         else
             WindUI:Notify({Title = "Erro Spin", Content = "Personagem não carregado.", Duration = 2, Icon = "x"})
-            toggleSpin(false)  -- Desliga se falhar
+            toggleSpin(false)
         end
     else
         if SpinConnection then
@@ -332,34 +406,39 @@ local function toggleSpin(enabled)
     end
 end
 
--- Listener pra respawn (spin continua após morte)
+
 LocalPlayer.CharacterAdded:Connect(function(char)
     if SpinEnabled then
-        task.wait(0.5)  -- Espera load
-        toggleSpin(true)  -- Reativa
+        task.wait(0.5) 
+        toggleSpin(true)  
     end
 end)
 
 -------------------------------* Fly function *-------------------------------
 
 local FlyEnabled = false
-local FlySpeed = 50  -- Velocidade inicial (ajuste no slider)
-local FlyConnection
-local FlyBodyVelocity
-local FlyBodyGyro
+local FlySpeed = 50
+local FlyConnection = nil
+local FlyBodyVelocity = nil
+local FlyBodyGyro = nil
+local FlyAlignOrientation = nil
 
 local function toggleFly(enabled)
     FlyEnabled = enabled
     local char = LocalPlayer.Character
-    if not char or not char:FindFirstChild("HumanoidRootPart") then
+    if not char or not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") then
         WindUI:Notify({Title = "Fly", Content = "Personagem não carregado.", Duration = 3, Icon = "x"})
         return
     end
 
+    local humanoid = char.Humanoid
     local root = char.HumanoidRootPart
 
     if enabled then
-        -- Cria BodyVelocity e BodyGyro
+        
+        humanoid.PlatformStand = true
+
+        -- Movers
         FlyBodyVelocity = Instance.new("BodyVelocity")
         FlyBodyVelocity.MaxForce = Vector3.new(1e9, 1e9, 1e9)
         FlyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
@@ -367,50 +446,85 @@ local function toggleFly(enabled)
 
         FlyBodyGyro = Instance.new("BodyGyro")
         FlyBodyGyro.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
-        FlyBodyGyro.CFrame = root.CFrame
-        FlyBodyGyro.P = 9e4
+        FlyBodyGyro.P = 10000
         FlyBodyGyro.Parent = root
 
-        -- Loop de controle (WASD + Space/Ctrl pra subir/descer)
-        if FlyConnection then FlyConnection:Disconnect() end
+        FlyAlignOrientation = Instance.new("AlignOrientation")
+        FlyAlignOrientation.MaxTorque = 1e9
+        FlyAlignOrientation.Responsiveness = 25
+        FlyAlignOrientation.Parent = root
+        FlyAlignOrientation.CFrame = root.CFrame
+
+        -- Controle WASD + Ctrl/Space
         FlyConnection = S.Run.RenderStepped:Connect(function()
             if not FlyEnabled then return end
             local cam = S.WS.CurrentCamera
             local moveDir = Vector3.new(0, 0, 0)
 
-            if S.UI:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + cam.CFrame.LookVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - cam.CFrame.LookVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - cam.CFrame.RightVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + cam.CFrame.RightVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
-            if S.UI:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+            if S.UI:IsKeyDown(Enum.KeyCode.W) then moveDir += cam.CFrame.LookVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.S) then moveDir -= cam.CFrame.LookVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.A) then moveDir -= cam.CFrame.RightVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.D) then moveDir += cam.CFrame.RightVector end
+            if S.UI:IsKeyDown(Enum.KeyCode.Space) then moveDir += Vector3.new(0, 1, 0) end
+            if S.UI:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir -= Vector3.new(0, 1, 0) end
 
-            if moveDir.Magnitude > 0 then
-                moveDir = moveDir.Unit * FlySpeed
-            end
-
+            if moveDir.Magnitude > 0 then moveDir = moveDir.Unit * FlySpeed end
             FlyBodyVelocity.Velocity = moveDir
+
             FlyBodyGyro.CFrame = cam.CFrame
         end)
 
-        WindUI:Notify({Title = "Fly", Content = "Voo ativado! (WASD + Space/Ctrl)", Duration = 4, Icon = "plane"})
+        WindUI:Notify({Title = "Fly", Content = "Voo ativado!", Duration = 1, Icon = "plane"})
     else
-        -- Limpa
-        if FlyBodyVelocity then FlyBodyVelocity:Destroy() FlyBodyVelocity = nil end
-        if FlyBodyGyro then FlyBodyGyro:Destroy() FlyBodyGyro = nil end
-        if FlyConnection then FlyConnection:Disconnect() FlyConnection = nil end
-        WindUI:Notify({Title = "Fly", Content = "Voo desativado.", Duration = 2, Icon = "x"})
+        
+        spawn(function()
+            if FlyConnection then FlyConnection:Disconnect() FlyConnection = nil end
+
+            humanoid.PlatformStand = false
+
+            if FlyBodyVelocity then
+                FlyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
+                FlyBodyVelocity:Destroy()
+                FlyBodyVelocity = nil
+            end
+            if FlyBodyGyro then FlyBodyGyro:Destroy() FlyBodyGyro = nil end
+            if FlyAlignOrientation then FlyAlignOrientation:Destroy() FlyAlignOrientation = nil end
+
+            
+            root.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            root.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+
+            humanoid.Sit = true
+            task.wait(0.1)
+            humanoid.Sit = false
+
+            root.CFrame = root.CFrame + Vector3.new(0, 5, 0)
+            task.wait(0.1)
+            humanoid:ChangeState(Enum.HumanoidStateType.Landed)
+            task.wait(0.1)
+            humanoid:ChangeState(Enum.HumanoidStateType.Running)
+
+            WindUI:Notify({Title = "Fly", Content = "Desativado", Duration = 1, Icon = "check"})
+        end)
     end
 end
 
--- Reativa fly após respawn
 LocalPlayer.CharacterAdded:Connect(function()
     task.wait(0.5)
     if FlyEnabled then toggleFly(true) end
 end)
 
+------------------------------* Aimbot Variables *-------------------------------
 
--------------------------------* Aimbot Variaveis *-------------------------------
+local AimbotEnabled = {normal = false, rage = false}
+local AimbotConnections = {}
+local TargetPart = "Head"  -- Mude pra "HumanoidRootPart" se quiser corpo
+local MaxDistance = 1500
+local UseTeamCheck = true
+
+-------------------------------* Aimbot Functions *-------------------------------
+
+-- ===== AIMBOT VARIABLES & FUNCTIONS =====
 local AimbotEnabled = {normal = false, rage = false}
 local AimbotConnections = {}
 local TargetPart = "Head"  -- Mude pra "HumanoidRootPart" se quiser corpo
@@ -418,8 +532,7 @@ local MaxDistance = 1500
 local UseTeamCheck = true
 local UseWallCheck = true  -- Toggle pra ligar/desligar
 
--------------------------------* Aimbot Função *-------------------------------
-
+-- Encontra alvo mais próximo (com FOV básico e team check)
 local function getClosestTarget()
     local camera = S.WS.CurrentCamera
     local closest, shortestDist = nil, MaxDistance
@@ -468,17 +581,17 @@ local function getClosestTarget()
     return closest
 end
 
--- Mira suave (comum)
+-- Mira suave (pra "comum")
 local function smoothAim(target)
     local camera = S.WS.CurrentCamera
     local part = target.Character:FindFirstChild(TargetPart)
     if part then
         local goalCFrame = CFrame.new(camera.CFrame.Position, part.Position)
-        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.25)  -- Suave, mude pra 0.5+ pra mais rápido
+        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.2)  -- 0.2 = suave (aumente pra mais rápido)
     end
 end
 
--- Mira snap (rage)
+-- Mira snap (pra "rage")
 local function snapAim(target)
     local camera = S.WS.CurrentCamera
     local part = target.Character:FindFirstChild(TargetPart)
@@ -487,42 +600,91 @@ local function snapAim(target)
     end
 end
 
--- Toggle genérico
-local function toggleAimbot(mode)
+-- Toggle genérico (normal ou rage)
+local function toggleAimbot(mode)  -- mode = "normal" ou "rage"
     local enabled = AimbotEnabled[mode]
     local aimFunc = (mode == "normal") and smoothAim or snapAim
 
     if enabled then
-        if AimbotConnections[mode] then
-            AimbotConnections[mode]:Disconnect()
-        end
+        if AimbotConnections[mode] then AimbotConnections[mode]:Disconnect() end
         AimbotConnections[mode] = S.Run.Heartbeat:Connect(function()
             local target = getClosestTarget()
             if target then
                 aimFunc(target)
-                -- DEBUG: Print no console (remove depois)
-                print("🔒 AIMBOT HIT:", target.Name, " (dist:", math.floor(shortestDist), ")")
             end
         end)
-        WindUI:Notify({
-            Title = (mode == "normal" and "Aimbot Comum" or "Aimbot Rage") .. " Ativado!",
-            Content = "Mira grudando no alvo mais próximo!",
-            Duration = 3,
-            Icon = "target"
-        })
+        -- DEBUG: Notifica se achou alvo (remove depois)
+        -- WindUI:Notify({
+        --     Title = mode:gsub("^%l", string.upper):gsub("bot", "bot") .. " Ativado",
+        --     Content = "Mira ligada! (Debug: Alvos sendo detectados)",
+        --     Duration = 2
+        -- })
     else
         if AimbotConnections[mode] then
             AimbotConnections[mode]:Disconnect()
             AimbotConnections[mode] = nil
         end
+        -- WindUI:Notify({
+        --     Title = mode:gsub("^%l", string.upper):gsub("bot", "bot") .. " Desativado",
+        --     Content = "Mira desligada.",
+        --     Duration = 2
+        -- })
+    end
+end
+
+------------------------------* Fake TP Function *-------------------------------
+
+local FakeTPEnabled = false
+local FakeTPConnection = nil
+local FakeTPDelay = 0.2  -- Tempo entre "fakes" (0.1 pra rápido, 0.5 pra mais lento - evite baixo pra não kick)
+local FakeTPDistance = 3  -- Distância max do TP fake (em studs - 2 a 5 é bom)
+
+local function toggleFakeTP(enabled)
+    FakeTPEnabled = enabled
+    if enabled then
+        if FakeTPConnection then FakeTPConnection:Disconnect() end
+        FakeTPConnection = S.Run.Heartbeat:Connect(function()
+            local char = LocalPlayer.Character
+            if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+            local root = char.HumanoidRootPart
+            local originalCFrame = root.CFrame  -- Salva posição original
+
+            -- TP fake pra posição aleatória próxima
+            local randomOffset = Vector3.new(math.random(-FakeTPDistance, FakeTPDistance), math.random(1, FakeTPDistance), math.random(-FakeTPDistance, FakeTPDistance))
+            root.CFrame = originalCFrame + randomOffset
+
+            -- Volta imediato (faz o "fake")
+            task.wait(FakeTPDelay)
+            root.CFrame = originalCFrame
+        end)
         WindUI:Notify({
-            Title = (mode == "normal" and "Aimbot Comum" or "Aimbot Rage") .. " Desativado",
-            Content = "Mira desligada.",
+            Title = "Fake TP",
+            Content = "Ativado! (Dodge anti-aim ligado)",
+            Duration = 3,
+            Icon = "ghost"
+        })
+    else
+        if FakeTPConnection then
+            FakeTPConnection:Disconnect()
+            FakeTPConnection = nil
+        end
+        WindUI:Notify({
+            Title = "Fake TP",
+            Content = "Desativado.",
             Duration = 2,
             Icon = "x"
         })
     end
 end
+
+-- Reativa no respawn
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(0.5)
+    if FakeTPEnabled then toggleFakeTP(true) end
+end)
+
+
 
 -------------------------------* Temas *-------------------------------
 
@@ -649,6 +811,7 @@ WindUI:AddTheme({
     Icon = "bug",
 })
 wait(1)
+
 WindUI:Notify({
 	Title = "Verificação",
 	Content = "Verificando usuario...",
@@ -656,13 +819,14 @@ WindUI:Notify({
 	Icon = "user"
 })
 wait(3)
+
 WindUI:Notify({
 	Title = "Register",
 	Content = "Usuario verificado com sucesso!, será necessario uma Key para usar a script caso não tenha usado alguma anteriormente.",
 	Duration = 3,
 	Ico = "bug"
 })
-wait(2)
+wait(1)
 
 -------------------------------* Janela principal *-------------------------------
 
@@ -719,7 +883,6 @@ KeySystem = {
 
 local ConfigMenu = Window.ConfigManager:Config("RoyalHub_Config")
 
-
 -------------------------------* Aviso Keybind *-------------------------------
 
 WindUI:Notify({
@@ -736,7 +899,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.3.9",
+    Title = "v1.4.2",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8, -- from 0 to 13
@@ -929,8 +1092,59 @@ SectionAimbot:Toggle({ Title = "Ignorar Aliados (Team Check)", Default = true, C
 
 SectionAimbot:Toggle({ Title = "Wall Check (Ignorar Paredes)", Default = true, Callback = function(enabled) UseWallCheck = enabled WindUI:Notify({Title = "Wall Check", Content = enabled and "Ligado (só mira visível)" or "Desligado (mira através)", Duration = 2}) end })
 
-TabHome:Space({ Columns = 2 })
+SectionAimbot:Space({ Columns = 1 })
 
+local ToggleESP = SectionAimbot:Toggle({
+    Title = "Esp",
+    Desc = "Players ficam visiveis atrás de paredes e marcados.",
+    Icon = "solar:eye-bold",
+    --Type = "Checkbox",
+    Locked = false,
+    LockedTitle = "Em desenvolvimento",
+    Value = false, -- default value
+    Callback = function(state)
+		espEnabled = state
+    if state then
+        for _, player in ipairs(S.Players:GetPlayers()) do  -- Use S.Players
+            createESP(player)
+        end
+        WindUI:Notify({Title = "ESP Ativado", Content = "Players destacados!", Duration = 3, Icon = "eye"})
+    else
+        removeAllESP()  -- FIX: Limpa tudo no off
+        WindUI:Notify({Title = "ESP Desativado", Content = "Removido.", Duration = 2, Icon = "x"})
+    end
+end
+})
+
+SectionAimbot:Space({ Columns = 1 })
+
+SectionAimbot:Toggle({
+    Title = "Fake TP (Dodge)",
+    Default = false,
+    Callback = function(enabled)
+        toggleFakeTP(enabled)
+    end
+})
+
+SectionAimbot:Slider({
+    Title = "Delay Fake TP",
+    Desc = "Tempo entre fakes (menor = mais rápido)",
+    Step = 0.1,
+    Value = { Min = 0.1, Max = 1, Default = 0.2 },
+    Callback = function(value)
+        FakeTPDelay = value
+    end
+})
+
+SectionAimbot:Slider({
+    Title = "Distância Fake TP",
+    Desc = "Quão longe o fake TP vai (em studs)",
+    Step = 1,
+    Value = { Min = 1, Max = 10, Default = 3 },
+    Callback = function(value)
+        FakeTPDistance = value
+    end
+})
 -------------------------------* Auto Farm Level *-------------------------------
 
 local SectionAutofarmLevel = TabFarm:Section({
@@ -1273,6 +1487,132 @@ local DestruirHub = SectionConfig:Button({
 	end
 })
 
+local SectionKeyBinds = TabSettings:Section({
+    Title = "KeyBinds",
+    Desc = "Aqui você pode alterar os keybinds das funções.",
+    Icon = "keyboard",
+    IconColor = Color3.fromRGB(100, 100, 255),
+    TextSize = 19,
+    TextXAlignment = "Left",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
+    FontWeight = Enum.FontWeight.SemiBold,
+    DescFontWeight = Enum.FontWeight.Medium,
+    TextTransparency = 0.05,
+    DescTextTransparency = 0.4,
+})
+
+-- Keybind pro Aimbot Comum
+SectionKeyBinds:Keybind({
+    Title = "Aimbot Comum (K)",
+    Value = "K",  -- tecla inicial (o usuário pode mudar na GUI)
+    Callback = function(key)
+        AimbotEnabled.normal = not AimbotEnabled.normal
+        toggleAimbot("normal")
+        WindUI:Notify({
+            Title = "Aimbot Comum",
+            Content = AimbotEnabled.normal and "Ativado!" or "Desativado!",
+            Duration = 2,
+            Icon = AimbotEnabled.normal and "target" or "x"
+        })
+        print("Aimbot Comum toggled via keybind:", key)
+    end
+})
+
+SectionKeyBinds:Space({ Columns = 1 })
+
+-- Keybind pro Aimbot Rage
+SectionKeyBinds:Keybind({
+    Title = "Aimbot Rage (L)",
+    Value = "L",
+    Callback = function(key)
+        AimbotEnabled.rage = not AimbotEnabled.rage
+        toggleAimbot("rage")
+        WindUI:Notify({
+            Title = "Aimbot Rage",
+            Content = AimbotEnabled.rage and "Ativado!" or "Desativado!",
+            Duration = 2,
+            Icon = AimbotEnabled.rage and "target" or "x"
+        })
+        print("Aimbot Rage toggled via keybind:", key)
+    end
+})
+
+SectionKeyBinds:Space({ Columns = 1 })
+
+-- Keybind pro ESP
+SectionKeyBinds:Keybind({
+    Title = "ESP (E)",
+    Value = "E",
+    Callback = function(key)
+        espEnabled = not espEnabled
+        if espEnabled then
+            for _, player in ipairs(S.Players:GetPlayers()) do
+                createESP(player)
+            end
+            WindUI:Notify({Title = "ESP", Content = "Ativado!", Duration = 2, Icon = "eye"})
+        else
+            removeAllESP()
+            WindUI:Notify({Title = "ESP", Content = "Desativado!", Duration = 2, Icon = "x"})
+        end
+        print("ESP toggled via keybind:", key)
+    end
+})
+
+SectionKeyBinds:Space({ Columns = 1 })
+
+-- Keybind pro Fly
+SectionKeyBinds:Keybind({
+    Title = "Fly (F)",
+    Value = "F",
+    Callback = function(key)
+        toggleFly(not FlyEnabled)  -- Inverte o estado atual
+        WindUI:Notify({
+            Title = "Fly",
+            Content = FlyEnabled and "Ativado!" or "Desativado!",
+            Duration = 2,
+            Icon = FlyEnabled and "plane" or "x"
+        })
+        print("Fly toggled via keybind:", key)
+    end
+})
+
+SectionKeyBinds:Space({ Columns = 1 })
+
+-- Keybind pro Spin
+SectionKeyBinds:Keybind({
+    Title = "Spin (G)",
+    Value = "G",
+    Callback = function(key)
+        toggleSpin(not SpinEnabled)
+        WindUI:Notify({
+            Title = "Spin",
+            Content = SpinEnabled and "Ativado!" or "Desativado!",
+            Duration = 2,
+            Icon = SpinEnabled and "rotate-cw" or "x"
+        })
+        print("Spin toggled via keybind:", key)
+    end
+})
+
+SectionKeyBinds:Space({ Columns = 1 })
+
+-- Keybind pro Loop TP
+SectionKeyBinds:Keybind({
+    Title = "Loop TP (T)",
+    Value = "T",
+    Callback = function(key)
+        toggleLoopTP(not LoopTPEnabled)
+        WindUI:Notify({
+            Title = "Loop TP",
+            Content = LoopTPEnabled and "Ativado!" or "Desativado!",
+            Duration = 2,
+            Icon = LoopTPEnabled and "repeat" or "x"
+        })
+        print("Loop TP toggled via keybind:", key)
+    end
+})
 
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
@@ -1334,6 +1674,9 @@ local FlyToggle = TabPersonagem:Toggle({
 local SliderFlySpeed = TabPersonagem:Slider({
     Title = "Velocidade do Fly",
     Desc = "Ajuste a velocidade do voo (quanto maior, mais rápido).",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
     Step = 5,
     Value = { Min = 20, Max = 200, Default = 50 },
     Callback = function(value)
@@ -1341,7 +1684,6 @@ local SliderFlySpeed = TabPersonagem:Slider({
         if FlyEnabled and FlyBodyVelocity then
             FlyBodyVelocity.Velocity = FlyBodyVelocity.Velocity.Unit * value
         end
-        print("Fly Speed:", value)
     end
 })
 
@@ -1371,36 +1713,6 @@ local SliderGravity = TabPersonagem:Slider({
     end
 })
 
-TabPersonagem:Space({ Columns = 2 })
-
-TabPersonagem:Section({
-    Title = "Outros",
-    TextSize = 20,
-    FontWeight = Enum.FontWeight.SemiBold,
-})
-
-local ToggleESP = TabPersonagem:Toggle({
-    Title = "Esp",
-    Desc = "Players ficam visiveis atrás de paredes e marcados.",
-    Icon = "solar:eye-bold",
-    --Type = "Checkbox",
-    Locked = false,
-    LockedTitle = "Em desenvolvimento",
-    Value = false, -- default value
-    Callback = function(state)
-		espEnabled = state
-    if state then
-        for _, player in ipairs(S.Players:GetPlayers()) do  -- Use S.Players
-            createESP(player)
-        end
-        WindUI:Notify({Title = "ESP Ativado", Content = "Players destacados!", Duration = 3, Icon = "eye"})
-    else
-        removeAllESP()  -- FIX: Limpa tudo no off
-        WindUI:Notify({Title = "ESP Desativado", Content = "Removido.", Duration = 2, Icon = "x"})
-    end
-end
-})
-
 ResetGravity = TabPersonagem:Button({
         Title = "Reset Gravity",
         Desc = "Reseta a gravidade para o valor padrão (196.2)",
@@ -1417,6 +1729,15 @@ ResetGravity = TabPersonagem:Button({
             })
             print("Gravidade resetada para 196.2")
     end
+})
+
+
+TabPersonagem:Space({ Columns = 2 })
+
+TabPersonagem:Section({
+    Title = "Outros",
+    TextSize = 20,
+    FontWeight = Enum.FontWeight.SemiBold,
 })
 
 -------------------------------* Buttons TabTeleport *-------------------------------
@@ -1443,7 +1764,8 @@ local DropDownPlayersTP = SectionTP:Dropdown({
     Values = playerValues,
     Value = playerValues[0],
     Callback = function(option)
-		TeleporteToPlayer(option.Title)
+		LoopTPTargetName = option.Title  -- Salva o nome selecionado aqui!
+        TeleporteToPlayer(option.Title)  -- Mantém o TP único normal
         print("Selecionado:", option.Title)
         print("Player:", option.Player)
     end
@@ -1455,12 +1777,38 @@ local LoopTP = SectionTP:Toggle({
 	Title = "Loop TP",
 	Desc = "Teleporta infinitamente no jogado que foi selecionado acima.",
 	Icon = "",
-	Locked = true,
+	Locked = false,
 	LockedTitle = "Em desenvolvimento.",
 	Value = false,
 	Callback = function(state)
+        toggleLoopTP(state)
 		print("Em desenvolvimento.")	
 	end
+})
+
+SectionTP:Space({ Columns = 1 })
+
+local SliderLoopDelay = SectionTP:Slider({
+    Title = "Delay entre TPs",
+    Desc = "Tempo em segundos entre cada teleporte (menor = mais rápido)",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 0.1,
+    Value = {
+        Min = 0.3,
+        Max = 5,
+        Default = 1,
+    },
+    Callback = function(value)
+        LoopTPDelay = value
+        WindUI:Notify({
+            Title = "Loop TP Delay",
+            Content = "Atualizado para " .. value .. " segundos",
+            Duration = 2,
+            Icon = "timer"
+        })
+    end
 })
 
 TabTeleport:Space({ Columns = 2 })
