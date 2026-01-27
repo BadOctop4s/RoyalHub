@@ -929,6 +929,17 @@ local emoteList = {
     Helicopter = 71527789940915,
     SummonAFriend = 118979452794479,
     Tank = 137814849942324,
+    SadSit = 100798804992348,
+    FFTheWalker = 121448822763616,
+    FFpiopio = 131858162905276,
+    HearMeNow = 88974065639269,
+    PassinhoBolsonaro = 96673018720208,
+    YNWallLean = 114388371896974,
+    SHAKETHATTHANG = 103461852463003,
+    StylishFloating = 112089880074848,
+    Gangnamstyle = 131104967711844,
+    sturdy = 132104757386824,
+    ObbyHead = 125176243437210,
 
 }
 
