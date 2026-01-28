@@ -1324,7 +1324,7 @@ WindUI:Notify({
 	Duration = 3,
 	Ico = "bug"
 })
-wait(1)
+wait(2)
 
 -------------------------------* Janela principal *-------------------------------
 
@@ -1535,6 +1535,15 @@ local TabMisc = Window:Tab({
     IconShape = "Square",
 	Locked = false,
 
+})
+
+local TabExploits = Window:Tab({
+    Title = "Exploits",
+    Desc = "Scripts que podem ser uteis",
+    Icon = "solar:bolt-bold",
+    IconColor = DarkGray,
+    IconShape = "Square",
+    Locked = false,
 })
 
 local TabSettings = Window:Tab({
@@ -2876,6 +2885,337 @@ local emoteStopButton = SectionFun:Button({
     end
 })
 
+------------------------------* TabExploits *-------------------------------
+
+local SectionExploitsTab = TabExploits:Section({
+    Title = "BrookHaven",
+    Desc = "", 
+    Icon = "solar:bolt-bold", 
+    IconColor = Color3.fromRGB(100, 100, 255), 
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4,
+})
+
+SectionExploitsTab:Button({
+    Title = "FAELZIN HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://gist.githubusercontent.com/PhantomClientDEV/6d65c2e0f668d998b4be8dcab6d9f969/raw/6d1f08a15d890149f5c033b6f29d51eda3de7149/HalloweenV2.lua", true))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "BRUTON HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/bruton-lua-sources/BRUTON-HUB-/refs/heads/main/BRUTON"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "CARTOLA HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Davi999z/Cartola-Hub/refs/heads/main/Brookhaven",true))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "PILOT HUB",
+    Callback = function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/mbm9XDQG'))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "SALVATORE",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RFR-R1CH4RD/Loader/main/Salvatore.lua"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "SANDER XY",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/kigredns/testUIDK/refs/heads/main/panel.lua"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "HX HEXAGON",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/nxvap/hexagon/refs/heads/main/brookhaven"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "COVET HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/pl4y80ytt-a11y/VoidHub/refs/heads/main/covet"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "LOBO HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/luauhubs666/lobohub/refs/heads/main/lobohub.luau"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "FORBID SPAMMER",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/QjmKIpUW/raw"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "SPECTRA HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/assure157tv157157157-boop/Spectra-HUB-V2-/refs/heads/main/URL%20do%20scriptblox"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "CHAD HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/bjair5955-wq/Chad-Hub-V2.0/refs/heads/main/obfuscated.lua%20(3).txt"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "MAX HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://scriptsneonauth.vercel.app/api/scripts/565a57db-dea3-46cf-b46d-1cfcdcbe7700/raw"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "CHAD HUB V2",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/bjair5955-wq/Chad-Hub-V2.0/refs/heads/main/obfuscated.lua%20(3).txt"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "PHANTOM CLIENT",
+    Callback = function()
+        loadstring(game:HttpGet("https://gist.githubusercontent.com/phantomdevelopers078-star/125196a67d4baa872a569230471dd38b/raw/20eed7bae23eac4fddf8177ca64a3f6323313aca/PhantomClienteasy.lua"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "LYRA HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/kayrus999/Lyrapainel/refs/heads/main/Lyrabrookhaven"))()
+    end
+})
+
+SectionExploitsTab:Space({ Columns = 1 })
+
+SectionExploitsTab:Button({
+    Title = "SANT HUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-Nytherune-Hub-58124"))()
+    end
+})
+
+TabExploits:Space({ Columns = 2 })
+
+local SectionExpUniv = TabExploits:Section({
+    Title = "King-Legacy",
+    Desc = "", 
+    Icon = "solar:bolt-bold", 
+    IconColor = Color3.fromRGB(100, 100, 255), 
+    TextSize = 19, 
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true, 
+    Opened = true, 
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4,
+})
+
+SectionExpUniv:Button({
+    Title = "ZEE-HUB UPD 9",
+    Desc = "",
+    Callback = function()
+        loadstring(game:HttpGet('https://zuwz.me/Ls-Zee-Hub-KL'))()
+    end
+})
+TabExploits:Space({ Columns = 1 })
+-- SectionExpUniv:Button({
+--     Title = "",
+--     Desc = "",
+--     Callback = function()
+        
+-- })
+
+-- SectionExpUniv:Button({
+--     Title = "",
+--     Desc = "",
+--     Callback = function()
+        
+-- })
+
+-- SectionExpUniv:Button({
+--     Title = "",
+--     Desc = "",
+--     Callback = function()
+        
+-- })
+
+-- SectionExpUniv:Button({
+--     Title = "",
+--     Desc = "",
+--     Callback = function()
+        
+-- })
+
+local SectionUniversal = TabExploits:Section({
+    Title = "Universais",
+    Desc = "",
+    Icon = "solar:bolt-bold",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
+})
+
+SectionUniversal:Button({
+     Title = "DEX-EXPLORER",
+     Desc = "",
+     Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+    end
+})
+
+SectionUniversal:Space({ Columns = 1 })
+
+SectionUniversal:Button({
+     Title = "TCA GUI",
+     Desc = "",
+     Callback = function()
+        require(82040251531905):TCA("username")
+    end
+})
+
+SectionUniversal:Space({ Columns = 1 })
+
+SectionUniversal:Button({
+     Title = "INFINITE YIELD",
+     Desc = "",
+     Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+    end
+})
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
+
+-- SectionUniversal:Button({
+--      Title = "",
+--      Desc = "",
+--      Callback = function()
+-- })
 -------------------------------* Paragrafos *-------------------------------
 
 local SectionInfo = TabInfo:Section({
