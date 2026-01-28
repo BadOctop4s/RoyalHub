@@ -1329,7 +1329,7 @@ wait(2)
 -------------------------------* Janela principal *-------------------------------
 
 local Window = WindUI:CreateWindow({
-    Title = "Royal Hub",
+    Title = '<font color="#c8ee1f">RoyalHub</font>',
     Author = "Eodraxkk & Einzbern      ",
     Folder = "RoyalHub",
     Icon = "solar:crown-minimalistic-bold",
