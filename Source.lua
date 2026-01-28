@@ -1066,11 +1066,12 @@ end
 WindUI:AddTheme({
     Name = "Hutao By Einzbern",
     Accent = Color3.fromHex("#18181b"),
-    Outline = Color3.fromHex("#000000"),
-    Text = Color3.fromHex("#f70000"),
-    Placeholder = Color3.fromHex("#000000"),
-    Button = Color3.fromHex("#c40b0b"),
-    Icon = Color3.fromHex("#e20505"),
+    Background = Color3.fromHex("#000000"),
+    Outline = Color3.fromHex("#991b1b"),
+    Text = Color3.fromHex("#991b1b"),
+    Placeholder = Color3.fromHex("#141414"),
+    Button = Color3.fromHex("#dc2626"),
+    Icon = Color3.fromHex("#ef4444"),
 })
 
 WindUI:AddTheme({
@@ -1081,7 +1082,7 @@ WindUI:AddTheme({
     Text = Color3.fromHex("#000000"),
     Placeholder = Color3.fromHex("#7a7a7a"),
     Button = Color3.fromHex("#000000"),
-    Icon = Color3.fromHex("#c5b1b1"),
+    Icon = Color3.fromHex("#000000"),
 })
 
 WindUI:AddTheme({
@@ -1125,26 +1126,26 @@ WindUI:AddTheme({
 WindUI:AddTheme({
     Name = "CyberPunk",
     Accent = WindUI:Gradient({
-    ["0"] = { Color = Color3.fromHex("#1f1f23"), Transparency = 0 },
-    ["100"]   = { Color = Color3.fromHex("#bbb815"), Transparency = 0 },
-    }, { 
-        Rotation = 0,
-    }),
+        ["0"] = { Color = Color3.fromHex("#d1b201"), Transparency = 0 },
+        ["50"]= { Color = Color3.fromHex("#000000"), Transparency = 0 },
+        ["100"] = { Color = Color3.fromHex("#eeff00"), Transparency = 0}, 
+    }, {
+
+    })
 })
 
 WindUI:AddTheme({
     Name = "Solar Theme",
-    Accent = WindUI:Gradient{
+    Accent = WindUI:Gradient({
         ["0"] = { Color = Color3.fromHex("#ff6a30"), Transparency = 0 },
         ["100"]  = { Color = Color3.fromHex("ffe72f"), Transparency = 0 },
     }, {
         Rotation = 80,
-    }   
+    })
 })
 
 WindUI:AddTheme({
   Name = "Midnight",
-  
   Accent = Color3.fromHex("#1e3a8a"),
   Background = Color3.fromHex("#0c1e42"),
   Outline = Color3.fromHex("#bfdbff"),
@@ -1153,9 +1154,9 @@ WindUI:AddTheme({
   Button = Color3.fromHex("#2563eb"),
   Icon = Color3.fromHex("#5591f4"),
 })
+
 WindUI:AddTheme({
   Name = "Crimson",
-  
   Accent = Color3.fromHex("#b91c1c"),
   Background = Color3.fromHex("#0c0404"),
   Outline = Color3.fromHex("#161616"),
@@ -1163,18 +1164,17 @@ WindUI:AddTheme({
   Placeholder = Color3.fromHex("#6f757b"),
   Button = Color3.fromHex("#991b1b"),
   Icon = Color3.fromHex("#dc2626"),
-  
 })
+
 WindUI:AddTheme({
   Name = "Snow",
-  
   Accent = Color3.fromHex("#18181b"),
-  Background = Color3.fromHex("#eeeeee"),
-  Outline = Color3.fromHex("#FFFFFF"),
+  Background = Color3.fromHex("#363434"),
+  Outline = Color3.fromHex("#535151"),
   Text = Color3.fromHex("#aca1a1"),
   Placeholder = Color3.fromHex("#7a7a7a"),
   Button = Color3.fromHex("#52525b"),
-  Icon = Color3.fromHex("#a1a1aa"),
+  Icon = Color3.fromHex("#414142"),
 })
 
 WindUI:AddTheme({
@@ -1198,7 +1198,6 @@ WindUI:AddTheme({
   Button = Color3.fromHex("#52525b"),
   Icon = Color3.fromHex("#414142"),
 })
-
 WindUI:AddTheme({
   Name = "Monokai", -- theme name
   Accent = Color3.fromHex("#fc9867"),
@@ -1219,6 +1218,39 @@ WindUI:AddTheme({
   Placeholder = Color3.fromHex("#7A7A7A"),
   Button = Color3.fromHex("#52525b"),
   Icon = Color3.fromHex("#414142"),
+})
+
+WindUI:AddTheme({
+  Name = "Lunar",
+  Accent = Color3.fromHex("#3a3a3a"),
+  Background = Color3.fromHex("#000000"),
+  Outline = Color3.fromHex("#b3b3b3"),
+  Text = Color3.fromHex("#e0e0e0"),
+  Placeholder = Color3.fromHex("#7a7a7a"),
+  Button = Color3.fromHex("#5c5c5c"),
+  Icon = Color3.fromHex("#444444"),
+})
+
+WindUI:AddTheme({
+  Name = "Indigo",
+  Accent = Color3.fromHex("#3730a3"),
+  Background = Color3.fromHex("#0f0a2e"),
+  Outline = Color3.fromHex("#c7d2fe"),
+  Text = Color3.fromHex("#f1f5f9"),
+  Placeholder = Color3.fromHex("#7078d9"),
+  Button = Color3.fromHex("#4f46e5"),
+  Icon = Color3.fromHex("#6366f1"),
+})
+
+WindUI:AddTheme({
+  Name = "Startorch",
+  Accent = Color3.fromHex("#b45309"),
+  Background = Color3.fromHex("#1c1003"),
+  Outline = Color3.fromHex("#fcd34d"),
+  Text = Color3.fromHex("#fffbeb"),
+  Placeholder = Color3.fromHex("#fbbf24"),
+  Button = Color3.fromHex("#d97706"),
+  Icon = Color3.fromHex("#f59e0b"),
 })
 
 -------------------------------* Notificação *-------------------------------
@@ -1891,6 +1923,15 @@ local DropdownTemas = SectionConfig:Dropdown({
         {
             Title = "Moonlight",
         },
+        {
+            Title = "Lunar",
+        },
+        {
+            Title = "Indigo"
+        },
+        {
+            Title = "Startorch"
+        },
     },
     Value = "Dark Amoled ( Default )",
     Callback = function(option)
@@ -2064,7 +2105,7 @@ SectionKeyBinds:Keybind({
             WindUI:Notify({Title = "ESP", Content = "Ativado!", Duration = 2, Icon = "eye"})
         else
             removeAllESP()
-            WindUI:Notify({Title = "ESP", Content = "Desativado!", Duration = 2, Icon = "x"})
+           -- WindUI:Notify({Title = "ESP", Content = "Desativado!", Duration = 2, Icon = "x"})
         end
         print("ESP toggled via keybind:", key)
     end
