@@ -36,10 +36,7 @@ local S = {
 -------------------------------* Variáveis globais *-------------------------------
 local LoopEmote = false
 local CurrentEmoteTrack = nil
-local EmoteLoopConnection = nil  -- NOVA: pra controlar o loop manual
-
-
-
+local EmoteLoopConnection = nil
 -------------------------------* Funções externas *-------------------------------
 
 local function tableToClipboard(luau_table, indent)
@@ -83,6 +80,75 @@ for _, plr in ipairs(Players:GetPlayers()) do
     })
 end
 
+------------------------------* Set rpName *-------------------------
+
+local function SetRPNameAndBio()
+    local admins = {"DARK_ZIINN", "S1wlkrX", "thenoctisblack78"}
+    local player = game:GetService("Players").LocalPlayer
+    local isAdmin = table.find(admins, player.Name) ~= nil
+    local rpName = isAdmin and " [ DEV ]" or "CLIENTE ROYAL HUB"
+    local bio = isAdmin and "CREATOR OF ROYAL HUB" or ""
+    print("[RoyalHub] Aplicando RP Name: '" .. rpName .. "' | Bio: '" .. bio .. "' | Admin: " .. tostring(isAdmin))
+
+    local PlayersBag = player:WaitForChild("PlayersBag", 10)
+    if PlayersBag then
+        if PlayersBag:FindFirstChild("RPName") then PlayersBag.RPName.Value = rpName end
+        if PlayersBag:FindFirstChild("RPBio") then PlayersBag.RPBio.Value = bio end
+        print("[RoyalHub] PlayersBag texto atualizado")
+    end
+    local RE = game:GetService("ReplicatedStorage"):WaitForChild("RE", 5)
+    if not RE then
+        warn("[RoyalHub] Pasta RE não encontrada!")
+        return
+    end
+
+    local textRemote = RE:FindFirstChild("1RPNam1eTex1t")
+    if textRemote and textRemote:IsA("RemoteEvent") then
+        textRemote:FireServer("RolePlayName", rpName)
+        textRemote:FireServer("RolePlayBio", bio)
+        print("[RoyalHub] Texto Name e Bio disparados")
+    end
+
+    local nameColorRemote = RE:FindFirstChild("1RPNam1eColo1r")
+    local bioColorRemote = RE:FindFirstChild("1RPNam1eColo1r")
+    if isAdmin then
+        local nameR, nameG, nameB = 1, 0, 0 
+        local bioR, bioG, bioB = 0, 1, 1
+        if nameColorRemote then
+            nameColorRemote:FireServer("PickingRPNamColor", nameR, nameG, nameB)
+            print("[RoyalHub] Cor Nome disparada: " .. nameR .. ", " .. nameG .. ", " .. nameB)
+        end
+        if bioColorRemote then
+            bioColorRemote:FireServer("PickingRPNameColor", bioR, bioG, bioB)
+            print("[RoyalHub] Cor Bio disparada: " .. bioR .. ", " .. bioG .. ", " .. bioB)
+        end
+    else
+        local whiteR, whiteG, whiteB = 1, 1, 1
+        if nameColorRemote then nameColorRemote:FireServer("PickingRPNamColor", whiteR, whiteG, whiteB) end
+        if bioColorRemote then bioColorRemote:FireServer("PickingRPNameColor", whiteR, whiteG, whiteB) end
+    end
+end
+
+
+local function CheckAndSetRP()
+    local placeId = game.PlaceId
+    local brookhavenPlaceId = 4924922222
+    if placeId == brookhavenPlaceId then
+        WindUI:Notify({
+            Title = "AVISO!",
+            Content = '<font color="#FF0000">POR FAVOR, DEIXE O JOGO CARREGAR, APERTE EM JOGAR ASSIM QUE POSSIVEL!</font>',
+        })
+        print("[RoyalHub] Detectado Brookhaven (PlaceId " .. placeId .. ") - Aplicando RP custom")
+        Wait(8)
+        SetRPNameAndBio()
+    else
+        print("[RoyalHub] Não é Brookhaven (PlaceId " .. placeId .. ") - Pulando RP custom e indo para load do menu")
+    end
+end
+
+wait(1) 
+CheckAndSetRP()
+
 -------------------------------* Teleporte To Player Function *-------------------------------
 
 local function TeleporteToPlayer(playerName)
@@ -103,13 +169,11 @@ end
 
 -------------------------------* LOOP TP *------------------------------
 
--- ===== LOOP TP VARIABLES =====
 local LoopTPEnabled = false
-local LoopTPTargetName = nil  -- Nome do jogador selecionado no dropdown
-local LoopTPDelay = 1  -- Segundos entre cada TP (ajuste no slider se quiser)
+local LoopTPTargetName = nil 
+local LoopTPDelay = 1 
 local LoopTPConnection = nil
 
--- Função principal do Loop TP
 local function startLoopTP()
     if LoopTPConnection then LoopTPConnection:Disconnect() end
     
@@ -138,7 +202,6 @@ local function startLoopTP()
     end)
 end
 
--- Toggle function
 local function toggleLoopTP(enabled)
     LoopTPEnabled = enabled
     
@@ -183,7 +246,6 @@ local espEnabled = false
 local espObjects = {}  
 local playerListeners = {}  
 
--- Remove ESP de UM player
 local function removeESP(player)
     if espObjects[player] then
         for _, obj in pairs(espObjects[player]) do
@@ -195,7 +257,6 @@ local function removeESP(player)
     end
 end
 
--- Remove ESP de TODOS
 local function removeAllESP()
     for player, _ in pairs(espObjects) do
         removeESP(player)
@@ -203,10 +264,9 @@ local function removeAllESP()
     espObjects = {}
 end
 
--- Cria ESP
 local function createESP(player)
-    if player == LocalPlayer then return end  -- FIX: Ignora jogador local
-    if espObjects[player] then return end  -- Evita duplicatas
+    if player == LocalPlayer then return end 
+    if espObjects[player] then return end  
 
     local character = player.Character
     if not character then return end
@@ -232,7 +292,7 @@ local function createESP(player)
     local billboard = Instance.new("BillboardGui")
     billboard.Name = "ESP_Name"
     billboard.Adornee = humanoidRootPart
-    billboard.Size = UDim2.new(0, 150, 0, 30)  -- FIX: Menor (era 200x40)
+    billboard.Size = UDim2.new(0, 150, 0, 30)  
     billboard.StudsOffset = Vector3.new(0, 3, 0)
     billboard.AlwaysOnTop = true
     billboard.Parent = humanoidRootPart
@@ -243,8 +303,8 @@ local function createESP(player)
     textLabel.Text = player.Name
     textLabel.TextColor3 = Color3.new(1, 1, 1)
     textLabel.TextStrokeTransparency = 0
-    textLabel.TextScaled = false  -- FIX: Não escala mais, tamanho fixo
-    textLabel.TextSize = 16  -- FIX: Tamanho menor e fixo
+    textLabel.TextScaled = false  
+    textLabel.TextSize = 16  
     textLabel.Font = Enum.Font.GothamBold
     textLabel.Parent = billboard
 
@@ -252,7 +312,7 @@ local function createESP(player)
 end
 
 local function setupPlayerListeners(player)
-    if playerListeners[player] then return end  -- Evita duplicatas
+    if playerListeners[player] then return end
 
     local charAddedConn, charRemovingConn
 
@@ -260,11 +320,19 @@ local function setupPlayerListeners(player)
         task.wait(0.5)  -- Espera carregar
         if espEnabled then
             createESP(player)
+            WindUI:Notify({
+                Title = "Esp ativado!",
+                Icon = "Crosshair",
+            })
         end
     end)
 
     charRemovingConn = player.CharacterRemoving:Connect(function()
         removeESP(player)
+        WindUI:Notify({
+            Title = "Esp desativado!",
+            Icon = "Crosshair",
+        })
     end)
 
     playerListeners[player] = {charAddedConn, charRemovingConn}
@@ -323,7 +391,7 @@ local function RejoinServer()
     TeleportService:TeleportToPlaceInstance(placeId, jobId, LocalPlayer)
 end
 
--------------------------* FIX SERVER HOP FUNCTION *------------------------- 
+-------------------------* SERVER HOP FUNCTION *------------------------- 
 
 local AlreadyJoined = {}
 
@@ -396,7 +464,7 @@ local function toggleSpin(enabled)
             if SpinConnection then SpinConnection:Disconnect() end
             SpinConnection = S.Run.Heartbeat:Connect(function(delta)
                 local root = char.HumanoidRootPart
-                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)  -- Gira 360°/seg
+                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)
             end)
             WindUI:Notify({Title = "Spin", Content = "Girando! (Desative pra parar)", Duration = 3, Icon = "rotate-cw"})
         else
@@ -444,7 +512,6 @@ local function toggleFly(enabled)
         
         humanoid.PlatformStand = true
 
-        -- Movers
         FlyBodyVelocity = Instance.new("BodyVelocity")
         FlyBodyVelocity.MaxForce = Vector3.new(1e9, 1e9, 1e9)
         FlyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
@@ -542,7 +609,7 @@ local function getClosestTarget()
     local camera = S.WS.CurrentCamera
     local closest, shortestDist = nil, MaxDistance
     local localTeam = LocalPlayer.Team
-    local origin = camera.CFrame.Position  -- Origem do raycast (câmera)
+    local origin = camera.CFrame.Position
 
     for _, player in ipairs(S.Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character then
@@ -552,12 +619,12 @@ local function getClosestTarget()
                 if part then
                     local dist = (camera.CFrame.Position - part.Position).Magnitude
                     if dist < shortestDist then
-                        -- Team check
+                       
                         if not UseTeamCheck or not localTeam or player.Team ~= localTeam then
-                            -- FOV simples
+                           
                             local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
                             if onScreen and screenPos.Z > 0 then
-                                -- WallCheck com Raycast
+                                
                                 if not UseWallCheck then
                                     shortestDist = dist
                                     closest = player
@@ -571,7 +638,7 @@ local function getClosestTarget()
                                     local rayResult = workspace:Raycast(origin, direction * dist, rayParams)
 
                                     if rayResult and rayResult.Instance:IsDescendantOf(player.Character) then
-                                        -- Ray bateu direto no alvo (sem parede)
+                                       
                                         shortestDist = dist
                                         closest = player
                                     end
@@ -592,7 +659,7 @@ local function smoothAim(target)
     local part = target.Character:FindFirstChild(TargetPart)
     if part then
         local goalCFrame = CFrame.new(camera.CFrame.Position, part.Position)
-        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.2)  -- 0.2 = suave (aumente pra mais rápido)
+        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.2) 
     end
 end
 
@@ -860,7 +927,7 @@ local function toggleNoClip(enabled)
         
         WindUI:Notify({
             Title = "NoClip",
-            Content = "NoClip ativado! (Passe por paredes)",
+            Content = "NoClip ativado!",
             Duration = 3,
             Icon = "ghost"
         })
@@ -993,152 +1060,6 @@ local function Fling(targetPlayer, flingPower, direction)
         end
     end
 end
-
--------------------------------* SpyChat ( Talvez não funcione. ) *-------------------------------
-
--- === SPYCHAT (ver PRIVADOS de TODOS) ===
--- local SpyChatEnabled = false
--- local SpyGui = nil
--- local SpyConnection = nil
-
--- -- Função pra criar GUI spy (frame no topo da tela)
--- local function createSpyGui()
---     SpyGui = Instance.new("ScreenGui")
---     SpyGui.Name = "SpyChat"
---     SpyGui.Parent = S.Players.LocalPlayer:WaitForChild("PlayerGui")
---     SpyGui.ResetOnSpawn = false
-    
---     local frame = Instance.new("Frame")
---     frame.Size = UDim2.new(0, 400, 0, 200)
---     frame.Position = UDim2.new(0, 10, 0, 10)
---     frame.BackgroundColor3 = Color3.new(0,0,0)
---     frame.BackgroundTransparency = 0.3
---     frame.BorderSizePixel = 0
---     frame.Parent = SpyGui
-    
---     local list = Instance.new("ScrollingFrame")
---     list.Size = UDim2.new(1, -10, 1, -30)
---     list.Position = UDim2.new(0, 5, 0, 5)
---     list.BackgroundTransparency = 1
---     list.ScrollBarThickness = 6
---     list.Parent = frame
-    
---     local title = Instance.new("TextLabel")
---     title.Size = UDim2.new(1, 0, 0, 25)
---     title.BackgroundTransparency = 1
---     title.Text = "🕵️ SpyChat (PRIVADOS)"
---     title.TextColor3 = Color3.new(1,1,1)
---     title.TextScaled = true
---     title.Font = Enum.Font.GothamBold
---     title.Parent = frame
-    
---     return list
--- end
-
--- -- Toggle SpyChat
--- local function toggleSpyChat(enabled)
---     SpyChatEnabled = enabled
-    
---     if enabled then
---         local spyList = SpyGui and SpyGui.Frame.ScrollingFrame or createSpyGui().Frame.ScrollingFrame
-        
---         SpyConnection = S.Players.PlayerAdded:Connect(function(plr)
---             plr.Chatted:Connect(function(msg, recipient)
---                 if recipient and recipient ~= S.Players.LocalPlayer then  -- É PRIVADO!
---                     local text = plr.Name .. " ➜ " .. (recipient.Name or "?") .. ": " .. msg
---                     local label = Instance.new("TextLabel")
---                     label.Size = UDim2.new(1, -10, 0, 20)
---                     label.BackgroundTransparency = 1
---                     label.Text = text
---                     label.TextColor3 = Color3.new(0,1,0)  -- Verde pra privado
---                     label.TextScaled = true
---                     label.Font = Enum.Font.Gotham
---                     label.TextXAlignment = Enum.TextXAlignment.Left
---                     label.Parent = spyList
-                    
---                     spyList.CanvasSize = UDim2.new(0, 0, 0, spyList.AbsoluteContentSize.Y + 25)
---                     spyList.CanvasPosition = Vector2.new(0, spyList.AbsoluteCanvasSize.Y)
---                 end
---             end)
---         end)
-        
---         -- Players já no server
---         for _, plr in ipairs(S.Players:GetPlayers()) do
---             if plr ~= S.Players.LocalPlayer then
---                 plr.Chatted:Connect(function(msg, recipient) end)
---             end
---         end
-        
---         WindUI:Notify({
---             Title = "SpyChat",
---             Content = "SpyChat ATIVADO! Veja DMs no topo da tela.",
---             Duration = 4,
---             Icon = "eye"
---         })
---     else
---         if SpyConnection then SpyConnection:Disconnect() end
---         if SpyGui then SpyGui:Destroy() end
---         SpyGui = nil
---         WindUI:Notify({
---             Title = "SpyChat",
---             Content = "SpyChat desativado.",
---             Duration = 3,
---             Icon = "x"
---         })
---     end
--- end
-
--------------------------------* Audio Function *-------------------------------
-
--- local currentAudioId = 1839246711  -- Default vine boom
--- local currentVolume = 10
-
--- local function playGlobalMusicRemote(id, volume)
---     id = tonumber(id) or currentAudioId
---     volume = tonumber(volume) or currentVolume
-    
---     local rs = game:GetService("ReplicatedStorage")
---     local remote = rs.Remotes:FindFirstChild("ClientMusicFamily")  -- Do seu dump
-    
---     if not remote or not remote:IsA("RemoteEvent") then
---         print("ClientMusicFamily não encontrado!")
---         game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Erro", Text = "Remote ClientMusicFamily não achado", Duration = 5})
---         return
---     end
-    
---     print("Firing ClientMusicFamily:", remote:GetFullName())
-    
---     -- Args comuns pra music remotes em Brookhaven (testados em scripts 2025)
---     local attempts = {
---         {"rbxassetid://" .. id, volume},  -- ID + volume (mais comum)
---         {id, volume},                     -- Número ID + vol
---         {"rbxassetid://" .. id, volume, true},  -- + bool pra loop?
---         {game.Players.LocalPlayer, "rbxassetid://" .. id, volume},  -- Player + ID + vol
---     }
-    
---     for i, args in ipairs(attempts) do
---         print("  Tentativa " .. i .. ":", unpack(args))
---         pcall(remote.FireServer, remote, unpack(args))
---         task.wait(0.5)
---     end
-    
---     game:GetService("StarterGui"):SetCore("SendNotification", {
---         Title = "🎵 Música Global Tentada",
---         Text = "Enviado pro ClientMusicFamily! (Deve tocar pra todos se for carro/música)",
---         Duration = 5
---     })
--- end
-
--- -- =============================================
--- -- IDs TROLL PRONTOS pro Brookhaven (earrape como "tiro")
--- local trollAudios = {
---     {Title = "Vine Boom", id = 1839246711},
---     {Title = "Earrape Scream", id = 1848354535},
---     {Title = "Among Us Drip", id = 9047050072},
---     {Title = "Troll Face", id = 12222058},
---     {Title = "Airhorn", id = 4595066905},
---     {Title = "Rick Roll (alto)", id = 1848354535},
--- }
 
 -------------------------------* Temas *-------------------------------
 
@@ -1316,7 +1237,7 @@ WindUI:Notify({
 	Duration = 3,
 	Icon = "user"
 })
-wait(3)
+wait(2)
 
 WindUI:Notify({
 	Title = "Register",
@@ -1397,7 +1318,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.4.0",
+    Title = "v1.4.1",
     Icon = "github",
     Color = Color3.fromHex("#30ff6a"),
     Radius = 8,
@@ -1574,14 +1495,14 @@ local SectionAimbot = TabHome:Section({
 	Desc = "Função de aimbot para facilitar seus tiros & Ataques.",
 	Icon = "geist:crosshair",
 	--IconColor = "Green" ,
-	TextSize = 19, -- title text size. optional
-    TextXAlignment = "Left", -- "Left", "Center", "Right". optional
-    Box = true, -- show box around section. optional
-    BoxBorder = true, -- show border on box. optional
-    Opened = true, -- section expanded by default. optional
-    FontWeight = Enum.FontWeight.SemiBold, -- title font weight. optional
-    DescFontWeight = Enum.FontWeight.Medium, -- description font weight. optional
-    TextTransparency = 0.05, -- title transparency. optional
+	TextSize = 19,
+    TextXAlignment = "Left", 
+    Box = true, 
+    BoxBorder = true,
+    Opened = true,
+    FontWeight = Enum.FontWeight.SemiBold, 
+    DescFontWeight = Enum.FontWeight.Medium, 
+    TextTransparency = 0.05,
     DescTextTransparency = 0.4,
 })
 
@@ -1608,16 +1529,16 @@ local ToggleESP = SectionAimbot:Toggle({
     --Type = "Checkbox",
     Locked = false,
     LockedTitle = "Em desenvolvimento",
-    Value = false, -- default value
+    Value = false, 
     Callback = function(state)
 		espEnabled = state
     if state then
-        for _, player in ipairs(S.Players:GetPlayers()) do  -- Use S.Players
+        for _, player in ipairs(S.Players:GetPlayers()) do
             createESP(player)
         end
         WindUI:Notify({Title = "ESP Ativado", Content = "Players destacados!", Duration = 3, Icon = "eye"})
     else
-        removeAllESP()  -- FIX: Limpa tudo no off
+        removeAllESP()  
         WindUI:Notify({Title = "ESP Desativado", Content = "Removido.", Duration = 2, Icon = "x"})
     end
 end
@@ -1892,18 +1813,18 @@ local ButtonBypass
 
 local SectionConfig = TabSettings:Section({
     Title = "General Settings",
-    Desc = "Configurações de tema, keybind e etc.", -- optional
-    Icon = "settings", -- lucide icon or "rbxassetid://". optional
-    IconColor = Color3.fromRGB(100, 100, 255), -- custom icon color. optional
-    TextSize = 19, -- title text size. optional
-    TextXAlignment = "Left", -- "Left", "Center", "Right". optional
-    Box = true, -- show box around section. optional
-    BoxBorder = true, -- show border on box. optional
-    Opened = true, -- section expanded by default. optional
-    FontWeight = Enum.FontWeight.SemiBold, -- title font weight. optional
-    DescFontWeight = Enum.FontWeight.Medium, -- description font weight. optional
-    TextTransparency = 0.05, -- title transparency. optional
-    DescTextTransparency = 0.4, -- description transparency. optional
+    Desc = "Configurações de tema, keybind e etc.", 
+    Icon = "settings", 
+    IconColor = Color3.fromRGB(100, 100, 255),
+    TextSize = 19, 
+    TextXAlignment = "Left",
+    Box = true, 
+    BoxBorder = true,
+    Opened = true,
+    FontWeight = Enum.FontWeight.SemiBold,
+    DescFontWeight = Enum.FontWeight.Medium,
+    TextTransparency = 0.05, 
+    DescTextTransparency = 0.4,
 })
 
 ButtonBypass = SectionConfig:Button({
@@ -1979,10 +1900,10 @@ local DropdownTemas = SectionConfig:Dropdown({
 
 local Keybind = SectionConfig:Keybind({
     Title = "Toggle UI",
-    Desc = "Altera a tecla que mostra | esconde o menu.", -- optional
-    Value = "H", -- default key. optional
-    Locked = false, -- disable keybind. optional
-    Flag = "toggle_ui_key", -- for config saving. optional
+    Desc = "Altera a tecla que mostra | esconde o menu.",
+    Value = "H",
+    Locked = false,
+    Flag = "toggle_ui_key",
     Callback = function(key)
 	Window:SetToggleKey(Enum.KeyCode[key])
         print("Keybind activated, key:", key)
@@ -1993,14 +1914,14 @@ SectionConfig:Space({ Columns = 1 })
 
 local SaveConfigButton = SectionConfig:Button({
     Title = "Salvar Config",
-    Desc = "Salva tema selecionado e etc.", -- optional
-    Icon = "save", -- lucide icon or "rbxassetid://". optional
-    --Color = "Green", -- Button color. optional
+    Desc = "Salva tema selecionado e etc.", 
+    Icon = "save", 
+    --Color = "Green", 
     Callback = function()
-        ConfigMenu:Save()-- Saves the current configuration
+        ConfigMenu:Save()
         WindUI:Notify({
-            Title = "Configuration Saved",
-            Content = "Your configuration has been saved successfully.",
+            Title = "Configuração salva!",
+            Content = "Sua configuração foi salva com sucesso!",
             Duration = 3,
             Icon = "save"
         })
@@ -2015,8 +1936,8 @@ local Load = SectionConfig:Button({
     Callback = function()
         ConfigMenu:Load()
         WindUI:Notify({
-            Title = "Configuration Loaded",
-            Content = "Your configuration has been loaded successfully.",
+            Title = "Configuração carregada!",
+            Content = "Sua configuração foi carregada com sucesso!",
             Duration = 3,
             Icon = "save"
         })
@@ -2044,15 +1965,15 @@ local DestruirHub = SectionConfig:Button({
 	Color = "Red",
 	Callback = function()
 		local Dialog = Window:Dialog({
-    Icon = "alert-circle", -- lucide icon or "rbxassetid://". optional
+    Icon = "alert-circle",
     Title = "Confirm Delete",
-    IconThemed = true, -- use theme colors for icon. optional
+    IconThemed = true,
     Content = "Esta ação não pode ser desfeita.",
     Buttons = {
         {
             Title = "Cancelar",
-            Icon = "x", -- button icon. optional
-            Variant = "secondary", -- "Primary", "Secondary", "Destructive", "Tertiary". optional
+            Icon = "x",
+            Variant = "secondary",
             Callback = function()
 				Destroy(Window)
                 print("Ejetado")
@@ -2060,8 +1981,8 @@ local DestruirHub = SectionConfig:Button({
         },
         {
             Title = "Ejetar",
-            Icon = "geist:rotate-clockwise", -- optional
-            Variant = "Destructive", -- optional
+            Icon = "geist:rotate-clockwise",
+            Variant = "Destructive",
             Callback = function()
 			Window:Destroy()
                 print("Ejetado")
@@ -2093,7 +2014,7 @@ local SectionKeyBinds = TabSettings:Section({
 SectionKeyBinds:Keybind({
     Title = "Aimbot Comum (K)",
     Flag = "aimbot_comum_keybind",
-    Value = "K",  -- tecla inicial (o usuário pode mudar na GUI)
+    Value = "K", 
     Callback = function(key)
         AimbotEnabled.normal = not AimbotEnabled.normal
         toggleAimbot("normal")
@@ -2157,13 +2078,7 @@ SectionKeyBinds:Keybind({
     Flag = "fly_keybind",
     Value = "F",
     Callback = function(key)
-        toggleFly(not FlyEnabled)  -- Inverte o estado atual
-        WindUI:Notify({
-            Title = "Fly",
-            Content = FlyEnabled and "Ativado!" or "Desativado!",
-            Duration = 2,
-            Icon = FlyEnabled and "plane" or "x"
-        })
+        toggleFly(not FlyEnabled)
         print("Fly toggled via keybind:", key)
     end
 })
@@ -2177,12 +2092,6 @@ SectionKeyBinds:Keybind({
     Value = "G",
     Callback = function(key)
         toggleSpin(not SpinEnabled)
-        WindUI:Notify({
-            Title = "Spin",
-            Content = SpinEnabled and "Ativado!" or "Desativado!",
-            Duration = 2,
-            Icon = SpinEnabled and "rotate-cw" or "x"
-        })
         print("Spin toggled via keybind:", key)
     end
 })
@@ -2196,12 +2105,6 @@ SectionKeyBinds:Keybind({
     Value = "T",
     Callback = function(key)
         toggleLoopTP(not LoopTPEnabled)
-        WindUI:Notify({
-            Title = "Loop TP",
-            Content = LoopTPEnabled and "Ativado!" or "Desativado!",
-            Duration = 2,
-            Icon = LoopTPEnabled and "repeat" or "x"
-        })
         print("Loop TP toggled via keybind:", key)
     end
 })
@@ -2253,11 +2156,11 @@ TabPersonagem:Space({ Columns = 1 })
 
 local FlyToggle = TabPersonagem:Toggle({
     Title = "Fly",
-    Desc = "Ativa o modo de voo",
+    Desc = "Ativa o modo voo",
     Icon = "solar:rocket-bold",
     Locked = false,
     LockedTitle = "Em desenvolvimento.",
-    Value = false, -- default value
+    Value = false,
     Callback = function(state)
         toggleFly(state)
     end
@@ -2356,8 +2259,8 @@ local DropDownPlayersTP = SectionTP:Dropdown({
     Values = playerValues,
     Value = playerValues[0],
     Callback = function(option)
-		LoopTPTargetName = option.Title  -- Salva o nome selecionado aqui!
-        TeleporteToPlayer(option.Title)  -- Mantém o TP único normal
+		LoopTPTargetName = option.Title
+        TeleporteToPlayer(option.Title)
         print("Selecionado:", option.Title)
         print("Player:", option.Player)
     end
@@ -2688,9 +2591,9 @@ local trollDropdown = SectionFun:Dropdown({
     Title = "IDs Troll Prontos",
     Locked = true,
     LockedTitle = "Em manutenção",
-    Values = trollAudios,  -- Agora correto!
+    Values = trollAudios,
     Multi = false,
-    Default = nil,  -- ou {trollAudios[1]} se quiser default
+    Default = nil,
     Callback = function(selected)
         if selected and selected.id then
             currentAudioId = selected.id
@@ -2715,7 +2618,6 @@ local volumeSlider = SectionFun:Slider({
     },
     Callback = function(value)
         currentVolume = value
-        -- Opcional: print("Volume atual:", currentVolume)
     end
 })
 
@@ -2745,20 +2647,19 @@ local EmoteDropdown = SectionFun:Dropdown({
 local emoteLoopToggle = SectionFun:Toggle({
     Title = "Loop Emote",
     Desc = "Faz o emote repetir automaticamente.",
-    Icon = "solar:repeat-bold",  -- Ajuste o ícone se quiser
+    Icon = "solar:repeat-bold",
     Value = false,
     Callback = function(state)
         LoopEmote = state
         
-        -- Se mudando MÍDIA-play, aplica na hora
         if CurrentEmoteTrack and CurrentEmoteTrack.IsPlaying then
             if state then
-                -- Ativa loop manual se não tiver
+
                 if not EmoteLoopConnection then
                     activateManualLoop(CurrentEmoteTrack)
                 end
             else
-                -- Desativa: para o track
+
                 if EmoteLoopConnection then
                     EmoteLoopConnection:Disconnect()
                     EmoteLoopConnection = nil
@@ -2782,7 +2683,7 @@ SectionFun:Space({ Columns = 1 })
 local EmoteStart = SectionFun:Button({
     Title = "Usar Emote",
     Desc = "Executa o emote selecionado.",
-    Icon = "solar:emoji-funny-square-bold",  -- Ajuste se quiser
+    Icon = "solar:emoji-funny-square-bold",
     Callback = function()
         if not SelectedEmote then
             WindUI:Notify({
@@ -2807,7 +2708,6 @@ local EmoteStart = SectionFun:Button({
         local animator = humanoid:FindFirstChildOfClass("Animator")
         if not animator then return end
         
-        -- Para o anterior TOTAL (track + loop)
         if CurrentEmoteTrack then
             CurrentEmoteTrack:Stop()
             CurrentEmoteTrack = nil
@@ -2817,13 +2717,12 @@ local EmoteStart = SectionFun:Button({
             EmoteLoopConnection = nil
         end
         
-        -- PCALL pra evitar crash (como no teu erro anterior)
         local success, track = pcall(function()
             local anim = Instance.new("Animation")
             anim.AnimationId = "rbxassetid://" .. emoteID
             local loadedTrack = animator:LoadAnimation(anim)
             loadedTrack.Priority = Enum.AnimationPriority.Action
-            loadedTrack.Looped = false  -- Desativa loop nativo, usa manual pra controle total
+            loadedTrack.Looped = false 
             loadedTrack:Play()
             return loadedTrack
         end)
@@ -2840,11 +2739,10 @@ local EmoteStart = SectionFun:Button({
         
         CurrentEmoteTrack = track
         
-        -- ATIVA LOOP MANUAL se toggle ligado
         if LoopEmote then
             activateManualLoop(track)
         else
-            -- Se não loop, limpa ao acabar
+
             track.Stopped:Connect(function()
                 if track == CurrentEmoteTrack then
                     CurrentEmoteTrack = nil
@@ -2864,7 +2762,7 @@ local EmoteStart = SectionFun:Button({
 local emoteStopButton = SectionFun:Button({
     Title = "Parar Emote",
     Desc = "Interrompe o emote atual.",
-    Icon = "solar:stop-bold",  -- Ajuste o ícone se quiser
+    Icon = "solar:stop-bold", 
     Callback = function()
        if CurrentEmoteTrack then
             CurrentEmoteTrack:Stop()
@@ -2874,8 +2772,8 @@ local emoteStopButton = SectionFun:Button({
             EmoteLoopConnection:Disconnect()
             EmoteLoopConnection = nil
         end
-        LoopEmote = false  -- Desativa loop
-        emoteLoopToggle:Set(false)  -- Atualiza UI
+        LoopEmote = false
+        emoteLoopToggle:Set(false)
         WindUI:Notify({
             Title = "Emote",
             Content = "Emote e loop parados!",
