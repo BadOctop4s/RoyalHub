@@ -320,19 +320,19 @@ local function setupPlayerListeners(player)
         task.wait(0.5)  -- Espera carregar
         if espEnabled then
             createESP(player)
-            WindUI:Notify({
-                Title = "Esp ativado!",
-                Icon = "Crosshair",
-            })
+            -- WindUI:Notify({
+            --     Title = "Esp ativado!",
+            --     Icon = "Crosshair",
+            -- })
         end
     end)
 
     charRemovingConn = player.CharacterRemoving:Connect(function()
         removeESP(player)
-        WindUI:Notify({
-            Title = "Esp desativado!",
-            Icon = "Crosshair",
-        })
+        -- WindUI:Notify({
+        --     Title = "Esp desativado!",
+        --     Icon = "Crosshair",
+        -- })
     end)
 
     playerListeners[player] = {charAddedConn, charRemovingConn}
@@ -2051,7 +2051,6 @@ local SectionKeyBinds = TabSettings:Section({
     DescTextTransparency = 0.4,
 })
 
--- Keybind pro Aimbot Comum
 SectionKeyBinds:Keybind({
     Title = "Aimbot Comum (K)",
     Flag = "aimbot_comum_keybind",
