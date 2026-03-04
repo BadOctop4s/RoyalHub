@@ -1,4 +1,5 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local Twilight = loadstring(game:HttpGet("https://raw.nebulasoftworks.xyz/twilight"))()
 
 WindUI:SetNotificationLower(true)
 
@@ -239,8 +240,8 @@ local function toggleLoopTP(enabled)
     end
 end
 
-------------------------------* ESP Function *-------------------------------
 
+------------------------------* ESP Function *-------------------------------
 local LocalPlayer = S.Players.LocalPlayer
 local espEnabled = false
 local espObjects = {}  
@@ -1576,6 +1577,66 @@ local ToggleESP = SectionAimbot:Toggle({
 end
 })
 
+SectionAimbot:Space({ Columns = 1 })
+
+local ToggleEsp2 = SectionAimbot:Toggle({
+    Title = "Esp 2.0 (Em desenvolvimento)",
+    Desc = "Players ficam visiveis atrás de paredes e marcados, com mais detalhes.",
+    Icon = "solar:eye-bold",
+    --Type = "Checkbox",
+    Locked = true,
+    LockedTitle = "Em desenvolvimento",
+    Value = false,
+    Callback = function(state)
+
+        Twilight:SetOptions({
+                Enabled = state, -- Enables Player ESPs
+
+                currentColors = {
+                    generic = {
+                        Box = {
+                            Outline = { -- The Visible And Invisible Colors Do Not Apply Here. Visible Will Be The Default When Visible Checks Are Off.
+                                Visible = Color3.new(1, 1, 1),
+                                Invisible = Color3.new(1, 1, 1),
+                            },
+                            Fill = {
+                                Visible = Color3.new(1, 1, 1),
+                                Invisible = Color3.new(1, 1, 1),
+                            },
+                        },
+                    }
+                },
+
+
+                HealthBar = {
+                    Enabled = { 
+                        enemy = true,
+                        friendly = true,
+                        ["local"] = false,
+                        generic = true,
+                    },
+                },
+
+                    Source = Twilight.Enums.HealthSource.Humanoid,
+
+                    Bar = true,
+                    Text = true, 
+
+                    Position = Twilight.Enums.HealthBarPosition.Left,
+                    Suffix = "HP",
+
+                Box = {
+                    Style = Twilight.Enums.BoxStyle.Normal,
+                    Enabled = true,
+                    Filled = {
+                        Enabled = true,
+                        Transparency = 0.6,
+                    },
+                    Thickness = 1, -- in pixels
+                },
+            })
+end
+})
 SectionAimbot:Space({ Columns = 1 })
 
 SectionAimbot:Toggle({
