@@ -1,5 +1,4 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
-local Twilight = loadstring(game:HttpGet("https://raw.nebulasoftworks.xyz/twilight"))()
 
 WindUI:SetNotificationLower(true)
 
@@ -39,126 +38,12 @@ local LoopEmote = false
 local CurrentEmoteTrack = nil
 local EmoteLoopConnection = nil
 
--------------------------------* Config Twilight *-------------------------------
-Twilight:Boot()
+local NotifySound = Instance.new("Sound")
+NotifySound.SoundId = "rbxassetid://6518811702"
+NotifySound.Volume = 1.0
+NotifySound.Parent = game:GetService("SoundService")
 
-Twilight:SetOptions({
-    Enabled = false,
-
-    --* ► BOX em volta do personagem
-    Box = {
-        Enabled = true,
-        Style = Twilight.Enums.BoxStyle.Normal, --* Normal = retângulo simples
-        --* outros estilos: BoxStyle.Corners (só os cantos, estilo moderno)
-        Thickness = 1,
-        Filled = {
-            Enabled = true,
-            Transparency = 0.7,
-        },
-    },
-
-    --* ► NOME do jogador
-    Name = {
-        Enabled = true,
-        -- Size = 13, (tamanho da fonte, se a versão suportar)
-    },
-
-    --* ► BARRA DE VIDA
-    HealthBar = {
-        Enabled = {
-            enemy    = true,
-            friendly = false,
-            ["local"] = false,
-            generic  = true,
-        },
-        Source   = Twilight.Enums.HealthSource.Humanoid,
-        Bar      = true,   --* barra colorida
-        Text     = true,   --* número do HP do lado
-        Position = Twilight.Enums.HealthBarPosition.Left,
-        Suffix   = "HP",
-    },
-
-    --* ► SKELETON (esqueleto)
-    Skeleton = {
-        Enabled = true,
-        Thickness = 1,
-    },
-
-    --* ► TRACER (linha do centro da tela até o jogador)
-    TracerLine = {
-        Enabled = false,
-        -- Origin = Twilight.Enums.TracerOrigin.Bottom (Bottom / Center / Mouse)
-        Thickness = 1,
-    },
-
-    --* ► DISTÂNCIA (texto com quantos studs de distância)
-    Distance = {
-        Enabled = true,
-        Suffix = "m",
-    },
-
-    currentColors = {
-        enemy = {   --* altera a cor para inimigos (time diferente)
-            Box = {
-                Outline = {
-                    Visible   = Color3.fromRGB(255, 80, 80),
-                    Invisible = Color3.fromRGB(200, 50, 50),
-                },
-                Fill = {
-                    Visible   = Color3.fromRGB(255, 80, 80),
-                    Invisible = Color3.fromRGB(200, 50, 50),
-                },
-            },
-        },
-        friendly = { --* para aliados (mesmo time)
-            Box = {
-                Outline = {
-                    Visible   = Color3.fromRGB(80, 200, 80),
-                    Invisible = Color3.fromRGB(50, 150, 50),
-                },
-            },
-        },
-        generic = {  --* quando não tem time
-            Box = {
-                Outline = {
-                    Visible   = Color3.fromRGB(255, 255, 255),
-                    Invisible = Color3.fromRGB(180, 180, 180),
-                },
-            },
-        },
-    },
-})
-
---? Info de como funciona:
---* ( Ignora o TODO no inicio, é pra alterar a cor, recomendo estar com a extensao "Better Comments" pra destacar )
-
---TODO Sobre os Enums disponíveis
-
---TODO Os enums que o Twilight expõe são acessíveis via `Twilight.Enums`:
---TODO ```
---TODO BoxStyle:
---TODO   .Normal    → retângulo simples (4 linhas)
---TODO   .Corners   → estilo "cantos" (mais moderno)
-
---TODO HealthBarPosition:
---TODO   .Left      → barra à esquerda do personagem
---TODO   .Right     → direita
---TODO   .Top       → em cima
---TODO   .Bottom    → embaixo
-
---TODO HealthSource:
---TODO   .Humanoid  → usa Humanoid.Health / Humanoid.MaxHealth
---TODO   .Attribute → usa um Attribute customizado
-
---TODO TracerOrigin:
---TODO   .Bottom    → linha sai do rodapé da tela
---TODO   .Center    → sai do centro
---TODO   .Mouse     → sai do mouse
-
-
---! AINDA NÃO TESTEI NO JOGO, ROBLOX ATUALIZOU HOJE E OS EXECUTOR NÃO ESTÃO FUNCIONANDO, MAS A LOGICA É ESSA, DEVE FUNCIONAR
-
--------------------------------* Funções externas *-------------------------------
+------------------------------* Funções externas *-------------------------------
 
 local function tableToClipboard(luau_table, indent)
     indent = indent or 4
@@ -1433,19 +1318,44 @@ local Window = WindUI:CreateWindow({
         ButtonsType = "Mac", -- Default or Mac
     },
 User = {
-        Enabled = true,
-        Anonymous = false,
-        Callback = function()
-            local function PlayClickSound()
-                local sound = Instance.new("Sound")
-                sound.SoundId = "rbxassetid://12222005" -- ID do som de clique
-                sound.Volume = 0.5
-                sound.PlayOnRemove = true
-                sound.Parent = workspace
-                sound:Destroy() -- Destrói o som para tocá-lo
-            end
-        end,
-    },
+    Enabled = true,
+    Anonymous = false,
+    Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+
+        NotifySound:Play()
+        Window:Dialog({
+            Icon = "user",
+            Title = player.Name,
+            IconThemed = true,
+            Content = "UserID: " .. player.UserId ..
+                      "\nConta criada há " .. player.AccountAge .. " dias" ..
+                      "\nTime: " .. (player.Team and player.Team.Name or "Nenhum"),
+            Buttons = {
+                {
+                    Title = "Copiar UserID",
+                    Icon = "copy",
+                    Variant = "secondary",
+                    Callback = function()
+                        setclipboard(tostring(player.UserId))
+                        WindUI:Notify({
+                            Title = "Copiado!",
+                            Content = "UserID copiado para a área de transferência.",
+                            Duration = 2,
+                            Icon = "copy",
+                        })
+                    end
+                },
+                {
+                    Title = "Fechar",
+                    Icon = "x",
+                    Variant = "secondary",
+                    Callback = function() end
+                },
+            }
+        })
+    end,
+},
 
 KeySystem = {                                                   
         Note = "É necessário uma key para utilizar o Royal Hub.", -- note under the textbox         
@@ -2023,6 +1933,7 @@ ButtonBypass = SectionConfig:Button({
          Callback = function()
             ButtonBypass:Highlight()
 			wait(2)
+            NotifySound:Play()
             WindUI:Notify({
                 Title = "Aviso!",
                 Content = "Bypass ativado com sucesso! (Funcionalidade em desenvolvimento)",
@@ -2117,6 +2028,7 @@ local SaveConfigButton = SectionConfig:Button({
     --Color = "Green", 
     Callback = function()
         ConfigMenu:Save()
+        NotifySound:Play()
         WindUI:Notify({
             Title = "Configuração salva!",
             Content = "Sua configuração foi salva com sucesso!",
@@ -2133,6 +2045,7 @@ local Load = SectionConfig:Button({
     Icon = "save",
     Callback = function()
         ConfigMenu:Load()
+        NotifySound:Play()
         WindUI:Notify({
             Title = "Configuração carregada!",
             Content = "Sua configuração foi carregada com sucesso!",
@@ -2306,11 +2219,11 @@ SectionKeyBinds:Keybind({
     end
 })
 
-TabSettings:Space({ Columns = 1 })
+TabSettings:Space({ Columns = 2 })
 
 local SectionConfigFuncs = TabSettings:Section({
-    Title = "Funções de Configuração",
-    Desc = "Aqui você pode encontrar funções para alterar os modulos de aimbot, esp e etc, deixando do seu jeito",
+    Title = "Configurações de funções",
+    Desc = "Aqui você pode encontrar funções para alterar comportamentos do jogo e do personagem.",
     Icon = "settings",
     IconColor = Color3.fromRGB(100, 100, 255),
     TextSize = 19,
@@ -2325,7 +2238,7 @@ local SectionConfigFuncs = TabSettings:Section({
 })
 
 
-local SectionConfigFuncs:Toggle({
+SectionConfigFuncs:Toggle({
     Title = "Modo anonymous",
     Desc = "Ativa o modo anonymous, que esconde seu nome e imagem do painel",
     Icon = "user",
@@ -2333,165 +2246,13 @@ local SectionConfigFuncs:Toggle({
     LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
-        WindUI:SetUser({ Anonymous = state })
-        WindUI:Notify({
-            Title = "Modo Anonymous",
-            Content = state and "Ativado! Seu nome e imagem estão escondidos." or "Desativado! Seu nome e imagem estão visíveis.",
-            Duration = 3,
-            Icon = state and "user" or "user-x"
-        })
-        print("Modo Anonymous:", state)
+        Window.User:SetAnonymous(state)
     end
 })
 
 SectionConfigFuncs:Space({ Columns = 1 })
 
-local SetionConfigFuncs:Toggle({
-    Title = "HP BAR ESP V2",
-    Desc = "Habilita a HP bar do ESP V2",
-    Icon = "heart",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            HealthBar = state,
-        })
-        WindUI:Notify({
-            Title = "HP Bar ESP V2",
-            Content = state and "Ativado! HP bar habilitada." or "Desativado! HP bar desabilitada.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("HP Bar ESP V2:", state)
-    end
-})
-
-local SectionConfigFuncs:Toggle({
-    Title = "Box ESP V2",
-    Desc = "Habilita a Box do ESP V2",
-    Icon = "square",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            Box = state,
-        })
-        WindUI:Notify({
-            Title = "Box ESP V2",
-            Content = state and "Ativado! Box habilitada." or "Desativado! Box desabilitada.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("Box ESP V2:", state)
-    end
-})
-
-local SectionConfigFuncs:Toggle({
-    Title = "Name ESP V2",
-    Desc = "Habilita o nome do player no ESP V2",
-    Icon = "id-card",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            Name = state,
-        })
-        WindUI:Notify({
-            Title = "Name ESP V2",
-            Content = state and "Ativado! Nome habilitado." or "Desativado! Nome desabilitado.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("Name ESP V2:", state)
-    end
-})
-
-local SectionConfigFuncs:Toggle({
-    Title = "Distance ESP V2",
-    Desc = "Habilita a distância do player no ESP V2",
-    Icon = "ruler",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            Distance = state,
-        })
-        WindUI:Notify({
-            Title = "Distance ESP V2",
-            Content = state and "Ativado! Distância habilitada." or "Desativado! Distância desabilitada.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("Distance ESP V2:", state)
-    end
-})
-
-local SectionConfigFuncs:Toggle({
-    Title = "Team Color ESP V2",
-    Desc = "Habilita a cor do time no ESP V2",
-    Icon = "palette",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            TeamColor = state,
-        })
-        WindUI:Notify({
-            Title = "Team Color ESP V2",
-            Content = state and "Ativado! Cor do time habilitada." or "Desativado! Cor do time desabilitada.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("Team Color ESP V2:", state)
-    end
-})
-
-local SectionConfigFuncs:Toggle({
-    Title = "Tracers ESP V2",
-    Desc = "Habilita as tracers do ESP V2",
-    Icon = "line",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            Tracers = state,
-        })
-        WindUI:Notify({
-            Title = "Tracers ESP V2",
-            Content = state and "Ativado! Tracers habilitadas." or "Desativado! Tracers desabilitadas.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("Tracers ESP V2:", state)
-    end
-})
-
-local SectionConfigFuncs:Toggle({
-    Title = "Skeleton ESP V2",
-    Desc = "Habilita o esqueleto do ESP V2",
-    Icon = "skeleton",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
-    Value = false,
-    Callback = function(state)
-        Twilight:SetOptions({
-            Skeleton = state,
-        })
-        WindUI:Notify({
-            Title = "Skeleton ESP V2",
-            Content = state and "Ativado! Esqueleto habilitado." or "Desativado! Esqueleto desabilitado.",
-            Duration = 3,
-            Icon = state and "color-swatch" or "x"
-        })
-        print("Skeleton ESP V2:", state)
-    end
-})
+SectionConfigFuncs:Toggle({ })
 
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
