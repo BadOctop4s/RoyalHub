@@ -4,6 +4,37 @@ WindUI:SetNotificationLower(true)
 
 -- WindUI:Notify("Loading", "Loading Hub... please wait.", 5)
 
+local Lighting = game:GetService("Lighting")
+
+-- Cria o blur (começa desativado)
+local blur = Instance.new("BlurEffect")
+blur.Size = 0
+blur.Parent = Lighting
+
+-- Quando o loader abrir, ativa o blur
+local function ativarBlur()
+    -- Tween suave de 0 até 20
+    local tween = game:GetService("TweenService"):Create(
+        blur,
+        TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        { Size = 20 }
+    )
+    tween:Play()
+end
+
+-- Quando o loader fechar, remove o blur
+local function desativarBlur()
+    local tween = game:GetService("TweenService"):Create(
+        blur,
+        TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+        { Size = 0 }
+    )
+    tween:Play()
+    tween.Completed:Connect(function()
+        blur.Size = 0
+    end)
+end
+
 ------------------* Language *-------------------
 local Localization = WindUI:Localization({
     Enabled = true,
@@ -54,6 +85,7 @@ local Localization = WindUI:Localization({
 })
 
 -------------------* Janela principal *-------------------
+ativarBlur()
 
 local Window = WindUI:CreateWindow({
     Title = "RoyalHub  |  Loader",
@@ -85,6 +117,7 @@ local Window = WindUI:CreateWindow({
         ButtonsType = "Mac", -- Default or Mac
     },
 })
+
 -------------* Aba Loader *----------------
 local Tab = Window:Tab({
     Title = "loc:LOADER",
@@ -102,18 +135,13 @@ local ButtonExecute = SectionLoader:Button({
     Title = "loc:EXECUTE",
     Icon = "arrow-right",
     Variant = "Primary",
+    Highlight = true,
     Callback = function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
-            WindUI:Notify("Success", "RoyalHub loaded successfully!", 5)
-            Wait(2)
+            desativarBlur()
             Window:Destroy()
     end
 })
---------------* Section Language *----------------
-local Section = Tab:Section({
-    Title = "loc:LOADER",
-})
-
 
 local TabLanguage = Window:Tab({
     Title = "loc:LANGUAGE_TAB",
@@ -164,42 +192,3 @@ local ButtonRussian = SectionLanguage:Button({
         WindUI:SetLanguage("ru")
     end
 })
--- local Popup = WindUI:Popup({
---     Title = "loc:TITLE",
---     Icon = "alert",
---     Content = "loc:LOAD_DESC",
---     Buttons = {
---         {
---             Title = "English",
---             Icon = "arrow-right",
---             Variant = "Primary",
---             Callback = function()
---                 WindUI:Localization():SetLanguage("en")
---             end
---         },
---         {
---             Title = "Português",
---             Icon = "arrow-right",
---             Variant = "Secondary",
---             Callback = function()
---                  WindUI:SetLanguage("pt-br")
---             end
---         },
---         {
---             Title = "Español",
---             Icon = "arrow-right", 
---             Variant = "Secondary",
---             Callback = function()
---                 WindUI:SetLanguage("es")
---             end
---         },
---         {
---             Title = "Русский",
---             Icon = "arrow-right",
---             Variant = "Secondary",
---             Callback = function()
---                 WindUI:SetLanguage("ru")
---             end
---         }
---     }
--- })
