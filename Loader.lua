@@ -2,18 +2,23 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 WindUI:SetNotificationLower(true)
 
--- WindUI:Notify("Loading", "Loading Hub... please wait.", 5)
+
+local NotifySound = Instance.new("Sound")
+NotifySound.SoundId = "rbxassetid://6518811702"
+NotifySound.Volume = 0.5
+NotifySound.Parent = game:GetService("SoundService")
+
 
 local Lighting = game:GetService("Lighting")
 
--- Cria o blur (começa desativado)
+
 local blur = Instance.new("BlurEffect")
 blur.Size = 0
 blur.Parent = Lighting
 
--- Quando o loader abrir, ativa o blur
+
 local function ativarBlur()
-    -- Tween suave de 0 até 20
+    
     local tween = game:GetService("TweenService"):Create(
         blur,
         TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -22,7 +27,7 @@ local function ativarBlur()
     tween:Play()
 end
 
--- Quando o loader fechar, remove o blur
+
 local function desativarBlur()
     local tween = game:GetService("TweenService"):Create(
         blur,
@@ -99,22 +104,22 @@ local Window = WindUI:CreateWindow({
     HideSearchBar = true,
     
     OpenButton = {
-        Title = "Open RoyalHub loader", -- can be changed
-        CornerRadius = UDim.new(1,0), -- fully rounded
-        StrokeThickness = 3, -- removing outline
-        Enabled = true, -- enable or disable openbutton
+        Title = "Open RoyalHub loader",
+        CornerRadius = UDim.new(1,0), 
+        StrokeThickness = 3, 
+        Enabled = true, 
         Draggable = true,
         OnlyMobile = true,
         Scale = 0.5,
         
-        Color = ColorSequence.new( -- gradient
+        Color = ColorSequence.new(
             Color3.fromHex("#30FF6A"), 
             Color3.fromHex("#e7ff2f")
         )
     },
     Topbar = {
         Height = 44,
-        ButtonsType = "Mac", -- Default or Mac
+        ButtonsType = "Mac",
     },
 })
 
@@ -138,6 +143,7 @@ local ButtonExecute = SectionLoader:Button({
     Highlight = true,
     Callback = function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
+            NotifySound:Play()
             desativarBlur()
             Window:Destroy()
     end
