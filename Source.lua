@@ -1294,6 +1294,14 @@ local chatCommands = {
             Icon = "info"
         })
     end,
+
+    ["Reload"] = function(args)
+        WindUI:Notify({Title = "Reload", Content = "Recarregando script...", Duration = 2, Icon = "reload"})
+        task.wait(2)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EinzbernHub/EinzHub/main/Script.lua"))()
+    end,
+
+
 }
 
 S.Players.LocalPlayer.Chatted:Connect(function(msg)
@@ -1630,9 +1638,9 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "v1.4.4",
+    Title = "v1.5.2",
     Icon = "github",
-    Color = Color3.fromHex("#f0d01a"),
+    Color = Color3.fromHex("rgb(26, 90, 240)"),
     Radius = 8,
 })
 
@@ -2409,6 +2417,23 @@ local DropdownTemas = SectionConfig:Dropdown({
     Value = "Dark Amoled ( Default )",
     Callback = function(option)
         WindUI:SetTheme(option.Title)
+    end
+})
+
+local Colorpicker = SectionConfig:Colorpicker({
+    Title = "Selecione a cor",
+    Desc = "Altera a cor do nome RP", -- optional
+    Default = Color3.fromRGB(255, 100, 100), -- default color. optional
+    Locked = false, -- disable colorpicker. optional
+    Flag = "custom_color", -- for config saving. optional
+    Callback = function(color)
+        WindUI:SetTitle('<font color="' .. Color3.toHex(color) .. '">RoyalHub</font>')
+        WindUI:Notify({
+            Title = "Cor personalizada",
+            Content = "Ainda em desenvolvimento, mas a cor do título foi alterada para a selecionada!",
+            Duration = 2,
+            Icon = "check"
+        })
     end
 })
 
