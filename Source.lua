@@ -1216,7 +1216,36 @@ local function reloadWithVerbose()
     print("Verbose mode finished. Check the console for all debug info.")
 end
 
--------------------------------* Chat Commands *-------------------------------
+
+
+local function FireAllRemotes()
+    for _, obj in ipairs(game:GetDescendants()) do
+        if obj:IsA("RemoteEvent") then
+            print("Firing:", obj:GetFullName())
+
+            pcall(function()
+                obj:FireServer()
+            end)
+        end
+    end
+end
+
+local function bypassAntiCheat(action, ...)
+    print("Attempting to bypass anti-cheat for action: " .. tostring(action) .. " with args: " .. table.concat({...}, ", "))
+    -- This is a placeholder. Actual anti-cheat bypass methods depend on the specific anti-cheat system in place.
+    -- Common techniques include using metamethods to hook into game functions, modifying network traffic, or exploiting vulnerabilities in the anti-cheat.
+    -- Implementing a bypass would require detailed knowledge of the target game's anti-cheat system and is beyond the scope of this example.
+end
+
+
+-- local function coroutine.wrap(function()
+--     for _, v in ipairs(game:GetDescendants()) do
+--         if v:IsA("RemoteEvent") then
+--             print(v:GetFullName())
+--         end
+--         task.wait()
+--     end
+-- end)()
 
 -------------------------------* Temas *-------------------------------
 
@@ -1617,7 +1646,6 @@ end)
 
  Window:SetToggleKey(Enum.KeyCode.H)
 
-
 -----------------------------*comandos de chat-------------------------------
  local chatPrefix = "/"
 
@@ -1716,7 +1744,7 @@ local chatCommands = {
     ["help"] = function(args)
         WindUI:Notify({
             Title = "Comandos disponíveis",
-            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp /reload /reload -v",
+            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp /reload /reload -v /Close /bypass",
             Duration = 8,
             Icon = "info"
         })
@@ -1730,6 +1758,31 @@ local chatCommands = {
         reloadWithVerbose()
     end,
 
+    ["viewAllRemotes"] = function(args)
+        print("Listando todos os RemoteEvents no jogo:")
+        for _, obj in ipairs(game:GetDescendants()) do
+            if obj:IsA("RemoteEvent") then
+                print(obj:GetFullName())
+            end
+        end
+    end,
+
+    ["FireRemotes"] = function(args)
+        FireAllRemotes()
+    end,
+
+    ["bypass"] = function(args)
+        local action = args[1]
+        if action then
+            bypassAntiCheat(action, select(2, unpack(args)))
+        else
+            WindUI:Notify({Title = "Bypass", Content = "Uso: /bypass <Action> [Args]", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["Close"] = function(args)
+       Window.Destroy()
+    end,
 
 }
 
