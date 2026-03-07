@@ -2,1266 +2,6 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 WindUI:SetNotificationLower(true)
 --*updated
-
-local savedLang = _G.RoyalHubLang or "pt-br"
-
-local Localization = WindUI:Localization({
-    Enabled = true,
-    Prefix = "loc:",
-    DefaultLanguage = savedLang, --
-    Translations = {
-
-        ["en"] = {
-            ["AVISO"] = "WARNING!",
-            ["ERRO"] = "Error",
-            ["JOGADOR_NAO_ENCONTRADO_OU_SEM_PERSONAGEM"] = "Player not found or no character.",
-            ["LOOP_TP"] = "Loop TP",
-            ["ALVO_SUMIU_OU_MORREU_LOOP_PARADO"] = "Target disappeared or died. Loop stopped.",
-            ["SELECIONE_UM_JOGADOR_NO_DROPDOWN_PRIMEIR"] = "Select a player in the dropdown first!",
-            ["INICIANDO_LOOP_NO_JOGADOR"] = "Starting loop on player:",
-            ["LOOP_DESATIVADO"] = "Loop disabled.",
-            ["ESP_ATIVADO"] = "ESP activated!",
-            ["ESP_DESATIVADO"] = "ESP disabled!",
-            ["REJOIN"] = "Rejoin",
-            ["NAO_FOI_POSSIVEL_PEGAR_O_JOBID_ATUAL_TEN"] = "Could not get current JobId. Try again.",
-            ["VOLTANDO_PRO_MESMO_SERVIDOR"] = "Returning to same server...",
-            ["SERVER_HOP"] = "Server Hop",
-            ["BUSCANDO_SERVIDORES_AGUARDE_510S"] = "Searching servers... (wait 5-10s)",
-            ["ERRO_HOP"] = "Hop Error",
-            ["SEM_SERVIDORES"] = "No Servers",
-            ["NENHUM_SERVER_DISPONIVEL_AGORA_TENTE_DE_"] = "No server available now. Try again or in another game.",
-            ["HOP"] = "Hop!",
-            ["TELEPORTANDO_PRO_SERVER"] = "Teleporting to server:",
-            ["TELEPORT_FALHOU"] = "Teleport Failed",
-            ["ERRO_2"] = "Error:",
-            ["SPIN"] = "Spin",
-            ["GIRANDO_DESATIVE_PRA_PARAR"] = "Spinning! (Disable to stop)",
-            ["ERRO_SPIN"] = "Spin Error",
-            ["PERSONAGEM_NAO_CARREGADO"] = "Character not loaded.",
-            ["PAROU_DE_GIRAR"] = "Stopped spinning.",
-            ["FLY"] = "Fly",
-            ["VOO_ATIVADO"] = "Fly activated!",
-            ["DESATIVADO"] = "Disabled",
-            ["FAKE_TP"] = "Fake TP",
-            ["ATIVADO_DODGE_ANTIAIM_LIGADO"] = "Enabled! (Dodge anti-aim on)",
-            ["DESATIVADO_2"] = "Disabled!",
-            ["ORBIT"] = "Orbit",
-            ["ALVO_SUMIU_OU_MORREU_ORBIT_PARADO"] = "Target disappeared or died. Orbit stopped.",
-            ["ORBITANDO"] = "Orbiting",
-            ["ORBIT_DESATIVADO"] = "Orbit disabled.",
-            ["VELOCIDADE_ATUALIZADA_PARA"] = "Speed updated to",
-            ["NOCLIP"] = "NoClip",
-            ["NOCLIP_ATIVADO"] = "NoClip enabled!",
-            ["NOCLIP_DESATIVADO"] = "NoClip disabled.",
-            ["ROYAL_HUB_AVISO"] = "Royal Hub - Warning!",
-            ["SCRIPT_EM_DESENVOLVIMENTO_FUNCOES_PODEM_"] = "Script in development, features may break over time.",
-            ["VERIFICACAO"] = "Verification",
-            ["VERIFICANDO_USUARIO"] = "Verifying user...",
-            ["REGISTER"] = "Register",
-            ["OPEN_ROYAL_HUB"] = "Open Royal Hub",
-            ["USERID"] = "UserID:",
-            ["COPIAR_USERID"] = "Copy UserID",
-            ["COPIADO"] = "Copied!",
-            ["USERID_COPIADO_PARA_A_AREA_DE_TRANSFEREN"] = "UserID copied to clipboard.",
-            ["FECHAR"] = "Close",
-            ["KEYBIND"] = "KeyBind",
-            ["APERTE_A_TECLA_H_PARA_ESCONDER_MOSTRAR_O"] = "Press ( H ) key to hide | Show menu",
-            ["V144"] = "v1.4.4",
-            ["SECURE"] = "Secure",
-            ["FPS_0"] = "FPS: 0",
-            ["PING_0MS"] = "Ping: 0ms",
-            ["INICIO"] = "Home",
-            ["FUNCOES_PRINCIPAIS_DO_ROYAL_HUB"] = "Main features of Royal Hub.",
-            ["PERSONAGEM"] = "Character",
-            ["MODIFICACOES_NO_PERSONAGEM"] = "Character modifications.",
-            ["FARM"] = "Farm",
-            ["FUNCOES_DE_FARM_AUTOMATICO"] = "Auto farm features.",
-            ["LOJA"] = "Shop",
-            ["COMPRE_ITENS_AUTOMATICAMENTE"] = "Buy items automatically.",
-            ["TP_AND_WBHK"] = "TP and WBHK",
-            ["TELEPORTE_E_WEBHOOK"] = "Teleport and WebHook.",
-            ["MISC"] = "Misc",
-            ["FUNCOES_DIVERSAS"] = "Miscellaneous features.",
-            ["EXPLOITS"] = "Exploits",
-            ["SCRIPTS_QUE_PODEM_SER_UTEIS"] = "Scripts that may be useful",
-            ["CONFIGURACOES"] = "Settings",
-            ["CONFIGURACOES_DO_ROYAL_HUB"] = "Royal Hub settings.",
-            ["INFO"] = "Info",
-            ["INFORMACOES_SOBRE_O_ROYAL_HUB_E_DESENVOL"] = "Information about Royal Hub and Developers.",
-            ["AIMBOT"] = "Aimbot",
-            ["FUNCAO_DE_AIMBOT_PARA_FACILITAR_SEUS_TIR"] = "Aimbot feature to make your shots & attacks easier.",
-            ["AIMBOT_COMUM"] = "Common aimbot",
-            ["AIMBOT_RAGE"] = "Aimbot Rage",
-            ["IGNORAR_ALIADOS_TEAM_CHECK"] = "Ignore Allies (Team Check)",
-            ["TEAM_CHECK"] = "Team Check",
-            ["WALL_CHECK_IGNORAR_PAREDES"] = "Wall Check (Ignore Walls)",
-            ["WALL_CHECK"] = "Wall Check",
-            ["ESP"] = "ESP",
-            ["PLAYERS_FICAM_VISIVEIS_ATRAS_DE_PAREDES_"] = "Players are visible behind walls and marked.",
-            ["EM_DESENVOLVIMENTO"] = "In Development",
-            ["ESP_ATIVADO_2"] = "ESP Activated",
-            ["PLAYERS_DESTACADOS"] = "Players highlighted!",
-            ["ESP_DESATIVADO_2"] = "ESP Deactivated",
-            ["REMOVIDO"] = "Removed.",
-            ["ESP_20_TWILIGHT"] = "ESP 2.0 (Twilight)",
-            ["ESP_COM_HEALTH_BAR_BOX_E_NOME_POWERED_BY"] = "ESP with health bar, box and name — powered by Twilight.",
-            ["ESP_20"] = "ESP 2.0",
-            ["FAKE_TP_DODGE"] = "Fake TP (Dodge)",
-            ["DELAY_FAKE_TP"] = "Fake TP Delay",
-            ["TEMPO_ENTRE_FAKES_MENOR_MAIS_RAPIDO"] = "Time between fakes (lower = faster)",
-            ["DISTANCIA_FAKE_TP"] = "Fake TP Distance",
-            ["QUAO_LONGE_O_FAKE_TP_VAI_EM_STUDS"] = "How far the fake TP goes (in studs)",
-            ["VISUAL"] = "Visual",
-            ["MODIFICACOES_VISUAIS_NO_JOGO"] = "Visual modifications in game.",
-            ["SELECIONE_O_PLAYER"] = "Select Player",
-            ["SELECIONA_O_PLAYER_PARA_APLICAR_AS_MODIF"] = "Select the player to apply visual modifications.",
-            ["EM_DESENVOLVIMENTO_2"] = "In development.",
-            ["VISUALIZAR_PLAYER"] = "Visualize Player",
-            ["ATIVA_AS_MODIFICACOES_VISUAIS_NO_PLAYER_"] = "Activates visual modifications on the selected player above.",
-            ["PERMITE_ATRAVESSAR_PAREDES_E_OBJETOS"] = "Allows passing through walls and objects.",
-            ["AUTO_FARM_LEVEL"] = "Auto Farm Level",
-            ["FARMA_AUTOMATICAMENTE_SEU_LEVEL_SE_NAO_E"] = "Automatically farms your level (if not at maximum)",
-            ["ATIVAR_AUTO_FARM_LEVEL"] = "Enable Auto Farm Level",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_LEVEL"] = "Activates automatic level farming.",
-            ["AUTO_FARM_LEVEL_ATIVADO"] = "Auto Farm Level enabled!",
-            ["AUTO_FARM_LEVEL_DESATIVADO"] = "Auto Farm Level disabled!",
-            ["AUTO_FARM_MATERIALS"] = "Auto Farm Materials",
-            ["FARMA_AUTOMATICAMENTE_MATERIAIS_DO_JOGO"] = "Automatically farms game materials.",
-            ["ATIVAR_AUTO_FARM_MATERIALS"] = "Enable Auto Farm Materials",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_MATERIAIS"] = "Activates automatic material farming.",
-            ["AUTO_FARM_MATERIALS_ATIVADO"] = "Auto Farm Materials enabled!",
-            ["AUTO_FARM_MATERIALS_DESATIVADO"] = "Auto Farm Materials disabled!",
-            ["SELECIONAR_MATERIAL"] = "Select Material",
-            ["SELECIONA_O_MATERIAL_QUE_DESEJA_FARMAR_A"] = "Select the material you want to farm automatically.",
-            ["MATERIAL_1"] = "Material 1",
-            ["MATERIAL_2"] = "Material 2",
-            ["MATERIAL_3"] = "Material 3",
-            ["AUTO_BUY"] = "Auto Buy",
-            ["COMPRA_ITENS_AUTOMATICAMENTE_DO_BLACKMAR"] = "Automatically purchases items from the blackmarket.",
-            ["SELECIONAR_ITEM"] = "Select Item",
-            ["SELECIONA_O_ITEM_QUE_DESEJA_COMPRAR_AUTO"] = "Select the item you want to buy automatically.",
-            ["ITEM_1"] = "Item 1",
-            ["ITEM_2"] = "Item 2",
-            ["ITEM_3"] = "Item 3",
-            ["ATIVAR_AUTO_BUY"] = "Enable Auto Buy",
-            ["ATIVA_A_COMPRA_AUTOMATICA_DO_ITEM_SELECI"] = "Enables automatic purchase of the selected item above.",
-            ["AUTO_BUY_ATIVADO"] = "Auto Buy enabled!",
-            ["AUTO_BUY_DESATIVADO"] = "Auto Buy disabled!",
-            ["GENERAL_SETTINGS"] = "General Settings",
-            ["CONFIGURACOES_DE_TEMA_KEYBIND_E_ETC"] = "Theme, Keybind and other settings.",
-            ["BYPASS_ANTICHEAT"] = "Bypass Anti-Cheat",
-            ["TENTA_BURLAR_O_SISTEMA_ANTICHEAT_DO_JOGO"] = "Attempts to bypass the game's anti-cheat system.",
-            ["AVISO_2"] = "Warning!",
-            ["BYPASS_ATIVADO_COM_SUCESSO_FUNCIONALIDAD"] = "Bypass activated successfully! (Feature in development)",
-            ["TEMAS"] = "Themes",
-            ["ALTERA_O_TEMA_DO_ROYAL_HUB"] = "Change the Royal Hub theme",
-            ["DARK_AMOLED_DEFAULT"] = "Dark Amoled ( Default )",
-            ["HUTAO_BY_EINZBERN"] = "Hutao By Einzbern",
-            ["REDX_HUB"] = "RedX Hub",
-            ["WHITE"] = "White",
-            ["MAIN_THEME"] = "Main Theme",
-            ["CYBERPUNK"] = "CyberPunk",
-            ["SOLAR_THEME"] = "Solar Theme",
-            ["MIDNIGHT"] = "Midnight",
-            ["CRIMSON"] = "Crimson",
-            ["SNOW"] = "Snow",
-            ["TUNDRA"] = "Tundra",
-            ["SAMURAI_DARK"] = "Samurai Dark",
-            ["MONOKAI"] = "Monokai",
-            ["MOONLIGHT"] = "Moonlight",
-            ["LUNAR"] = "Lunar",
-            ["INDIGO"] = "Indigo",
-            ["STARTORCH"] = "Startorch",
-            ["TOGGLE_UI"] = "Toggle UI",
-            ["ALTERA_A_TECLA_QUE_MOSTRA_ESCONDE_O_MENU"] = "Change the key that shows | hides the menu.",
-            ["SALVAR_CONFIG"] = "Save Config",
-            ["SALVA_TEMA_SELECIONADO_E_ETC"] = "Saves selected theme and etc.",
-            ["CONFIGURACAO_SALVA"] = "Configuration saved!",
-            ["SUA_CONFIGURACAO_FOI_SALVA_COM_SUCESSO"] = "Your configuration was saved successfully!",
-            ["CARREGAR_CONFIG"] = "Load Config",
-            ["CARREGA_A_CONFIGURACAO_SALVA_ANTERIORMEN"] = "Loads the previously saved configuration.",
-            ["CONFIGURACAO_CARREGADA"] = "Configuration loaded!",
-            ["SUA_CONFIGURACAO_FOI_CARREGADA_COM_SUCES"] = "Your configuration was loaded successfully!",
-            ["BACKDOOR_SCANNER"] = "Backdoor scanner",
-            ["ESCANEIA_O_JOGO_EM_BUSCA_DE_BACKDOORS_CO"] = "Scans the game for known backdoors.",
-            ["EJETAR_SCRIPT"] = "Eject script",
-            ["EJETA_A_SCRIPT_DO_JOGO"] = "Ejects the script from the game.",
-            ["CONFIRM_DELETE"] = "Confirm Delete",
-            ["ESTA_ACAO_NAO_PODE_SER_DESFEITA"] = "This action cannot be undone.",
-            ["CANCELAR"] = "Cancel",
-            ["EJETAR"] = "Eject",
-            ["KEYBINDS"] = "KeyBinds",
-            ["AQUI_VOCE_PODE_ALTERAR_OS_KEYBINDS_DAS_F"] = "Here you can change the function keybinds.",
-            ["AIMBOT_COMUM_K"] = "Common Aimbot (K)",
-            ["AIMBOT_COMUM_2"] = "Common Aimbot",
-            ["AIMBOT_RAGE_L"] = "Rage Aimbot (L)",
-            ["AIMBOT_RAGE_2"] = "Rage Aimbot",
-            ["ESP_E"] = "ESP (E)",
-            ["ESP_2"] = "ESP",
-            ["ATIVADO"] = "Enabled!",
-            ["FLY_F"] = "Fly (F)",
-            ["SPIN_G"] = "Spin (G)",
-            ["LOOP_TP_T"] = "Loop TP (T)",
-            ["CONFIGURACOES_DE_FUNCOES"] = "Function Settings",
-            ["MODO_ANONYMOUS"] = "Anonymous mode",
-            ["ATIVA_O_MODO_ANONYMOUS_QUE_ESCONDE_SEU_N"] = "Enables anonymous mode, which hides your name and image from the panel",
-            ["MOVIMENTO"] = "Movement",
-            ["SPEED"] = "Speed",
-            ["ALTERA_VELOCIDADE_DO_JOGADOR"] = "Changes player speed",
-            ["JUMP"] = "Jump",
-            ["AUMENTA_A_FORCA_DO_PULO"] = "Increases jump power",
-            ["ATIVA_O_MODO_VOO"] = "Enables flight mode",
-            ["VELOCIDADE_DO_FLY"] = "Fly Speed",
-            ["AJUSTE_A_VELOCIDADE_DO_VOO_QUANTO_MAIOR_"] = "Adjust the flight speed (higher = faster).",
-            ["GRAVIDADE"] = "Gravity",
-            ["GRAVITY"] = "Gravity",
-            ["ALTERA_A_GRAVIDADE_DO_JOGO"] = "Changes the game's gravity",
-            ["RESET_GRAVITY"] = "Reset Gravity",
-            ["RESETA_A_GRAVIDADE_PARA_O_VALOR_PADRAO_1"] = "Resets gravity to default value (196.2)",
-            ["GRAVIDADE_RESETADA"] = "Gravity reset!",
-            ["A_GRAVIDADE_FOI_RESETADA_PARA_O_VALOR_PA"] = "Gravity has been reset to default value (196.2)",
-            ["OUTROS"] = "Others",
-            ["TELEPORT"] = "Teleport",
-            ["PERMITE_TELEPORTAR_ATE_OUTROS_JOGADORES"] = "Allows teleporting to other players.",
-            ["TELEPORTAR_ATE_JOGADOR"] = "Teleport to player",
-            ["TELEPORTA_ATE_O_JOGADOR_SELECIONADO"] = "Teleports to the selected player",
-            ["TELEPORTA_INFINITAMENTE_NO_JOGADO_QUE_FO"] = "Teleports infinitely to the player selected above.",
-            ["DELAY_ENTRE_TPS"] = "Delay between TPs",
-            ["TEMPO_EM_SEGUNDOS_ENTRE_CADA_TELEPORTE_M"] = "Time in seconds between each teleport (lower = faster)",
-            ["LOOP_TP_DELAY"] = "Loop TP Delay",
-            ["ATUALIZADO_PARA"] = "Updated to",
-            ["TELEPORT_TO_ISLANDS"] = "Teleport to Islands",
-            ["TELEPORTA_PARA_AS_ILHAS_PRINCIPAIS_DO_JO"] = "Teleport to the main islands of the game.",
-            ["TELEPORTE_PARA_ILHA"] = "Teleport to Island",
-            ["TELEPORTA_PARA_A_ILHA_SELECIONADA"] = "Teleport to the selected island.",
-            ["STARTER_ISLAND"] = "Starter Island",
-            ["FOREST_ISLAND"] = "Forest Island",
-            ["DESERT_ISLAND"] = "Desert Island",
-            ["SNOW_ISLAND"] = "Snow Island",
-            ["VOLCANO_ISLAND"] = "Volcano Island",
-            ["SKY_ISLAND"] = "Sky Island",
-            ["MISCELLANEOUS"] = "Miscellaneous",
-            ["FUNCOES_DIVERSAS_DO_ROYAL_HUB"] = "Various Royal Hub functions.",
-            ["REENTRA_NA_PARTIDA_ATUAL"] = "Rejoin the current match.",
-            ["ENTRA_EM_OUTRO_SERVIDOR_DA_PARTIDA_ATUAL"] = "Join another server of the current match.",
-            ["REDEEM_CODES"] = "Redeem Codes",
-            ["RESGATA_CODIGOS_AUTOMATICAMENTE"] = "Redeem codes automatically.",
-            ["COLLECT_REWARDS"] = "Collect Rewards",
-            ["COLETA_RECOMPENSAS_DIARIAS_AUTOMATICAMEN"] = "Collect daily rewards automatically.",
-            ["FUNCOES_EXPLOITS_DO_ROYAL_HUB_PODE_NAO_F"] = "Royal Hub exploit functions. (may not work)",
-            ["SELECIONE_JOGADOR"] = "Select Player",
-            ["EM_MANUTENCAO"] = "Under maintenance.",
-            ["FLING_POWER"] = "Fling Power",
-            ["LOOP_FLING"] = "Loop Fling",
-            ["SELECIONE_UM_ALVO"] = "Select a target!",
-            ["FLING_PLAYER"] = "Fling Player",
-            ["FAZ_O_JOGADOR_SELECIONADO_VOAR_PELO_MAPA"] = "Makes the selected player fly across the map.",
-            ["FLING"] = "Fling",
-            ["ARREMESSADO"] = "Flung:",
-            ["SELECIONE_UM_ALVO_PRIMEIRO"] = "Select a target first!",
-            ["SPYCHAT"] = "SpyChat",
-            ["ESPIONA_TODOS_CHATS_PRIVADOSDMS"] = "Spies on ALL private chats/DMs.",
-            ["FUN"] = "Fun",
-            ["FUNCOES_DIVERTIDAS_DO_ROYAL_HUB"] = "Fun features from Royal Hub.",
-            ["FAZ_O_PERSONAGEM_GIRAR_INFINITAMENTE"] = "Makes the character spin infinitely.",
-            ["ATIVAR_ORBIT"] = "Enable Orbit",
-            ["VELOCIDADE_ROTACAO"] = "Rotation Speed",
-            ["IDS_TROLL_PRONTOS"] = "Ready Troll IDs",
-            ["EM_MANUTENCAO_2"] = "Under maintenance",
-            ["TROLL_SELECIONADO"] = "Selected Troll",
-            ["CARREGADO"] = "Loaded:",
-            ["VOLUME"] = "Volume",
-            ["TOCAR_GLOBAL"] = "Play Global",
-            ["SELECIONE_EMOTE"] = "Select Emote",
-            ["EMOTES_DISPONIVEIS_MESMO_SEM_TER_NA_CONT"] = "Available emotes (even without owning them).",
-            ["LOOP_EMOTE"] = "Loop Emote",
-            ["FAZ_O_EMOTE_REPETIR_AUTOMATICAMENTE"] = "Makes the emote repeat automatically.",
-            ["EMOTE"] = "Emote",
-            ["LOOP"] = "Loop",
-            ["USAR_EMOTE"] = "Use Emote",
-            ["EXECUTA_O_EMOTE_SELECIONADO"] = "Executes the selected emote.",
-            ["SELECIONE_UM_EMOTE_PRIMEIRO"] = "Select an emote first!",
-            ["FALHA_AO_CARREGAR"] = "Failed to load",
-            ["TOCANDO"] = "Playing",
-            ["PARAR_EMOTE"] = "Stop Emote",
-            ["INTERROMPE_O_EMOTE_ATUAL"] = "Stops the current emote.",
-            ["EMOTE_E_LOOP_PARADOS"] = "Emote and loop stopped!",
-            ["BROOKHAVEN"] = "BrookHaven",
-            ["FAELZIN_HUB"] = "FAELZIN HUB",
-            ["BRUTON_HUB"] = "BRUTON HUB",
-            ["CARTOLA_HUB"] = "CARTOLA HUB",
-            ["PILOT_HUB"] = "PILOT HUB",
-            ["SALVATORE"] = "SALVATORE",
-            ["SANDER_XY"] = "SANDER XY",
-            ["HX_HEXAGON"] = "HX HEXAGON",
-            ["COVET_HUB"] = "COVET HUB",
-            ["LOBO_HUB"] = "LOBO HUB",
-            ["FORBID_SPAMMER"] = "FORBID SPAMMER",
-            ["SPECTRA_HUB"] = "SPECTRA HUB",
-            ["CHAD_HUB"] = "CHAD HUB",
-            ["MAX_HUB"] = "MAX HUB",
-            ["CHAD_HUB_V2"] = "CHAD HUB V2",
-            ["PHANTOM_CLIENT"] = "PHANTOM CLIENT",
-            ["LYRA_HUB"] = "LYRA HUB",
-            ["SANT_HUB"] = "SANT HUB",
-            ["KINGLEGACY"] = "King-Legacy",
-            ["ZEEHUB_UPD_9"] = "ZEE-HUB UPD 9",
-            ["UNIVERSAIS"] = "Universal",
-            ["DEXEXPLORER"] = "DEX-EXPLORER",
-            ["TCA_GUI"] = "TCA GUI",
-            ["INFINITE_YIELD"] = "INFINITE YIELD",
-            ["INFORMACOES"] = "Information",
-            ["EODRAXKK"] = "Eodraxkk",
-            ["DESENVOLVEDOR_PRINCIPAL_DO_ROYAL_HUB_FOC"] = "Lead developer of Royal Hub, focused on programming and security.",
-            ["EINZBERN"] = "Einzbern",
-            ["CODESENVOLVEDOR_DO_ROYAL_HUB_FOCADO_EM_D"] = "Co-developer of Royal Hub, focused on design and feature ideas.",
-            ["LINK_DO_DISCORD"] = "Discord Link",
-            ["CLIQUE_PARA_COPIAR_O_LINK"] = "Click to copy the link",
-            ["CLIPBOARD"] = "Clipboard",
-            ["LINK_DO_DISCORD_COPIADO_PARA_A_AREA_DE_T"] = "Discord link copied to clipboard!",
-            ["SOBRE_O_ROYAL_HUB"] = "About Royal Hub",
-        },
-
-        ["pt-br"] = {
-            ["AVISO"] = "AVISO!",
-            ["ERRO"] = "Erro",
-            ["JOGADOR_NAO_ENCONTRADO_OU_SEM_PERSONAGEM"] = "Jogador não encontrado ou sem personagem.",
-            ["LOOP_TP"] = "Loop TP",
-            ["ALVO_SUMIU_OU_MORREU_LOOP_PARADO"] = "Alvo sumiu ou morreu. Loop parado.",
-            ["SELECIONE_UM_JOGADOR_NO_DROPDOWN_PRIMEIR"] = "Selecione um jogador no dropdown primeiro!",
-            ["INICIANDO_LOOP_NO_JOGADOR"] = "Iniciando loop no jogador:",
-            ["LOOP_DESATIVADO"] = "Loop desativado.",
-            ["ESP_ATIVADO"] = "ESP ativado!",
-            ["ESP_DESATIVADO"] = "ESP desativado!",
-            ["REJOIN"] = "Rejoin",
-            ["NAO_FOI_POSSIVEL_PEGAR_O_JOBID_ATUAL_TEN"] = "Não foi possível pegar o JobId atual. Tente novamente.",
-            ["VOLTANDO_PRO_MESMO_SERVIDOR"] = "Voltando pro mesmo servidor...",
-            ["SERVER_HOP"] = "Server Hop",
-            ["BUSCANDO_SERVIDORES_AGUARDE_510S"] = "Buscando servidores... (aguarde 5-10s)",
-            ["ERRO_HOP"] = "Erro Hop",
-            ["SEM_SERVIDORES"] = "Sem Servidores",
-            ["NENHUM_SERVER_DISPONIVEL_AGORA_TENTE_DE_"] = "Nenhum server disponível agora. Tente de novo ou em outro jogo.",
-            ["HOP"] = "Hop!",
-            ["TELEPORTANDO_PRO_SERVER"] = "Teleportando pro server:",
-            ["TELEPORT_FALHOU"] = "Teleport Falhou",
-            ["ERRO_2"] = "Erro:",
-            ["SPIN"] = "Spin",
-            ["GIRANDO_DESATIVE_PRA_PARAR"] = "Girando! (Desative pra parar)",
-            ["ERRO_SPIN"] = "Erro Spin",
-            ["PERSONAGEM_NAO_CARREGADO"] = "Personagem não carregado.",
-            ["PAROU_DE_GIRAR"] = "Parou de girar.",
-            ["FLY"] = "Fly",
-            ["VOO_ATIVADO"] = "Voo ativado!",
-            ["DESATIVADO"] = "Desativado",
-            ["FAKE_TP"] = "Fake TP",
-            ["ATIVADO_DODGE_ANTIAIM_LIGADO"] = "Ativado! (Dodge anti-aim ligado)",
-            ["DESATIVADO_2"] = "Desativado!",
-            ["ORBIT"] = "Orbit",
-            ["ALVO_SUMIU_OU_MORREU_ORBIT_PARADO"] = "Alvo sumiu ou morreu. Orbit parado.",
-            ["ORBITANDO"] = "Orbitando",
-            ["ORBIT_DESATIVADO"] = "Orbit desativado.",
-            ["VELOCIDADE_ATUALIZADA_PARA"] = "Velocidade atualizada para",
-            ["NOCLIP"] = "NoClip",
-            ["NOCLIP_ATIVADO"] = "NoClip ativado!",
-            ["NOCLIP_DESATIVADO"] = "NoClip desativado.",
-            ["ROYAL_HUB_AVISO"] = "Royal Hub - Aviso!",
-            ["SCRIPT_EM_DESENVOLVIMENTO_FUNCOES_PODEM_"] = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
-            ["VERIFICACAO"] = "Verificação",
-            ["VERIFICANDO_USUARIO"] = "Verificando usuario...",
-            ["REGISTER"] = "Register",
-            ["OPEN_ROYAL_HUB"] = "Open Royal Hub",
-            ["USERID"] = "UserID:",
-            ["COPIAR_USERID"] = "Copiar UserID",
-            ["COPIADO"] = "Copiado!",
-            ["USERID_COPIADO_PARA_A_AREA_DE_TRANSFEREN"] = "UserID copiado para a área de transferência.",
-            ["FECHAR"] = "Fechar",
-            ["KEYBIND"] = "KeyBind",
-            ["APERTE_A_TECLA_H_PARA_ESCONDER_MOSTRAR_O"] = "Aperte a tecla ( H )  para esconder | Mostrar o menu",
-            ["V144"] = "v1.4.4",
-            ["SECURE"] = "Secure",
-            ["FPS_0"] = "FPS: 0",
-            ["PING_0MS"] = "Ping: 0ms",
-            ["INICIO"] = "Inicio",
-            ["FUNCOES_PRINCIPAIS_DO_ROYAL_HUB"] = "Funções principais do Royal Hub.",
-            ["PERSONAGEM"] = "Personagem",
-            ["MODIFICACOES_NO_PERSONAGEM"] = "Modificações no personagem.",
-            ["FARM"] = "Farm",
-            ["FUNCOES_DE_FARM_AUTOMATICO"] = "Funções de farm automático.",
-            ["LOJA"] = "Loja",
-            ["COMPRE_ITENS_AUTOMATICAMENTE"] = "Compre itens automaticamente.",
-            ["TP_AND_WBHK"] = "TP and WBHK",
-            ["TELEPORTE_E_WEBHOOK"] = "Teleporte e WebHook.",
-            ["MISC"] = "Misc",
-            ["FUNCOES_DIVERSAS"] = "Funções diversas.",
-            ["EXPLOITS"] = "Exploits",
-            ["SCRIPTS_QUE_PODEM_SER_UTEIS"] = "Scripts que podem ser uteis",
-            ["CONFIGURACOES"] = "Configurações",
-            ["CONFIGURACOES_DO_ROYAL_HUB"] = "Configurações do Royal Hub.",
-            ["INFO"] = "Info",
-            ["INFORMACOES_SOBRE_O_ROYAL_HUB_E_DESENVOL"] = "Informações sobre o Royal Hub e Desenvolvedores.",
-            ["AIMBOT"] = "Aimbot",
-            ["FUNCAO_DE_AIMBOT_PARA_FACILITAR_SEUS_TIR"] = "Função de aimbot para facilitar seus tiros & Ataques.",
-            ["AIMBOT_COMUM"] = "Aimbot comum",
-            ["AIMBOT_RAGE"] = "Aimbot rage",
-            ["IGNORAR_ALIADOS_TEAM_CHECK"] = "Ignorar Aliados (Team Check)",
-            ["TEAM_CHECK"] = "Team Check",
-            ["WALL_CHECK_IGNORAR_PAREDES"] = "Wall Check (Ignorar Paredes)",
-            ["WALL_CHECK"] = "Wall Check",
-            ["ESP"] = "Esp",
-            ["PLAYERS_FICAM_VISIVEIS_ATRAS_DE_PAREDES_"] = "Players ficam visiveis atrás de paredes e marcados.",
-            ["EM_DESENVOLVIMENTO"] = "Em desenvolvimento",
-            ["ESP_ATIVADO_2"] = "ESP Ativado",
-            ["PLAYERS_DESTACADOS"] = "Players destacados!",
-            ["ESP_DESATIVADO_2"] = "ESP Desativado",
-            ["REMOVIDO"] = "Removido.",
-            ["ESP_20_TWILIGHT"] = "Esp 2.0 (Twilight)",
-            ["ESP_COM_HEALTH_BAR_BOX_E_NOME_POWERED_BY"] = "ESP com health bar, box e nome — powered by Twilight.",
-            ["ESP_20"] = "ESP 2.0",
-            ["FAKE_TP_DODGE"] = "Fake TP (Dodge)",
-            ["DELAY_FAKE_TP"] = "Delay Fake TP",
-            ["TEMPO_ENTRE_FAKES_MENOR_MAIS_RAPIDO"] = "Tempo entre fakes (menor = mais rápido)",
-            ["DISTANCIA_FAKE_TP"] = "Distância Fake TP",
-            ["QUAO_LONGE_O_FAKE_TP_VAI_EM_STUDS"] = "Quão longe o fake TP vai (em studs)",
-            ["VISUAL"] = "Visual",
-            ["MODIFICACOES_VISUAIS_NO_JOGO"] = "Modificações visuais no jogo.",
-            ["SELECIONE_O_PLAYER"] = "Selecione o Player",
-            ["SELECIONA_O_PLAYER_PARA_APLICAR_AS_MODIF"] = "Seleciona o player para aplicar as modificações visuais.",
-            ["EM_DESENVOLVIMENTO_2"] = "Em desenvolvimento.",
-            ["VISUALIZAR_PLAYER"] = "Visualizar Player",
-            ["ATIVA_AS_MODIFICACOES_VISUAIS_NO_PLAYER_"] = "Ativa as modificações visuais no player selecionado acima.",
-            ["PERMITE_ATRAVESSAR_PAREDES_E_OBJETOS"] = "Permite atravessar paredes e objetos.",
-            ["AUTO_FARM_LEVEL"] = "Auto Farm Level",
-            ["FARMA_AUTOMATICAMENTE_SEU_LEVEL_SE_NAO_E"] = "Farma automaticamente seu level ( se não estiver no maximo )",
-            ["ATIVAR_AUTO_FARM_LEVEL"] = "Ativar Auto Farm Level",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_LEVEL"] = "Ativa o farm automático de level.",
-            ["AUTO_FARM_LEVEL_ATIVADO"] = "Auto Farm Level ativado!",
-            ["AUTO_FARM_LEVEL_DESATIVADO"] = "Auto Farm Level desativado!",
-            ["AUTO_FARM_MATERIALS"] = "Auto Farm Materials",
-            ["FARMA_AUTOMATICAMENTE_MATERIAIS_DO_JOGO"] = "Farma automaticamente materiais do jogo.",
-            ["ATIVAR_AUTO_FARM_MATERIALS"] = "Ativar Auto Farm Materials",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_MATERIAIS"] = "Ativa o farm automático de materiais.",
-            ["AUTO_FARM_MATERIALS_ATIVADO"] = "Auto Farm Materials ativado!",
-            ["AUTO_FARM_MATERIALS_DESATIVADO"] = "Auto Farm Materials desativado!",
-            ["SELECIONAR_MATERIAL"] = "Selecionar Material",
-            ["SELECIONA_O_MATERIAL_QUE_DESEJA_FARMAR_A"] = "Seleciona o material que deseja farmar automaticamente.",
-            ["MATERIAL_1"] = "Material 1",
-            ["MATERIAL_2"] = "Material 2",
-            ["MATERIAL_3"] = "Material 3",
-            ["AUTO_BUY"] = "Auto Buy",
-            ["COMPRA_ITENS_AUTOMATICAMENTE_DO_BLACKMAR"] = "Compra itens automaticamente do blackmarket.",
-            ["SELECIONAR_ITEM"] = "Selecionar Item",
-            ["SELECIONA_O_ITEM_QUE_DESEJA_COMPRAR_AUTO"] = "Seleciona o item que deseja comprar automaticamente.",
-            ["ITEM_1"] = "Item 1",
-            ["ITEM_2"] = "Item 2",
-            ["ITEM_3"] = "Item 3",
-            ["ATIVAR_AUTO_BUY"] = "Ativar Auto Buy",
-            ["ATIVA_A_COMPRA_AUTOMATICA_DO_ITEM_SELECI"] = "Ativa a compra automática do item selecionado acima.",
-            ["AUTO_BUY_ATIVADO"] = "Auto Buy ativado!",
-            ["AUTO_BUY_DESATIVADO"] = "Auto Buy desativado!",
-            ["GENERAL_SETTINGS"] = "General Settings",
-            ["CONFIGURACOES_DE_TEMA_KEYBIND_E_ETC"] = "Configurações de tema, keybind e etc.",
-            ["BYPASS_ANTICHEAT"] = "Bypass Anti-Cheat",
-            ["TENTA_BURLAR_O_SISTEMA_ANTICHEAT_DO_JOGO"] = "Tenta burlar o sistema anti-cheat do jogo.",
-            ["AVISO_2"] = "Aviso!",
-            ["BYPASS_ATIVADO_COM_SUCESSO_FUNCIONALIDAD"] = "Bypass ativado com sucesso! (Funcionalidade em desenvolvimento)",
-            ["TEMAS"] = "Temas",
-            ["ALTERA_O_TEMA_DO_ROYAL_HUB"] = "Altera o tema do Royal Hub",
-            ["DARK_AMOLED_DEFAULT"] = "Dark Amoled ( Default )",
-            ["HUTAO_BY_EINZBERN"] = "Hutao By Einzbern",
-            ["REDX_HUB"] = "RedX Hub",
-            ["WHITE"] = "White",
-            ["MAIN_THEME"] = "Main Theme",
-            ["CYBERPUNK"] = "CyberPunk",
-            ["SOLAR_THEME"] = "Solar Theme",
-            ["MIDNIGHT"] = "Midnight",
-            ["CRIMSON"] = "Crimson",
-            ["SNOW"] = "Snow",
-            ["TUNDRA"] = "Tundra",
-            ["SAMURAI_DARK"] = "Samurai Dark",
-            ["MONOKAI"] = "Monokai",
-            ["MOONLIGHT"] = "Moonlight",
-            ["LUNAR"] = "Lunar",
-            ["INDIGO"] = "Indigo",
-            ["STARTORCH"] = "Startorch",
-            ["TOGGLE_UI"] = "Toggle UI",
-            ["ALTERA_A_TECLA_QUE_MOSTRA_ESCONDE_O_MENU"] = "Altera a tecla que mostra | esconde o menu.",
-            ["SALVAR_CONFIG"] = "Salvar Config",
-            ["SALVA_TEMA_SELECIONADO_E_ETC"] = "Salva tema selecionado e etc.",
-            ["CONFIGURACAO_SALVA"] = "Configuração salva!",
-            ["SUA_CONFIGURACAO_FOI_SALVA_COM_SUCESSO"] = "Sua configuração foi salva com sucesso!",
-            ["CARREGAR_CONFIG"] = "Carregar config",
-            ["CARREGA_A_CONFIGURACAO_SALVA_ANTERIORMEN"] = "Carrega a configuração salva anteriormente.",
-            ["CONFIGURACAO_CARREGADA"] = "Configuração carregada!",
-            ["SUA_CONFIGURACAO_FOI_CARREGADA_COM_SUCES"] = "Sua configuração foi carregada com sucesso!",
-            ["BACKDOOR_SCANNER"] = "Backdoor scanner",
-            ["ESCANEIA_O_JOGO_EM_BUSCA_DE_BACKDOORS_CO"] = "Escaneia o jogo em busca de backdoors conhecidos.",
-            ["EJETAR_SCRIPT"] = "Ejetar script",
-            ["EJETA_A_SCRIPT_DO_JOGO"] = "Ejeta a script do jogo.",
-            ["CONFIRM_DELETE"] = "Confirm Delete",
-            ["ESTA_ACAO_NAO_PODE_SER_DESFEITA"] = "Esta ação não pode ser desfeita.",
-            ["CANCELAR"] = "Cancelar",
-            ["EJETAR"] = "Ejetar",
-            ["KEYBINDS"] = "KeyBinds",
-            ["AQUI_VOCE_PODE_ALTERAR_OS_KEYBINDS_DAS_F"] = "Aqui você pode alterar os keybinds das funções.",
-            ["AIMBOT_COMUM_K"] = "Aimbot Comum (K)",
-            ["AIMBOT_COMUM_2"] = "Aimbot Comum",
-            ["AIMBOT_RAGE_L"] = "Aimbot Rage (L)",
-            ["AIMBOT_RAGE_2"] = "Aimbot Rage",
-            ["ESP_E"] = "ESP (E)",
-            ["ESP_2"] = "ESP",
-            ["ATIVADO"] = "Ativado!",
-            ["FLY_F"] = "Fly (F)",
-            ["SPIN_G"] = "Spin (G)",
-            ["LOOP_TP_T"] = "Loop TP (T)",
-            ["CONFIGURACOES_DE_FUNCOES"] = "Configurações de funções",
-            ["MODO_ANONYMOUS"] = "Modo anonymous",
-            ["ATIVA_O_MODO_ANONYMOUS_QUE_ESCONDE_SEU_N"] = "Ativa o modo anonymous, que esconde seu nome e imagem do painel",
-            ["MOVIMENTO"] = "Movimento",
-            ["SPEED"] = "Speed",
-            ["ALTERA_VELOCIDADE_DO_JOGADOR"] = "Altera velocidade do jogador",
-            ["JUMP"] = "Jump",
-            ["AUMENTA_A_FORCA_DO_PULO"] = "Aumenta a força do pulo",
-            ["ATIVA_O_MODO_VOO"] = "Ativa o modo voo",
-            ["VELOCIDADE_DO_FLY"] = "Velocidade do Fly",
-            ["AJUSTE_A_VELOCIDADE_DO_VOO_QUANTO_MAIOR_"] = "Ajuste a velocidade do voo (quanto maior, mais rápido).",
-            ["GRAVIDADE"] = "Gravidade",
-            ["GRAVITY"] = "Gravity",
-            ["ALTERA_A_GRAVIDADE_DO_JOGO"] = "Altera a gravidade do jogo",
-            ["RESET_GRAVITY"] = "Reset Gravity",
-            ["RESETA_A_GRAVIDADE_PARA_O_VALOR_PADRAO_1"] = "Reseta a gravidade para o valor padrão (196.2)",
-            ["GRAVIDADE_RESETADA"] = "Gravidade resetada!",
-            ["A_GRAVIDADE_FOI_RESETADA_PARA_O_VALOR_PA"] = "A gravidade foi resetada para o valor padrão (196.2)",
-            ["OUTROS"] = "Outros",
-            ["TELEPORT"] = "Teleport",
-            ["PERMITE_TELEPORTAR_ATE_OUTROS_JOGADORES"] = "Permite teleportar até outros jogadores.",
-            ["TELEPORTAR_ATE_JOGADOR"] = "Teleportar até jogador",
-            ["TELEPORTA_ATE_O_JOGADOR_SELECIONADO"] = "Teleporta até o jogador selecionado",
-            ["TELEPORTA_INFINITAMENTE_NO_JOGADO_QUE_FO"] = "Teleporta infinitamente no jogado que foi selecionado acima.",
-            ["DELAY_ENTRE_TPS"] = "Delay entre TPs",
-            ["TEMPO_EM_SEGUNDOS_ENTRE_CADA_TELEPORTE_M"] = "Tempo em segundos entre cada teleporte (menor = mais rápido)",
-            ["LOOP_TP_DELAY"] = "Loop TP Delay",
-            ["ATUALIZADO_PARA"] = "Atualizado para",
-            ["TELEPORT_TO_ISLANDS"] = "Teleport to Islands",
-            ["TELEPORTA_PARA_AS_ILHAS_PRINCIPAIS_DO_JO"] = "Teleporta para as ilhas principais do jogo.",
-            ["TELEPORTE_PARA_ILHA"] = "Teleporte para ilha",
-            ["TELEPORTA_PARA_A_ILHA_SELECIONADA"] = "Teleporta para a ilha selecionada.",
-            ["STARTER_ISLAND"] = "Starter Island",
-            ["FOREST_ISLAND"] = "Forest Island",
-            ["DESERT_ISLAND"] = "Desert Island",
-            ["SNOW_ISLAND"] = "Snow Island",
-            ["VOLCANO_ISLAND"] = "Volcano Island",
-            ["SKY_ISLAND"] = "Sky Island",
-            ["MISCELLANEOUS"] = "Miscellaneous",
-            ["FUNCOES_DIVERSAS_DO_ROYAL_HUB"] = "Funções diversas do Royal Hub.",
-            ["REENTRA_NA_PARTIDA_ATUAL"] = "Reentra na partida atual.",
-            ["ENTRA_EM_OUTRO_SERVIDOR_DA_PARTIDA_ATUAL"] = "Entra em outro servidor da partida atual.",
-            ["REDEEM_CODES"] = "Redeem Codes",
-            ["RESGATA_CODIGOS_AUTOMATICAMENTE"] = "Resgata códigos automaticamente.",
-            ["COLLECT_REWARDS"] = "Collect Rewards",
-            ["COLETA_RECOMPENSAS_DIARIAS_AUTOMATICAMEN"] = "Coleta recompensas diárias automaticamente.",
-            ["FUNCOES_EXPLOITS_DO_ROYAL_HUB_PODE_NAO_F"] = "Funções exploits do Royal Hub. ( pode não funcionar )",
-            ["SELECIONE_JOGADOR"] = "Selecione Jogador",
-            ["EM_MANUTENCAO"] = "Em manutenção.",
-            ["FLING_POWER"] = "Fling Power",
-            ["LOOP_FLING"] = "Loop Fling",
-            ["SELECIONE_UM_ALVO"] = "Selecione um alvo!",
-            ["FLING_PLAYER"] = "Fling Player",
-            ["FAZ_O_JOGADOR_SELECIONADO_VOAR_PELO_MAPA"] = "Faz o jogador selecionado voar pelo mapa.",
-            ["FLING"] = "Fling",
-            ["ARREMESSADO"] = "Arremessado:",
-            ["SELECIONE_UM_ALVO_PRIMEIRO"] = "Selecione um alvo primeiro!",
-            ["SPYCHAT"] = "SpyChat",
-            ["ESPIONA_TODOS_CHATS_PRIVADOSDMS"] = "Espiona TODOS chats privados/DMs.",
-            ["FUN"] = "Fun",
-            ["FUNCOES_DIVERTIDAS_DO_ROYAL_HUB"] = "Funções divertidas do Royal Hub.",
-            ["FAZ_O_PERSONAGEM_GIRAR_INFINITAMENTE"] = "Faz o personagem girar infinitamente.",
-            ["ATIVAR_ORBIT"] = "Ativar Orbit",
-            ["VELOCIDADE_ROTACAO"] = "Velocidade Rotação",
-            ["IDS_TROLL_PRONTOS"] = "IDs Troll Prontos",
-            ["EM_MANUTENCAO_2"] = "Em manutenção",
-            ["TROLL_SELECIONADO"] = "Troll Selecionado",
-            ["CARREGADO"] = "Carregado:",
-            ["VOLUME"] = "Volume",
-            ["TOCAR_GLOBAL"] = "Tocar Global",
-            ["SELECIONE_EMOTE"] = "Selecione Emote",
-            ["EMOTES_DISPONIVEIS_MESMO_SEM_TER_NA_CONT"] = "Emotes disponíveis (mesmo sem ter na conta).",
-            ["LOOP_EMOTE"] = "Loop Emote",
-            ["FAZ_O_EMOTE_REPETIR_AUTOMATICAMENTE"] = "Faz o emote repetir automaticamente.",
-            ["EMOTE"] = "Emote",
-            ["LOOP"] = "Loop",
-            ["USAR_EMOTE"] = "Usar Emote",
-            ["EXECUTA_O_EMOTE_SELECIONADO"] = "Executa o emote selecionado.",
-            ["SELECIONE_UM_EMOTE_PRIMEIRO"] = "Selecione um emote primeiro!",
-            ["FALHA_AO_CARREGAR"] = "Falha ao carregar",
-            ["TOCANDO"] = "Tocando",
-            ["PARAR_EMOTE"] = "Parar Emote",
-            ["INTERROMPE_O_EMOTE_ATUAL"] = "Interrompe o emote atual.",
-            ["EMOTE_E_LOOP_PARADOS"] = "Emote e loop parados!",
-            ["BROOKHAVEN"] = "BrookHaven",
-            ["FAELZIN_HUB"] = "FAELZIN HUB",
-            ["BRUTON_HUB"] = "BRUTON HUB",
-            ["CARTOLA_HUB"] = "CARTOLA HUB",
-            ["PILOT_HUB"] = "PILOT HUB",
-            ["SALVATORE"] = "SALVATORE",
-            ["SANDER_XY"] = "SANDER XY",
-            ["HX_HEXAGON"] = "HX HEXAGON",
-            ["COVET_HUB"] = "COVET HUB",
-            ["LOBO_HUB"] = "LOBO HUB",
-            ["FORBID_SPAMMER"] = "FORBID SPAMMER",
-            ["SPECTRA_HUB"] = "SPECTRA HUB",
-            ["CHAD_HUB"] = "CHAD HUB",
-            ["MAX_HUB"] = "MAX HUB",
-            ["CHAD_HUB_V2"] = "CHAD HUB V2",
-            ["PHANTOM_CLIENT"] = "PHANTOM CLIENT",
-            ["LYRA_HUB"] = "LYRA HUB",
-            ["SANT_HUB"] = "SANT HUB",
-            ["KINGLEGACY"] = "King-Legacy",
-            ["ZEEHUB_UPD_9"] = "ZEE-HUB UPD 9",
-            ["UNIVERSAIS"] = "Universais",
-            ["DEXEXPLORER"] = "DEX-EXPLORER",
-            ["TCA_GUI"] = "TCA GUI",
-            ["INFINITE_YIELD"] = "INFINITE YIELD",
-            ["INFORMACOES"] = "Informações",
-            ["EODRAXKK"] = "Eodraxkk",
-            ["DESENVOLVEDOR_PRINCIPAL_DO_ROYAL_HUB_FOC"] = "Desenvolvedor principal do Royal Hub, focado em programação e segurança.",
-            ["EINZBERN"] = "Einzbern",
-            ["CODESENVOLVEDOR_DO_ROYAL_HUB_FOCADO_EM_D"] = "Co-desenvolvedor do Royal Hub, focado em design e ideias de funções.",
-            ["LINK_DO_DISCORD"] = "Link do Discord",
-            ["CLIQUE_PARA_COPIAR_O_LINK"] = "Clique para copiar o link",
-            ["CLIPBOARD"] = "Clipboard",
-            ["LINK_DO_DISCORD_COPIADO_PARA_A_AREA_DE_T"] = "Link do Discord copiado para a área de transferência!",
-            ["SOBRE_O_ROYAL_HUB"] = "Sobre o Royal Hub",
-        },
-
-        ["es"] = {
-            ["AVISO"] = "¡AVISO!",
-            ["ERRO"] = "Error",
-            ["JOGADOR_NAO_ENCONTRADO_OU_SEM_PERSONAGEM"] = "Jugador no encontrado o sin personaje.",
-            ["LOOP_TP"] = "Loop TP",
-            ["ALVO_SUMIU_OU_MORREU_LOOP_PARADO"] = "Objetivo desapareció o murió. Loop detenido.",
-            ["SELECIONE_UM_JOGADOR_NO_DROPDOWN_PRIMEIR"] = "¡Selecciona un jugador en el dropdown primero!",
-            ["INICIANDO_LOOP_NO_JOGADOR"] = "Iniciando loop en el jugador:",
-            ["LOOP_DESATIVADO"] = "Loop desactivado.",
-            ["ESP_ATIVADO"] = "¡ESP activado!",
-            ["ESP_DESATIVADO"] = "¡ESP desactivado!",
-            ["REJOIN"] = "Rejoin",
-            ["NAO_FOI_POSSIVEL_PEGAR_O_JOBID_ATUAL_TEN"] = "No fue posible obtener el JobId actual. Intenta de nuevo.",
-            ["VOLTANDO_PRO_MESMO_SERVIDOR"] = "Volviendo al mismo servidor...",
-            ["SERVER_HOP"] = "Server Hop",
-            ["BUSCANDO_SERVIDORES_AGUARDE_510S"] = "Buscando servidores... (espera 5-10s)",
-            ["ERRO_HOP"] = "Error Hop",
-            ["SEM_SERVIDORES"] = "Sin Servidores",
-            ["NENHUM_SERVER_DISPONIVEL_AGORA_TENTE_DE_"] = "Ningún servidor disponible ahora. Intenta de nuevo o en otro juego.",
-            ["HOP"] = "¡Hop!",
-            ["TELEPORTANDO_PRO_SERVER"] = "Teletransportando al servidor:",
-            ["TELEPORT_FALHOU"] = "Teletransporte Fallido",
-            ["ERRO_2"] = "Error:",
-            ["SPIN"] = "Spin",
-            ["GIRANDO_DESATIVE_PRA_PARAR"] = "¡Girando! (Desactiva para parar)",
-            ["ERRO_SPIN"] = "Error Spin",
-            ["PERSONAGEM_NAO_CARREGADO"] = "Personaje no cargado.",
-            ["PAROU_DE_GIRAR"] = "Dejó de girar.",
-            ["FLY"] = "Fly",
-            ["VOO_ATIVADO"] = "¡Vuelo activado!",
-            ["DESATIVADO"] = "Desactivado",
-            ["FAKE_TP"] = "Fake TP",
-            ["ATIVADO_DODGE_ANTIAIM_LIGADO"] = "¡Activado! (Dodge anti-aim activado)",
-            ["DESATIVADO_2"] = "¡Desactivado!",
-            ["ORBIT"] = "Orbit",
-            ["ALVO_SUMIU_OU_MORREU_ORBIT_PARADO"] = "Objetivo desapareció o murió. Orbit detenido.",
-            ["ORBITANDO"] = "Orbitando",
-            ["ORBIT_DESATIVADO"] = "Orbit desactivado.",
-            ["VELOCIDADE_ATUALIZADA_PARA"] = "Velocidad actualizada a",
-            ["NOCLIP"] = "NoClip",
-            ["NOCLIP_ATIVADO"] = "¡NoClip activado!",
-            ["NOCLIP_DESATIVADO"] = "NoClip desactivado.",
-            ["ROYAL_HUB_AVISO"] = "Royal Hub - ¡Advertencia!",
-            ["SCRIPT_EM_DESENVOLVIMENTO_FUNCOES_PODEM_"] = "Script en desarrollo, las funciones pueden fallar con el tiempo.",
-            ["VERIFICACAO"] = "Verificación",
-            ["VERIFICANDO_USUARIO"] = "Verificando usuario...",
-            ["REGISTER"] = "Register",
-            ["OPEN_ROYAL_HUB"] = "Open Royal Hub",
-            ["USERID"] = "UserID:",
-            ["COPIAR_USERID"] = "Copiar UserID",
-            ["COPIADO"] = "¡Copiado!",
-            ["USERID_COPIADO_PARA_A_AREA_DE_TRANSFEREN"] = "UserID copiado al portapapeles.",
-            ["FECHAR"] = "Cerrar",
-            ["KEYBIND"] = "KeyBind",
-            ["APERTE_A_TECLA_H_PARA_ESCONDER_MOSTRAR_O"] = "Presiona la tecla ( H ) para ocultar | Mostrar el menú",
-            ["V144"] = "v1.4.4",
-            ["SECURE"] = "Secure",
-            ["FPS_0"] = "FPS: 0",
-            ["PING_0MS"] = "Ping: 0ms",
-            ["INICIO"] = "Inicio",
-            ["FUNCOES_PRINCIPAIS_DO_ROYAL_HUB"] = "Funciones principales de Royal Hub.",
-            ["PERSONAGEM"] = "Personaje",
-            ["MODIFICACOES_NO_PERSONAGEM"] = "Modificaciones del personaje.",
-            ["FARM"] = "Farm",
-            ["FUNCOES_DE_FARM_AUTOMATICO"] = "Funciones de farm automático.",
-            ["LOJA"] = "Tienda",
-            ["COMPRE_ITENS_AUTOMATICAMENTE"] = "Compra objetos automáticamente.",
-            ["TP_AND_WBHK"] = "TP and WBHK",
-            ["TELEPORTE_E_WEBHOOK"] = "Teletransporte y WebHook.",
-            ["MISC"] = "Misc",
-            ["FUNCOES_DIVERSAS"] = "Funciones diversas.",
-            ["EXPLOITS"] = "Exploits",
-            ["SCRIPTS_QUE_PODEM_SER_UTEIS"] = "Scripts que pueden ser útiles",
-            ["CONFIGURACOES"] = "Configuración",
-            ["CONFIGURACOES_DO_ROYAL_HUB"] = "Configuración de Royal Hub.",
-            ["INFO"] = "Info",
-            ["INFORMACOES_SOBRE_O_ROYAL_HUB_E_DESENVOL"] = "Información sobre Royal Hub y Desarrolladores.",
-            ["AIMBOT"] = "Aimbot",
-            ["FUNCAO_DE_AIMBOT_PARA_FACILITAR_SEUS_TIR"] = "Función de aimbot para facilitar tus disparos y ataques.",
-            ["AIMBOT_COMUM"] = "Aimbot común",
-            ["AIMBOT_RAGE"] = "Aimbot Rage",
-            ["IGNORAR_ALIADOS_TEAM_CHECK"] = "Ignorar Aliados (Team Check)",
-            ["TEAM_CHECK"] = "Team Check",
-            ["WALL_CHECK_IGNORAR_PAREDES"] = "Wall Check (Ignorar Paredes)",
-            ["WALL_CHECK"] = "Wall Check",
-            ["ESP"] = "ESP",
-            ["PLAYERS_FICAM_VISIVEIS_ATRAS_DE_PAREDES_"] = "Los jugadores son visibles detrás de paredes y marcados.",
-            ["EM_DESENVOLVIMENTO"] = "En desarrollo",
-            ["ESP_ATIVADO_2"] = "ESP Activado",
-            ["PLAYERS_DESTACADOS"] = "¡Jugadores destacados!",
-            ["ESP_DESATIVADO_2"] = "ESP Desactivado",
-            ["REMOVIDO"] = "Eliminado.",
-            ["ESP_20_TWILIGHT"] = "ESP 2.0 (Twilight)",
-            ["ESP_COM_HEALTH_BAR_BOX_E_NOME_POWERED_BY"] = "ESP con barra de salud, caja y nombre — powered by Twilight.",
-            ["ESP_20"] = "ESP 2.0",
-            ["FAKE_TP_DODGE"] = "Fake TP (Dodge)",
-            ["DELAY_FAKE_TP"] = "Delay Fake TP",
-            ["TEMPO_ENTRE_FAKES_MENOR_MAIS_RAPIDO"] = "Tiempo entre fakes (menor = más rápido)",
-            ["DISTANCIA_FAKE_TP"] = "Distancia Fake TP",
-            ["QUAO_LONGE_O_FAKE_TP_VAI_EM_STUDS"] = "Qué tan lejos va el fake TP (en studs)",
-            ["VISUAL"] = "Visual",
-            ["MODIFICACOES_VISUAIS_NO_JOGO"] = "Modificaciones visuales en el juego.",
-            ["SELECIONE_O_PLAYER"] = "Seleccionar Jugador",
-            ["SELECIONA_O_PLAYER_PARA_APLICAR_AS_MODIF"] = "Selecciona el jugador para aplicar las modificaciones visuales.",
-            ["EM_DESENVOLVIMENTO_2"] = "En desarrollo.",
-            ["VISUALIZAR_PLAYER"] = "Visualizar Jugador",
-            ["ATIVA_AS_MODIFICACOES_VISUAIS_NO_PLAYER_"] = "Activa las modificaciones visuales en el jugador seleccionado arriba.",
-            ["PERMITE_ATRAVESSAR_PAREDES_E_OBJETOS"] = "Permite atravesar paredes y objetos.",
-            ["AUTO_FARM_LEVEL"] = "Auto Farm Level",
-            ["FARMA_AUTOMATICAMENTE_SEU_LEVEL_SE_NAO_E"] = "Farmea automáticamente tu nivel (si no está al máximo)",
-            ["ATIVAR_AUTO_FARM_LEVEL"] = "Activar Auto Farm Level",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_LEVEL"] = "Activa el farmeo automático de nivel.",
-            ["AUTO_FARM_LEVEL_ATIVADO"] = "¡Auto Farm Level activado!",
-            ["AUTO_FARM_LEVEL_DESATIVADO"] = "¡Auto Farm Level desactivado!",
-            ["AUTO_FARM_MATERIALS"] = "Auto Farm Materials",
-            ["FARMA_AUTOMATICAMENTE_MATERIAIS_DO_JOGO"] = "Farmea automáticamente materiales del juego.",
-            ["ATIVAR_AUTO_FARM_MATERIALS"] = "Activar Auto Farm Materials",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_MATERIAIS"] = "Activa el farmeo automático de materiales.",
-            ["AUTO_FARM_MATERIALS_ATIVADO"] = "¡Auto Farm Materials activado!",
-            ["AUTO_FARM_MATERIALS_DESATIVADO"] = "¡Auto Farm Materials desactivado!",
-            ["SELECIONAR_MATERIAL"] = "Seleccionar Material",
-            ["SELECIONA_O_MATERIAL_QUE_DESEJA_FARMAR_A"] = "Selecciona el material que deseas farmear automáticamente.",
-            ["MATERIAL_1"] = "Material 1",
-            ["MATERIAL_2"] = "Material 2",
-            ["MATERIAL_3"] = "Material 3",
-            ["AUTO_BUY"] = "Auto Buy",
-            ["COMPRA_ITENS_AUTOMATICAMENTE_DO_BLACKMAR"] = "Compra artículos automáticamente del mercado negro.",
-            ["SELECIONAR_ITEM"] = "Seleccionar Artículo",
-            ["SELECIONA_O_ITEM_QUE_DESEJA_COMPRAR_AUTO"] = "Selecciona el artículo que deseas comprar automáticamente.",
-            ["ITEM_1"] = "Artículo 1",
-            ["ITEM_2"] = "Artículo 2",
-            ["ITEM_3"] = "Artículo 3",
-            ["ATIVAR_AUTO_BUY"] = "Activar Auto Buy",
-            ["ATIVA_A_COMPRA_AUTOMATICA_DO_ITEM_SELECI"] = "Activa la compra automática del artículo seleccionado arriba.",
-            ["AUTO_BUY_ATIVADO"] = "¡Auto Buy activado!",
-            ["AUTO_BUY_DESATIVADO"] = "¡Auto Buy desactivado!",
-            ["GENERAL_SETTINGS"] = "General Settings",
-            ["CONFIGURACOES_DE_TEMA_KEYBIND_E_ETC"] = "Configuración de tema, Keybind, etc.",
-            ["BYPASS_ANTICHEAT"] = "Bypass Anti-Cheat",
-            ["TENTA_BURLAR_O_SISTEMA_ANTICHEAT_DO_JOGO"] = "Intenta eludir el sistema anti-trampas del juego.",
-            ["AVISO_2"] = "¡Aviso!",
-            ["BYPASS_ATIVADO_COM_SUCESSO_FUNCIONALIDAD"] = "¡Bypass activado con éxito! (Funcionalidad en desarrollo)",
-            ["TEMAS"] = "Temas",
-            ["ALTERA_O_TEMA_DO_ROYAL_HUB"] = "Cambiar el tema de Royal Hub",
-            ["DARK_AMOLED_DEFAULT"] = "Dark Amoled ( Por defecto )",
-            ["HUTAO_BY_EINZBERN"] = "Hutao By Einzbern",
-            ["REDX_HUB"] = "RedX Hub",
-            ["WHITE"] = "Blanco",
-            ["MAIN_THEME"] = "Tema Principal",
-            ["CYBERPUNK"] = "CyberPunk",
-            ["SOLAR_THEME"] = "Tema Solar",
-            ["MIDNIGHT"] = "Medianoche",
-            ["CRIMSON"] = "Carmesí",
-            ["SNOW"] = "Nieve",
-            ["TUNDRA"] = "Tundra",
-            ["SAMURAI_DARK"] = "Samurai Dark",
-            ["MONOKAI"] = "Monokai",
-            ["MOONLIGHT"] = "Luz de Luna",
-            ["LUNAR"] = "Lunar",
-            ["INDIGO"] = "Índigo",
-            ["STARTORCH"] = "Startorch",
-            ["TOGGLE_UI"] = "Toggle UI",
-            ["ALTERA_A_TECLA_QUE_MOSTRA_ESCONDE_O_MENU"] = "Cambia la tecla que muestra | oculta el menú.",
-            ["SALVAR_CONFIG"] = "Guardar Config",
-            ["SALVA_TEMA_SELECIONADO_E_ETC"] = "Guarda el tema seleccionado y etc.",
-            ["CONFIGURACAO_SALVA"] = "¡Configuración guardada!",
-            ["SUA_CONFIGURACAO_FOI_SALVA_COM_SUCESSO"] = "¡Tu configuración fue guardada con éxito!",
-            ["CARREGAR_CONFIG"] = "Cargar Config",
-            ["CARREGA_A_CONFIGURACAO_SALVA_ANTERIORMEN"] = "Carga la configuración guardada anteriormente.",
-            ["CONFIGURACAO_CARREGADA"] = "¡Configuración cargada!",
-            ["SUA_CONFIGURACAO_FOI_CARREGADA_COM_SUCES"] = "¡Tu configuración fue cargada con éxito!",
-            ["BACKDOOR_SCANNER"] = "Backdoor scanner",
-            ["ESCANEIA_O_JOGO_EM_BUSCA_DE_BACKDOORS_CO"] = "Escanea el juego en busca de backdoors conocidos.",
-            ["EJETAR_SCRIPT"] = "Expulsar script",
-            ["EJETA_A_SCRIPT_DO_JOGO"] = "Expulsa el script del juego.",
-            ["CONFIRM_DELETE"] = "Confirm Delete",
-            ["ESTA_ACAO_NAO_PODE_SER_DESFEITA"] = "Esta acción no se puede deshacer.",
-            ["CANCELAR"] = "Cancelar",
-            ["EJETAR"] = "Expulsar",
-            ["KEYBINDS"] = "KeyBinds",
-            ["AQUI_VOCE_PODE_ALTERAR_OS_KEYBINDS_DAS_F"] = "Aquí puedes cambiar los keybinds de las funciones.",
-            ["AIMBOT_COMUM_K"] = "Aimbot Común (K)",
-            ["AIMBOT_COMUM_2"] = "Aimbot Común",
-            ["AIMBOT_RAGE_L"] = "Aimbot Rage (L)",
-            ["AIMBOT_RAGE_2"] = "Aimbot Rage",
-            ["ESP_E"] = "ESP (E)",
-            ["ESP_2"] = "ESP",
-            ["ATIVADO"] = "¡Activado!",
-            ["FLY_F"] = "Fly (F)",
-            ["SPIN_G"] = "Spin (G)",
-            ["LOOP_TP_T"] = "Loop TP (T)",
-            ["CONFIGURACOES_DE_FUNCOES"] = "Configuración de funciones",
-            ["MODO_ANONYMOUS"] = "Modo anonymous",
-            ["ATIVA_O_MODO_ANONYMOUS_QUE_ESCONDE_SEU_N"] = "Activa el modo anonymous, que oculta tu nombre e imagen del panel",
-            ["MOVIMENTO"] = "Movimiento",
-            ["SPEED"] = "Speed",
-            ["ALTERA_VELOCIDADE_DO_JOGADOR"] = "Cambia la velocidad del jugador",
-            ["JUMP"] = "Jump",
-            ["AUMENTA_A_FORCA_DO_PULO"] = "Aumenta la fuerza del salto",
-            ["ATIVA_O_MODO_VOO"] = "Activa el modo vuelo",
-            ["VELOCIDADE_DO_FLY"] = "Velocidad de Fly",
-            ["AJUSTE_A_VELOCIDADE_DO_VOO_QUANTO_MAIOR_"] = "Ajusta la velocidad de vuelo (mayor = más rápido).",
-            ["GRAVIDADE"] = "Gravedad",
-            ["GRAVITY"] = "Gravity",
-            ["ALTERA_A_GRAVIDADE_DO_JOGO"] = "Cambia la gravedad del juego",
-            ["RESET_GRAVITY"] = "Reset Gravity",
-            ["RESETA_A_GRAVIDADE_PARA_O_VALOR_PADRAO_1"] = "Restablece la gravedad al valor predeterminado (196.2)",
-            ["GRAVIDADE_RESETADA"] = "¡Gravedad restablecida!",
-            ["A_GRAVIDADE_FOI_RESETADA_PARA_O_VALOR_PA"] = "La gravedad ha sido restablecida al valor predeterminado (196.2)",
-            ["OUTROS"] = "Otros",
-            ["TELEPORT"] = "Teleport",
-            ["PERMITE_TELEPORTAR_ATE_OUTROS_JOGADORES"] = "Permite teletransportarse a otros jugadores.",
-            ["TELEPORTAR_ATE_JOGADOR"] = "Teletransportar a jugador",
-            ["TELEPORTA_ATE_O_JOGADOR_SELECIONADO"] = "Teletransporta al jugador seleccionado",
-            ["TELEPORTA_INFINITAMENTE_NO_JOGADO_QUE_FO"] = "Teletransporta infinitamente al jugador seleccionado arriba.",
-            ["DELAY_ENTRE_TPS"] = "Delay entre TPs",
-            ["TEMPO_EM_SEGUNDOS_ENTRE_CADA_TELEPORTE_M"] = "Tiempo en segundos entre cada teletransporte (menor = más rápido)",
-            ["LOOP_TP_DELAY"] = "Loop TP Delay",
-            ["ATUALIZADO_PARA"] = "Actualizado a",
-            ["TELEPORT_TO_ISLANDS"] = "Teleport to Islands",
-            ["TELEPORTA_PARA_AS_ILHAS_PRINCIPAIS_DO_JO"] = "Teletransporta a las islas principales del juego.",
-            ["TELEPORTE_PARA_ILHA"] = "Teletransporte a isla",
-            ["TELEPORTA_PARA_A_ILHA_SELECIONADA"] = "Teletransporta a la isla seleccionada.",
-            ["STARTER_ISLAND"] = "Starter Island",
-            ["FOREST_ISLAND"] = "Forest Island",
-            ["DESERT_ISLAND"] = "Desert Island",
-            ["SNOW_ISLAND"] = "Snow Island",
-            ["VOLCANO_ISLAND"] = "Volcano Island",
-            ["SKY_ISLAND"] = "Sky Island",
-            ["MISCELLANEOUS"] = "Miscellaneous",
-            ["FUNCOES_DIVERSAS_DO_ROYAL_HUB"] = "Funciones diversas de Royal Hub.",
-            ["REENTRA_NA_PARTIDA_ATUAL"] = "Volver a unirse a la partida actual.",
-            ["ENTRA_EM_OUTRO_SERVIDOR_DA_PARTIDA_ATUAL"] = "Unirse a otro servidor de la partida actual.",
-            ["REDEEM_CODES"] = "Redeem Codes",
-            ["RESGATA_CODIGOS_AUTOMATICAMENTE"] = "Canjear códigos automáticamente.",
-            ["COLLECT_REWARDS"] = "Collect Rewards",
-            ["COLETA_RECOMPENSAS_DIARIAS_AUTOMATICAMEN"] = "Recolectar recompensas diarias automáticamente.",
-            ["FUNCOES_EXPLOITS_DO_ROYAL_HUB_PODE_NAO_F"] = "Funciones exploits de Royal Hub. (puede no funcionar)",
-            ["SELECIONE_JOGADOR"] = "Seleccionar Jugador",
-            ["EM_MANUTENCAO"] = "En mantenimiento.",
-            ["FLING_POWER"] = "Fling Power",
-            ["LOOP_FLING"] = "Loop Fling",
-            ["SELECIONE_UM_ALVO"] = "¡Selecciona un objetivo!",
-            ["FLING_PLAYER"] = "Fling Player",
-            ["FAZ_O_JOGADOR_SELECIONADO_VOAR_PELO_MAPA"] = "Hace que el jugador seleccionado vuele por el mapa.",
-            ["FLING"] = "Fling",
-            ["ARREMESSADO"] = "Lanzado:",
-            ["SELECIONE_UM_ALVO_PRIMEIRO"] = "¡Selecciona un objetivo primero!",
-            ["SPYCHAT"] = "SpyChat",
-            ["ESPIONA_TODOS_CHATS_PRIVADOSDMS"] = "Espía TODOS los chats privados/DMs.",
-            ["FUN"] = "Fun",
-            ["FUNCOES_DIVERTIDAS_DO_ROYAL_HUB"] = "Funciones divertidas de Royal Hub.",
-            ["FAZ_O_PERSONAGEM_GIRAR_INFINITAMENTE"] = "Hace que el personaje gire infinitamente.",
-            ["ATIVAR_ORBIT"] = "Activar Orbit",
-            ["VELOCIDADE_ROTACAO"] = "Velocidad de Rotación",
-            ["IDS_TROLL_PRONTOS"] = "IDs Troll Listos",
-            ["EM_MANUTENCAO_2"] = "En mantenimiento",
-            ["TROLL_SELECIONADO"] = "Troll Seleccionado",
-            ["CARREGADO"] = "Cargado:",
-            ["VOLUME"] = "Volumen",
-            ["TOCAR_GLOBAL"] = "Reproducir Global",
-            ["SELECIONE_EMOTE"] = "Seleccionar Emote",
-            ["EMOTES_DISPONIVEIS_MESMO_SEM_TER_NA_CONT"] = "Emotes disponibles (incluso sin tenerlos en la cuenta).",
-            ["LOOP_EMOTE"] = "Loop Emote",
-            ["FAZ_O_EMOTE_REPETIR_AUTOMATICAMENTE"] = "Hace que el emote se repita automáticamente.",
-            ["EMOTE"] = "Emote",
-            ["LOOP"] = "Loop",
-            ["USAR_EMOTE"] = "Usar Emote",
-            ["EXECUTA_O_EMOTE_SELECIONADO"] = "Ejecuta el emote seleccionado.",
-            ["SELECIONE_UM_EMOTE_PRIMEIRO"] = "¡Selecciona un emote primero!",
-            ["FALHA_AO_CARREGAR"] = "Error al cargar",
-            ["TOCANDO"] = "Reproduciendo",
-            ["PARAR_EMOTE"] = "Detener Emote",
-            ["INTERROMPE_O_EMOTE_ATUAL"] = "Detiene el emote actual.",
-            ["EMOTE_E_LOOP_PARADOS"] = "¡Emote y loop detenidos!",
-            ["BROOKHAVEN"] = "BrookHaven",
-            ["FAELZIN_HUB"] = "FAELZIN HUB",
-            ["BRUTON_HUB"] = "BRUTON HUB",
-            ["CARTOLA_HUB"] = "CARTOLA HUB",
-            ["PILOT_HUB"] = "PILOT HUB",
-            ["SALVATORE"] = "SALVATORE",
-            ["SANDER_XY"] = "SANDER XY",
-            ["HX_HEXAGON"] = "HX HEXAGON",
-            ["COVET_HUB"] = "COVET HUB",
-            ["LOBO_HUB"] = "LOBO HUB",
-            ["FORBID_SPAMMER"] = "FORBID SPAMMER",
-            ["SPECTRA_HUB"] = "SPECTRA HUB",
-            ["CHAD_HUB"] = "CHAD HUB",
-            ["MAX_HUB"] = "MAX HUB",
-            ["CHAD_HUB_V2"] = "CHAD HUB V2",
-            ["PHANTOM_CLIENT"] = "PHANTOM CLIENT",
-            ["LYRA_HUB"] = "LYRA HUB",
-            ["SANT_HUB"] = "SANT HUB",
-            ["KINGLEGACY"] = "King-Legacy",
-            ["ZEEHUB_UPD_9"] = "ZEE-HUB UPD 9",
-            ["UNIVERSAIS"] = "Universal",
-            ["DEXEXPLORER"] = "DEX-EXPLORER",
-            ["TCA_GUI"] = "TCA GUI",
-            ["INFINITE_YIELD"] = "INFINITE YIELD",
-            ["INFORMACOES"] = "Información",
-            ["EODRAXKK"] = "Eodraxkk",
-            ["DESENVOLVEDOR_PRINCIPAL_DO_ROYAL_HUB_FOC"] = "Desarrollador principal de Royal Hub, enfocado en programación y seguridad.",
-            ["EINZBERN"] = "Einzbern",
-            ["CODESENVOLVEDOR_DO_ROYAL_HUB_FOCADO_EM_D"] = "Co-desarrollador de Royal Hub, enfocado en diseño e ideas de funciones.",
-            ["LINK_DO_DISCORD"] = "Enlace de Discord",
-            ["CLIQUE_PARA_COPIAR_O_LINK"] = "Haz clic para copiar el enlace",
-            ["CLIPBOARD"] = "Portapapeles",
-            ["LINK_DO_DISCORD_COPIADO_PARA_A_AREA_DE_T"] = "¡Enlace de Discord copiado al portapapeles!",
-            ["SOBRE_O_ROYAL_HUB"] = "Acerca de Royal Hub",
-        },
-
-        ["ru"] = {
-            ["AVISO"] = "ВНИМАНИЕ!",
-            ["ERRO"] = "Ошибка",
-            ["JOGADOR_NAO_ENCONTRADO_OU_SEM_PERSONAGEM"] = "Игрок не найден или без персонажа.",
-            ["LOOP_TP"] = "Loop TP",
-            ["ALVO_SUMIU_OU_MORREU_LOOP_PARADO"] = "Цель исчезла или умерла. Loop остановлен.",
-            ["SELECIONE_UM_JOGADOR_NO_DROPDOWN_PRIMEIR"] = "Сначала выберите игрока в выпадающем списке!",
-            ["INICIANDO_LOOP_NO_JOGADOR"] = "Запуск loop на игрока:",
-            ["LOOP_DESATIVADO"] = "Loop отключён.",
-            ["ESP_ATIVADO"] = "ESP активирован!",
-            ["ESP_DESATIVADO"] = "ESP отключён!",
-            ["REJOIN"] = "Rejoin",
-            ["NAO_FOI_POSSIVEL_PEGAR_O_JOBID_ATUAL_TEN"] = "Не удалось получить текущий JobId. Попробуйте снова.",
-            ["VOLTANDO_PRO_MESMO_SERVIDOR"] = "Возврат на тот же сервер...",
-            ["SERVER_HOP"] = "Server Hop",
-            ["BUSCANDO_SERVIDORES_AGUARDE_510S"] = "Поиск серверов... (подождите 5-10с)",
-            ["ERRO_HOP"] = "Ошибка Hop",
-            ["SEM_SERVIDORES"] = "Нет Серверов",
-            ["NENHUM_SERVER_DISPONIVEL_AGORA_TENTE_DE_"] = "Нет доступных серверов сейчас. Попробуйте снова или в другой игре.",
-            ["HOP"] = "Hop!",
-            ["TELEPORTANDO_PRO_SERVER"] = "Телепортация на сервер:",
-            ["TELEPORT_FALHOU"] = "Телепорт не удался",
-            ["ERRO_2"] = "Ошибка:",
-            ["SPIN"] = "Spin",
-            ["GIRANDO_DESATIVE_PRA_PARAR"] = "Вращение! (Отключите, чтобы остановить)",
-            ["ERRO_SPIN"] = "Ошибка Spin",
-            ["PERSONAGEM_NAO_CARREGADO"] = "Персонаж не загружен.",
-            ["PAROU_DE_GIRAR"] = "Вращение остановлено.",
-            ["FLY"] = "Fly",
-            ["VOO_ATIVADO"] = "Полёт активирован!",
-            ["DESATIVADO"] = "Отключено",
-            ["FAKE_TP"] = "Fake TP",
-            ["ATIVADO_DODGE_ANTIAIM_LIGADO"] = "Включено! (Dodge anti-aim включён)",
-            ["DESATIVADO_2"] = "Отключено!",
-            ["ORBIT"] = "Orbit",
-            ["ALVO_SUMIU_OU_MORREU_ORBIT_PARADO"] = "Цель исчезла или умерла. Orbit остановлен.",
-            ["ORBITANDO"] = "Орбита",
-            ["ORBIT_DESATIVADO"] = "Orbit отключён.",
-            ["VELOCIDADE_ATUALIZADA_PARA"] = "Скорость обновлена до",
-            ["NOCLIP"] = "NoClip",
-            ["NOCLIP_ATIVADO"] = "NoClip включен!",
-            ["NOCLIP_DESATIVADO"] = "NoClip отключен.",
-            ["ROYAL_HUB_AVISO"] = "Royal Hub - Предупреждение!",
-            ["SCRIPT_EM_DESENVOLVIMENTO_FUNCOES_PODEM_"] = "Скрипт в разработке, функции могут сломаться со временем.",
-            ["VERIFICACAO"] = "Проверка",
-            ["VERIFICANDO_USUARIO"] = "Проверка пользователя...",
-            ["REGISTER"] = "Register",
-            ["OPEN_ROYAL_HUB"] = "Open Royal Hub",
-            ["USERID"] = "UserID:",
-            ["COPIAR_USERID"] = "Копировать UserID",
-            ["COPIADO"] = "Скопировано!",
-            ["USERID_COPIADO_PARA_A_AREA_DE_TRANSFEREN"] = "UserID скопирован в буфер обмена.",
-            ["FECHAR"] = "Закрыть",
-            ["KEYBIND"] = "KeyBind",
-            ["APERTE_A_TECLA_H_PARA_ESCONDER_MOSTRAR_O"] = "Нажмите клавишу ( H ) чтобы скрыть | Показать меню",
-            ["V144"] = "v1.4.4",
-            ["SECURE"] = "Secure",
-            ["FPS_0"] = "FPS: 0",
-            ["PING_0MS"] = "Ping: 0ms",
-            ["INICIO"] = "Главная",
-            ["FUNCOES_PRINCIPAIS_DO_ROYAL_HUB"] = "Основные функции Royal Hub.",
-            ["PERSONAGEM"] = "Персонаж",
-            ["MODIFICACOES_NO_PERSONAGEM"] = "Модификации персонажа.",
-            ["FARM"] = "Farm",
-            ["FUNCOES_DE_FARM_AUTOMATICO"] = "Функции автоматического фарма.",
-            ["LOJA"] = "Магазин",
-            ["COMPRE_ITENS_AUTOMATICAMENTE"] = "Автоматическая покупка предметов.",
-            ["TP_AND_WBHK"] = "TP and WBHK",
-            ["TELEPORTE_E_WEBHOOK"] = "Телепорт и WebHook.",
-            ["MISC"] = "Misc",
-            ["FUNCOES_DIVERSAS"] = "Разные функции.",
-            ["EXPLOITS"] = "Exploits",
-            ["SCRIPTS_QUE_PODEM_SER_UTEIS"] = "Скрипты, которые могут быть полезны",
-            ["CONFIGURACOES"] = "Настройки",
-            ["CONFIGURACOES_DO_ROYAL_HUB"] = "Настройки Royal Hub.",
-            ["INFO"] = "Info",
-            ["INFORMACOES_SOBRE_O_ROYAL_HUB_E_DESENVOL"] = "Информация о Royal Hub и разработчиках.",
-            ["AIMBOT"] = "Aimbot",
-            ["FUNCAO_DE_AIMBOT_PARA_FACILITAR_SEUS_TIR"] = "Функция аимбота для облегчения стрельбы и атак.",
-            ["AIMBOT_COMUM"] = "Обычный aimbot",
-            ["AIMBOT_RAGE"] = "Aimbot Rage",
-            ["IGNORAR_ALIADOS_TEAM_CHECK"] = "Игнорировать союзников (Team Check)",
-            ["TEAM_CHECK"] = "Team Check",
-            ["WALL_CHECK_IGNORAR_PAREDES"] = "Wall Check (игнорировать стены)",
-            ["WALL_CHECK"] = "Wall Check",
-            ["ESP"] = "ESP",
-            ["PLAYERS_FICAM_VISIVEIS_ATRAS_DE_PAREDES_"] = "Игроки видны за стенами и отмечены.",
-            ["EM_DESENVOLVIMENTO"] = "В разработке",
-            ["ESP_ATIVADO_2"] = "ESP активирован",
-            ["PLAYERS_DESTACADOS"] = "Игроки выделены!",
-            ["ESP_DESATIVADO_2"] = "ESP деактивирован",
-            ["REMOVIDO"] = "Удалено.",
-            ["ESP_20_TWILIGHT"] = "ESP 2.0 (Twilight)",
-            ["ESP_COM_HEALTH_BAR_BOX_E_NOME_POWERED_BY"] = "ESP с полосой здоровья, рамкой и именем — powered by Twilight.",
-            ["ESP_20"] = "ESP 2.0",
-            ["FAKE_TP_DODGE"] = "Fake TP (Dodge)",
-            ["DELAY_FAKE_TP"] = "Задержка Fake TP",
-            ["TEMPO_ENTRE_FAKES_MENOR_MAIS_RAPIDO"] = "Время между фейками (меньше = быстрее)",
-            ["DISTANCIA_FAKE_TP"] = "Дистанция Fake TP",
-            ["QUAO_LONGE_O_FAKE_TP_VAI_EM_STUDS"] = "Как далеко идёт fake TP (в стадах)",
-            ["VISUAL"] = "Visual",
-            ["MODIFICACOES_VISUAIS_NO_JOGO"] = "Визуальные модификации в игре.",
-            ["SELECIONE_O_PLAYER"] = "Выбрать игрока",
-            ["SELECIONA_O_PLAYER_PARA_APLICAR_AS_MODIF"] = "Выберите игрока для применения визуальных модификаций.",
-            ["EM_DESENVOLVIMENTO_2"] = "В разработке.",
-            ["VISUALIZAR_PLAYER"] = "Визуализировать игрока",
-            ["ATIVA_AS_MODIFICACOES_VISUAIS_NO_PLAYER_"] = "Активирует визуальные модификации для выбранного игрока выше.",
-            ["PERMITE_ATRAVESSAR_PAREDES_E_OBJETOS"] = "Позволяет проходить сквозь стены и объекты.",
-            ["AUTO_FARM_LEVEL"] = "Auto Farm Level",
-            ["FARMA_AUTOMATICAMENTE_SEU_LEVEL_SE_NAO_E"] = "Автоматически фармит ваш уровень (если не максимальный)",
-            ["ATIVAR_AUTO_FARM_LEVEL"] = "Включить Auto Farm Level",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_LEVEL"] = "Активирует автоматический фарм уровня.",
-            ["AUTO_FARM_LEVEL_ATIVADO"] = "Auto Farm Level включен!",
-            ["AUTO_FARM_LEVEL_DESATIVADO"] = "Auto Farm Level выключен!",
-            ["AUTO_FARM_MATERIALS"] = "Auto Farm Materials",
-            ["FARMA_AUTOMATICAMENTE_MATERIAIS_DO_JOGO"] = "Автоматически фармит материалы игры.",
-            ["ATIVAR_AUTO_FARM_MATERIALS"] = "Включить Auto Farm Materials",
-            ["ATIVA_O_FARM_AUTOMATICO_DE_MATERIAIS"] = "Активирует автоматический фарм материалов.",
-            ["AUTO_FARM_MATERIALS_ATIVADO"] = "Auto Farm Materials включен!",
-            ["AUTO_FARM_MATERIALS_DESATIVADO"] = "Auto Farm Materials выключен!",
-            ["SELECIONAR_MATERIAL"] = "Выбрать Материал",
-            ["SELECIONA_O_MATERIAL_QUE_DESEJA_FARMAR_A"] = "Выберите материал для автоматической фарма.",
-            ["MATERIAL_1"] = "Материал 1",
-            ["MATERIAL_2"] = "Материал 2",
-            ["MATERIAL_3"] = "Материал 3",
-            ["AUTO_BUY"] = "Auto Buy",
-            ["COMPRA_ITENS_AUTOMATICAMENTE_DO_BLACKMAR"] = "Автоматически покупает предметы на чёрном рынке.",
-            ["SELECIONAR_ITEM"] = "Выбрать Предмет",
-            ["SELECIONA_O_ITEM_QUE_DESEJA_COMPRAR_AUTO"] = "Выберите предмет для автоматической покупки.",
-            ["ITEM_1"] = "Предмет 1",
-            ["ITEM_2"] = "Предмет 2",
-            ["ITEM_3"] = "Предмет 3",
-            ["ATIVAR_AUTO_BUY"] = "Включить Auto Buy",
-            ["ATIVA_A_COMPRA_AUTOMATICA_DO_ITEM_SELECI"] = "Включает автоматическую покупку выбранного предмета.",
-            ["AUTO_BUY_ATIVADO"] = "Auto Buy включён!",
-            ["AUTO_BUY_DESATIVADO"] = "Auto Buy выключен!",
-            ["GENERAL_SETTINGS"] = "General Settings",
-            ["CONFIGURACOES_DE_TEMA_KEYBIND_E_ETC"] = "Настройки темы, Keybind и т.д.",
-            ["BYPASS_ANTICHEAT"] = "Bypass Anti-Cheat",
-            ["TENTA_BURLAR_O_SISTEMA_ANTICHEAT_DO_JOGO"] = "Пытается обойти античит-систему игры.",
-            ["AVISO_2"] = "Внимание!",
-            ["BYPASS_ATIVADO_COM_SUCESSO_FUNCIONALIDAD"] = "Обход успешно активирован! (Функция в разработке)",
-            ["TEMAS"] = "Темы",
-            ["ALTERA_O_TEMA_DO_ROYAL_HUB"] = "Изменить тему Royal Hub",
-            ["DARK_AMOLED_DEFAULT"] = "Dark Amoled ( По умолчанию )",
-            ["HUTAO_BY_EINZBERN"] = "Hutao By Einzbern",
-            ["REDX_HUB"] = "RedX Hub",
-            ["WHITE"] = "Белый",
-            ["MAIN_THEME"] = "Основная Тема",
-            ["CYBERPUNK"] = "CyberPunk",
-            ["SOLAR_THEME"] = "Солнечная Тема",
-            ["MIDNIGHT"] = "Полночь",
-            ["CRIMSON"] = "Багровый",
-            ["SNOW"] = "Снег",
-            ["TUNDRA"] = "Тундра",
-            ["SAMURAI_DARK"] = "Samurai Dark",
-            ["MONOKAI"] = "Monokai",
-            ["MOONLIGHT"] = "Лунный Свет",
-            ["LUNAR"] = "Лунный",
-            ["INDIGO"] = "Индиго",
-            ["STARTORCH"] = "Startorch",
-            ["TOGGLE_UI"] = "Toggle UI",
-            ["ALTERA_A_TECLA_QUE_MOSTRA_ESCONDE_O_MENU"] = "Изменяет клавишу, которая показывает | скрывает меню.",
-            ["SALVAR_CONFIG"] = "Сохранить Config",
-            ["SALVA_TEMA_SELECIONADO_E_ETC"] = "Сохраняет выбранную тему и т.д.",
-            ["CONFIGURACAO_SALVA"] = "Конфигурация сохранена!",
-            ["SUA_CONFIGURACAO_FOI_SALVA_COM_SUCESSO"] = "Ваша конфигурация была успешно сохранена!",
-            ["CARREGAR_CONFIG"] = "Загрузить Config",
-            ["CARREGA_A_CONFIGURACAO_SALVA_ANTERIORMEN"] = "Загружает ранее сохранённую конфигурацию.",
-            ["CONFIGURACAO_CARREGADA"] = "Конфигурация загружена!",
-            ["SUA_CONFIGURACAO_FOI_CARREGADA_COM_SUCES"] = "Ваша конфигурация была успешно загружена!",
-            ["BACKDOOR_SCANNER"] = "Backdoor scanner",
-            ["ESCANEIA_O_JOGO_EM_BUSCA_DE_BACKDOORS_CO"] = "Сканирует игру на наличие известных бэкдоров.",
-            ["EJETAR_SCRIPT"] = "Извлечь скрипт",
-            ["EJETA_A_SCRIPT_DO_JOGO"] = "Извлекает скрипт из игры.",
-            ["CONFIRM_DELETE"] = "Confirm Delete",
-            ["ESTA_ACAO_NAO_PODE_SER_DESFEITA"] = "Это действие нельзя отменить.",
-            ["CANCELAR"] = "Отмена",
-            ["EJETAR"] = "Извлечь",
-            ["KEYBINDS"] = "KeyBinds",
-            ["AQUI_VOCE_PODE_ALTERAR_OS_KEYBINDS_DAS_F"] = "Здесь вы можете изменить keybinds функций.",
-            ["AIMBOT_COMUM_K"] = "Обычный Aimbot (K)",
-            ["AIMBOT_COMUM_2"] = "Обычный Aimbot",
-            ["AIMBOT_RAGE_L"] = "Aimbot Rage (L)",
-            ["AIMBOT_RAGE_2"] = "Aimbot Rage",
-            ["ESP_E"] = "ESP (E)",
-            ["ESP_2"] = "ESP",
-            ["ATIVADO"] = "Включено!",
-            ["FLY_F"] = "Fly (F)",
-            ["SPIN_G"] = "Spin (G)",
-            ["LOOP_TP_T"] = "Loop TP (T)",
-            ["CONFIGURACOES_DE_FUNCOES"] = "Настройки функций",
-            ["MODO_ANONYMOUS"] = "Режим anonymous",
-            ["ATIVA_O_MODO_ANONYMOUS_QUE_ESCONDE_SEU_N"] = "Включает режим anonymous, который скрывает ваше имя и изображение с панели",
-            ["MOVIMENTO"] = "Движение",
-            ["SPEED"] = "Speed",
-            ["ALTERA_VELOCIDADE_DO_JOGADOR"] = "Изменяет скорость игрока",
-            ["JUMP"] = "Jump",
-            ["AUMENTA_A_FORCA_DO_PULO"] = "Увеличивает силу прыжка",
-            ["ATIVA_O_MODO_VOO"] = "Включает режим полёта",
-            ["VELOCIDADE_DO_FLY"] = "Скорость Fly",
-            ["AJUSTE_A_VELOCIDADE_DO_VOO_QUANTO_MAIOR_"] = "Настройте скорость полёта (выше = быстрее).",
-            ["GRAVIDADE"] = "Гравитация",
-            ["GRAVITY"] = "Gravity",
-            ["ALTERA_A_GRAVIDADE_DO_JOGO"] = "Изменяет гравитацию игры",
-            ["RESET_GRAVITY"] = "Reset Gravity",
-            ["RESETA_A_GRAVIDADE_PARA_O_VALOR_PADRAO_1"] = "Сбрасывает гравитацию до значения по умолчанию (196.2)",
-            ["GRAVIDADE_RESETADA"] = "Гравитация сброшена!",
-            ["A_GRAVIDADE_FOI_RESETADA_PARA_O_VALOR_PA"] = "Гравитация была сброшена до значения по умолчанию (196.2)",
-            ["OUTROS"] = "Другое",
-            ["TELEPORT"] = "Teleport",
-            ["PERMITE_TELEPORTAR_ATE_OUTROS_JOGADORES"] = "Позволяет телепортироваться к другим игрокам.",
-            ["TELEPORTAR_ATE_JOGADOR"] = "Телепорт к игроку",
-            ["TELEPORTA_ATE_O_JOGADOR_SELECIONADO"] = "Телепортирует к выбранному игроку",
-            ["TELEPORTA_INFINITAMENTE_NO_JOGADO_QUE_FO"] = "Бесконечно телепортируется к игроку, выбранному выше.",
-            ["DELAY_ENTRE_TPS"] = "Delay между TPs",
-            ["TEMPO_EM_SEGUNDOS_ENTRE_CADA_TELEPORTE_M"] = "Время в секундах между каждым телепортом (меньше = быстрее)",
-            ["LOOP_TP_DELAY"] = "Loop TP Delay",
-            ["ATUALIZADO_PARA"] = "Обновлено на",
-            ["TELEPORT_TO_ISLANDS"] = "Teleport to Islands",
-            ["TELEPORTA_PARA_AS_ILHAS_PRINCIPAIS_DO_JO"] = "Телепортироваться на основные острова игры.",
-            ["TELEPORTE_PARA_ILHA"] = "Телепорт на остров",
-            ["TELEPORTA_PARA_A_ILHA_SELECIONADA"] = "Телепортироваться на выбранный остров.",
-            ["STARTER_ISLAND"] = "Starter Island",
-            ["FOREST_ISLAND"] = "Forest Island",
-            ["DESERT_ISLAND"] = "Desert Island",
-            ["SNOW_ISLAND"] = "Snow Island",
-            ["VOLCANO_ISLAND"] = "Volcano Island",
-            ["SKY_ISLAND"] = "Sky Island",
-            ["MISCELLANEOUS"] = "Miscellaneous",
-            ["FUNCOES_DIVERSAS_DO_ROYAL_HUB"] = "Различные функции Royal Hub.",
-            ["REENTRA_NA_PARTIDA_ATUAL"] = "Переподключиться к текущему матчу.",
-            ["ENTRA_EM_OUTRO_SERVIDOR_DA_PARTIDA_ATUAL"] = "Присоединиться к другому серверу текущего матча.",
-            ["REDEEM_CODES"] = "Redeem Codes",
-            ["RESGATA_CODIGOS_AUTOMATICAMENTE"] = "Автоматически активировать коды.",
-            ["COLLECT_REWARDS"] = "Collect Rewards",
-            ["COLETA_RECOMPENSAS_DIARIAS_AUTOMATICAMEN"] = "Автоматически собирать ежедневные награды.",
-            ["FUNCOES_EXPLOITS_DO_ROYAL_HUB_PODE_NAO_F"] = "Эксплойт функции Royal Hub. (может не работать)",
-            ["SELECIONE_JOGADOR"] = "Выбрать игрока",
-            ["EM_MANUTENCAO"] = "На обслуживании.",
-            ["FLING_POWER"] = "Fling Power",
-            ["LOOP_FLING"] = "Loop Fling",
-            ["SELECIONE_UM_ALVO"] = "Выберите цель!",
-            ["FLING_PLAYER"] = "Fling Player",
-            ["FAZ_O_JOGADOR_SELECIONADO_VOAR_PELO_MAPA"] = "Заставляет выбранного игрока летать по карте.",
-            ["FLING"] = "Fling",
-            ["ARREMESSADO"] = "Запущен:",
-            ["SELECIONE_UM_ALVO_PRIMEIRO"] = "Сначала выберите цель!",
-            ["SPYCHAT"] = "SpyChat",
-            ["ESPIONA_TODOS_CHATS_PRIVADOSDMS"] = "Шпионит за ВСЕМИ личными чатами/ЛС.",
-            ["FUN"] = "Fun",
-            ["FUNCOES_DIVERTIDAS_DO_ROYAL_HUB"] = "Веселые функции Royal Hub.",
-            ["FAZ_O_PERSONAGEM_GIRAR_INFINITAMENTE"] = "Заставляет персонажа вращаться бесконечно.",
-            ["ATIVAR_ORBIT"] = "Включить Orbit",
-            ["VELOCIDADE_ROTACAO"] = "Скорость Вращения",
-            ["IDS_TROLL_PRONTOS"] = "Готовые Troll ID",
-            ["EM_MANUTENCAO_2"] = "На обслуживании",
-            ["TROLL_SELECIONADO"] = "Выбранный Troll",
-            ["CARREGADO"] = "Загружено:",
-            ["VOLUME"] = "Громкость",
-            ["TOCAR_GLOBAL"] = "Воспроизвести глобально",
-            ["SELECIONE_EMOTE"] = "Выбрать эмоцию",
-            ["EMOTES_DISPONIVEIS_MESMO_SEM_TER_NA_CONT"] = "Доступные эмоции (даже без наличия в аккаунте).",
-            ["LOOP_EMOTE"] = "Loop эмоции",
-            ["FAZ_O_EMOTE_REPETIR_AUTOMATICAMENTE"] = "Заставляет эмоцию повторяться автоматически.",
-            ["EMOTE"] = "Эмоция",
-            ["LOOP"] = "Loop",
-            ["USAR_EMOTE"] = "Использовать эмоцию",
-            ["EXECUTA_O_EMOTE_SELECIONADO"] = "Выполняет выбранную эмоцию.",
-            ["SELECIONE_UM_EMOTE_PRIMEIRO"] = "Сначала выберите эмоцию!",
-            ["FALHA_AO_CARREGAR"] = "Ошибка загрузки",
-            ["TOCANDO"] = "Воспроизводится",
-            ["PARAR_EMOTE"] = "Остановить эмоцию",
-            ["INTERROMPE_O_EMOTE_ATUAL"] = "Останавливает текущую эмоцию.",
-            ["EMOTE_E_LOOP_PARADOS"] = "Эмоция и loop остановлены!",
-            ["BROOKHAVEN"] = "BrookHaven",
-            ["FAELZIN_HUB"] = "FAELZIN HUB",
-            ["BRUTON_HUB"] = "BRUTON HUB",
-            ["CARTOLA_HUB"] = "CARTOLA HUB",
-            ["PILOT_HUB"] = "PILOT HUB",
-            ["SALVATORE"] = "SALVATORE",
-            ["SANDER_XY"] = "SANDER XY",
-            ["HX_HEXAGON"] = "HX HEXAGON",
-            ["COVET_HUB"] = "COVET HUB",
-            ["LOBO_HUB"] = "LOBO HUB",
-            ["FORBID_SPAMMER"] = "FORBID SPAMMER",
-            ["SPECTRA_HUB"] = "SPECTRA HUB",
-            ["CHAD_HUB"] = "CHAD HUB",
-            ["MAX_HUB"] = "MAX HUB",
-            ["CHAD_HUB_V2"] = "CHAD HUB V2",
-            ["PHANTOM_CLIENT"] = "PHANTOM CLIENT",
-            ["LYRA_HUB"] = "LYRA HUB",
-            ["SANT_HUB"] = "SANT HUB",
-            ["KINGLEGACY"] = "King-Legacy",
-            ["ZEEHUB_UPD_9"] = "ZEE-HUB UPD 9",
-            ["UNIVERSAIS"] = "Универсальные",
-            ["DEXEXPLORER"] = "DEX-EXPLORER",
-            ["TCA_GUI"] = "TCA GUI",
-            ["INFINITE_YIELD"] = "INFINITE YIELD",
-            ["INFORMACOES"] = "Информация",
-            ["EODRAXKK"] = "Eodraxkk",
-            ["DESENVOLVEDOR_PRINCIPAL_DO_ROYAL_HUB_FOC"] = "Главный разработчик Royal Hub, специализируется на программировании и безопасности.",
-            ["EINZBERN"] = "Einzbern",
-            ["CODESENVOLVEDOR_DO_ROYAL_HUB_FOCADO_EM_D"] = "Со-разработчик Royal Hub, специализируется на дизайне и идеях функций.",
-            ["LINK_DO_DISCORD"] = "Ссылка на Discord",
-            ["CLIQUE_PARA_COPIAR_O_LINK"] = "Нажмите, чтобы скопировать ссылку",
-            ["CLIPBOARD"] = "Буфер обмена",
-            ["LINK_DO_DISCORD_COPIADO_PARA_A_AREA_DE_T"] = "Ссылка на Discord скопирована в буфер обмена!",
-            ["SOBRE_O_ROYAL_HUB"] = "О Royal Hub",
-        },
-    }
-})
-
--------------------------------* NotifySound *-------------------------------
-local NotifySound = Instance.new("Sound")
-NotifySound.SoundId = "rbxassetid://6518811702"
-NotifySound.Volume = 1.0
-NotifySound.Parent = game:GetService("SoundService")
 -------------------------------* Cores *--------------------------
 
 local Purple = Color3.fromHex("#7775F2")
@@ -1297,6 +37,11 @@ local S = {
 local LoopEmote = false
 local CurrentEmoteTrack = nil
 local EmoteLoopConnection = nil
+
+local NotifySound = Instance.new("Sound")
+NotifySound.SoundId = "rbxassetid://6518811702"
+NotifySound.Volume = 1.0
+NotifySound.Parent = game:GetService("SoundService")
 
 ------------------------------* Funções externas *-------------------------------
 
@@ -1396,18 +141,18 @@ local function CheckAndSetRP()
     local brookhavenPlaceId = 4924922222
     if placeId == brookhavenPlaceId then
         WindUI:Notify({
-            Title = "loc:AVISO",
+            Title = "AVISO!",
             Content = '<font color="#FF0000">POR FAVOR, DEIXE O JOGO CARREGAR, APERTE EM JOGAR ASSIM QUE POSSIVEL!</font>',
         })
         print("[RoyalHub] Detectado Brookhaven (PlaceId " .. placeId .. ") - Aplicando RP custom")
-        task.wait(8)
+        Wait(8)
         SetRPNameAndBio()
     else
         print("[RoyalHub] Não é Brookhaven (PlaceId " .. placeId .. ") - Pulando RP custom e indo para load do menu")
     end
 end
 
-task.wait(1) 
+wait(1) 
 CheckAndSetRP()
 
 -------------------------------* Teleporte To Player Function *-------------------------------
@@ -1420,8 +165,8 @@ local function TeleporteToPlayer(playerName)
         localPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(targetPosition + Vector3.new(0, 5, 0))
     else
         WindUI:Notify({
-            Title = "loc:ERRO",
-            Content = "loc:JOGADOR_NAO_ENCONTRADO_OU_SEM_PERSONAGEM",
+            Title = "Erro",
+            Content = "Jogador não encontrado ou sem personagem.",
             Duration = 3,
             Icon = "alert-circle"
         })
@@ -1449,8 +194,8 @@ local function startLoopTP()
         local target = S.Players:FindFirstChild(LoopTPTargetName)
         if not target or not target.Character then
             WindUI:Notify({
-                Title = "loc:LOOP_TP",
-                Content = "loc:ALVO_SUMIU_OU_MORREU_LOOP_PARADO",
+                Title = "Loop TP",
+                Content = "Alvo sumiu ou morreu. Loop parado.",
                 Duration = 4,
                 Icon = "alert-circle"
             })
@@ -1469,8 +214,8 @@ local function toggleLoopTP(enabled)
     if enabled then
         if not LoopTPTargetName then
             WindUI:Notify({
-                Title = "loc:LOOP_TP",
-                Content = "loc:SELECIONE_UM_JOGADOR_NO_DROPDOWN_PRIMEIR",
+                Title = "Loop TP",
+                Content = "Selecione um jogador no dropdown primeiro!",
                 Duration = 4,
                 Icon = "alert-circle"
             })
@@ -1479,7 +224,7 @@ local function toggleLoopTP(enabled)
         end
         
         WindUI:Notify({
-            Title = "loc:LOOP_TP",
+            Title = "Loop TP",
             Content = "Iniciando loop no jogador: " .. LoopTPTargetName .. " (delay: " .. LoopTPDelay .. "s)",
             Duration = 4,
             Icon = "repeat"
@@ -1492,8 +237,8 @@ local function toggleLoopTP(enabled)
             LoopTPConnection = nil
         end
         WindUI:Notify({
-            Title = "loc:LOOP_TP",
-            Content = "loc:LOOP_DESATIVADO",
+            Title = "Loop TP",
+            Content = "Loop desativado.",
             Duration = 3,
             Icon = "x"
         })
@@ -1582,7 +327,7 @@ local function setupPlayerListeners(player)
         if espEnabled then
             createESP(player)
             -- WindUI:Notify({
-            --     Title = "loc:ESP_ATIVADO",
+            --     Title = "Esp ativado!",
             --     Icon = "Crosshair",
             -- })
         end
@@ -1591,7 +336,7 @@ local function setupPlayerListeners(player)
     charRemovingConn = player.CharacterRemoving:Connect(function()
         removeESP(player)
         -- WindUI:Notify({
-        --     Title = "loc:ESP_DESATIVADO",
+        --     Title = "Esp desativado!",
         --     Icon = "Crosshair",
         -- })
     end)
@@ -1615,7 +360,7 @@ S.Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
-task.spawn(function()
+spawn(function()
     S.WS.CurrentCamera.CameraType = Enum.CameraType.Custom
 end)
 
@@ -1634,8 +379,8 @@ local function RejoinServer()
     
     if jobId == "" then
         WindUI:Notify({
-            Title = "loc:REJOIN",
-            Content = "loc:NAO_FOI_POSSIVEL_PEGAR_O_JOBID_ATUAL_TEN",
+            Title = "Rejoin",
+            Content = "Não foi possível pegar o JobId atual. Tente novamente.",
             Duration = 4,
             Icon = "alert-circle"
         })
@@ -1643,8 +388,8 @@ local function RejoinServer()
     end
     
     WindUI:Notify({
-        Title = "loc:REJOIN",
-        Content = "loc:VOLTANDO_PRO_MESMO_SERVIDOR",
+        Title = "Rejoin",
+        Content = "Voltando pro mesmo servidor...",
         Duration = 3,
         Icon = "refresh-cw"
     })
@@ -1662,8 +407,8 @@ local function ServerHop()
     local servers = {}
     
     WindUI:Notify({
-        Title = "loc:SERVER_HOP",
-        Content = "loc:BUSCANDO_SERVIDORES_AGUARDE_510S",
+        Title = "Server Hop",
+        Content = "Buscando servidores... (aguarde 5-10s)",
         Duration = 5,
         Icon = "refresh-cw"
     })
@@ -1676,7 +421,7 @@ local function ServerHop()
         end)
         
         if not success then
-            WindUI:Notify({Title = "loc:ERRO_HOP", Content = "Falha no HttpGet: " .. tostring(response), Duration = 5, Icon = "x"})
+            WindUI:Notify({Title = "Erro Hop", Content = "Falha no HttpGet: " .. tostring(response), Duration = 5, Icon = "x"})
             return
         end
         
@@ -1693,21 +438,21 @@ local function ServerHop()
     until cursor == ""
     
     if #servers == 0 then
-        WindUI:Notify({Title = "loc:SEM_SERVIDORES", Content = "loc:NENHUM_SERVER_DISPONIVEL_AGORA_TENTE_DE_", Duration = 5, Icon = "alert-circle"})
+        WindUI:Notify({Title = "Sem Servidores", Content = "Nenhum server disponível agora. Tente de novo ou em outro jogo.", Duration = 5, Icon = "alert-circle"})
         return
     end
     
     local randomServer = servers[math.random(1, #servers)]
     AlreadyJoined[randomServer] = true
     
-    WindUI:Notify({Title = "loc:HOP", Content = "Teleportando pro server: " .. randomServer, Duration = 3, Icon = "server"})
+    WindUI:Notify({Title = "Hop!", Content = "Teleportando pro server: " .. randomServer, Duration = 3, Icon = "server"})
     
     local success, err = pcall(function()
         TeleportService:TeleportToPlaceInstance(placeId, randomServer, LocalPlayer)
     end)
     
     if not success then
-        WindUI:Notify({Title = "loc:TELEPORT_FALHOU", Content = "Erro: " .. tostring(err) .. ". Verifique executor/anti-cheat.", Duration = 5, Icon = "x"})
+        WindUI:Notify({Title = "Teleport Falhou", Content = "Erro: " .. tostring(err) .. ". Verifique executor/anti-cheat.", Duration = 5, Icon = "x"})
     end
 end
 
@@ -1727,9 +472,9 @@ local function toggleSpin(enabled)
                 local root = char.HumanoidRootPart
                 root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)
             end)
-            WindUI:Notify({Title = "loc:SPIN", Content = "loc:GIRANDO_DESATIVE_PRA_PARAR", Duration = 3, Icon = "rotate-cw"})
+            WindUI:Notify({Title = "Spin", Content = "Girando! (Desative pra parar)", Duration = 3, Icon = "rotate-cw"})
         else
-            WindUI:Notify({Title = "loc:ERRO_SPIN", Content = "loc:PERSONAGEM_NAO_CARREGADO", Duration = 2, Icon = "x"})
+            WindUI:Notify({Title = "Erro Spin", Content = "Personagem não carregado.", Duration = 2, Icon = "x"})
             toggleSpin(false)
         end
     else
@@ -1737,7 +482,7 @@ local function toggleSpin(enabled)
             SpinConnection:Disconnect()
             SpinConnection = nil
         end
-        WindUI:Notify({Title = "loc:SPIN", Content = "loc:PAROU_DE_GIRAR", Duration = 2, Icon = "x"})
+        WindUI:Notify({Title = "Spin", Content = "Parou de girar.", Duration = 2, Icon = "x"})
     end
 end
 
@@ -1762,7 +507,7 @@ local function toggleFly(enabled)
     FlyEnabled = enabled
     local char = LocalPlayer.Character
     if not char or not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") then
-        WindUI:Notify({Title = "loc:FLY", Content = "loc:PERSONAGEM_NAO_CARREGADO", Duration = 3, Icon = "x"})
+        WindUI:Notify({Title = "Fly", Content = "Personagem não carregado.", Duration = 3, Icon = "x"})
         return
     end
 
@@ -1808,10 +553,10 @@ local function toggleFly(enabled)
             FlyBodyGyro.CFrame = cam.CFrame
         end)
 
-        WindUI:Notify({Title = "loc:FLY", Content = "loc:VOO_ATIVADO", Duration = 1, Icon = "plane"})
+        WindUI:Notify({Title = "Fly", Content = "Voo ativado!", Duration = 1, Icon = "plane"})
     else
         
-        task.spawn(function()
+        spawn(function()
             if FlyConnection then FlyConnection:Disconnect() FlyConnection = nil end
 
             humanoid.PlatformStand = false
@@ -1838,7 +583,7 @@ local function toggleFly(enabled)
             task.wait(0.1)
             humanoid:ChangeState(Enum.HumanoidStateType.Running)
 
-            WindUI:Notify({Title = "loc:FLY", Content = "loc:DESATIVADO", Duration = 1, Icon = "check"})
+            WindUI:Notify({Title = "Fly", Content = "Desativado", Duration = 1, Icon = "check"})
         end)
     end
 end
@@ -1979,8 +724,8 @@ local function toggleFakeTP(enabled)
             root.CFrame = originalCFrame
         end)
         WindUI:Notify({
-            Title = "loc:FAKE_TP",
-            Content = "loc:ATIVADO_DODGE_ANTIAIM_LIGADO",
+            Title = "Fake TP",
+            Content = "Ativado! (Dodge anti-aim ligado)",
             Duration = 3,
             Icon = "ghost"
         })
@@ -1990,7 +735,7 @@ local function toggleFakeTP(enabled)
             FakeTPConnection = nil
         end
         WindUI:Notify({
-            Title = "loc:FAKE_TP",
+            Title = "Fake TP",
             Content = "Desativado.",
             Duration = 2,
             Icon = "x"
@@ -2070,8 +815,8 @@ local function startOrbit()
         local target = S.Players:FindFirstChild(OrbitTargetName)
         if not target or not target.Character then
             WindUI:Notify({
-                Title = "loc:ORBIT",
-                Content = "loc:ALVO_SUMIU_OU_MORREU_ORBIT_PARADO",
+                Title = "Orbit",
+                Content = "Alvo sumiu ou morreu. Orbit parado.",
                 Duration = 4,
                 Icon = "alert-circle"
             })
@@ -2112,8 +857,8 @@ local function toggleOrbit(enabled)
     if enabled then
         if not OrbitTargetName then
             WindUI:Notify({
-                Title = "loc:ORBIT",
-                Content = "loc:SELECIONE_UM_JOGADOR_NO_DROPDOWN_PRIMEIR",
+                Title = "Orbit",
+                Content = "Selecione um jogador no dropdown primeiro!",
                 Duration = 4,
                 Icon = "alert-circle"
             })
@@ -2122,7 +867,7 @@ local function toggleOrbit(enabled)
         end
         
         WindUI:Notify({
-            Title = "loc:ORBIT",
+            Title = "Orbit",
             Content = "Orbitando " .. OrbitTargetName .. " com velocidade " .. OrbitSpeed,
             Duration = 4,
             Icon = "rotate-cw"
@@ -2145,8 +890,8 @@ local function toggleOrbit(enabled)
         end
         
         WindUI:Notify({
-            Title = "loc:ORBIT",
-            Content = "loc:ORBIT_DESATIVADO",
+            Title = "Orbit",
+            Content = "Orbit desativado.",
             Duration = 3,
             Icon = "x"
         })
@@ -2157,7 +902,7 @@ local function setOrbitSpeed(value)
     OrbitSpeed = value
     if OrbitEnabled then
         WindUI:Notify({
-            Title = "loc:ORBIT",
+            Title = "Orbit",
             Content = "Velocidade atualizada para " .. value,
             Duration = 2,
             Icon = "wind"
@@ -2187,8 +932,8 @@ local function toggleNoClip(enabled)
         end)
         
         WindUI:Notify({
-            Title = "loc:NOCLIP",
-            Content = "loc:NOCLIP_ATIVADO",
+            Title = "NoClip",
+            Content = "NoClip ativado!",
             Duration = 3,
             Icon = "ghost"
         })
@@ -2208,8 +953,8 @@ local function toggleNoClip(enabled)
         end
         
         WindUI:Notify({
-            Title = "loc:NOCLIP",
-            Content = "loc:NOCLIP_DESATIVADO",
+            Title = "NoClip",
+            Content = "NoClip desativado.",
             Duration = 3,
             Icon = "x"
         })
@@ -2517,28 +1262,28 @@ WindUI:AddTheme({
 ------------------------------* Notificação *-------------------------------
 
  WindUI:Notify({
-    Title = "loc:ROYAL_HUB_AVISO",
-    Content = "loc:SCRIPT_EM_DESENVOLVIMENTO_FUNCOES_PODEM_",
+    Title = "Royal Hub - Aviso!",
+    Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
     Duration = 6, -- 3 seconds
     Icon = "bug",
 })
-task.wait(1)
+wait(1)
 
 WindUI:Notify({
-	Title = "loc:VERIFICACAO",
-	Content = "loc:VERIFICANDO_USUARIO",
+	Title = "Verificação",
+	Content = "Verificando usuario...",
 	Duration = 3,
 	Icon = "user"
 })
-task.wait(2)
+wait(2)
 
 WindUI:Notify({
-	Title = "loc:REGISTER",
+	Title = "Register",
 	Content = "Usuario verificado com sucesso!, será necessario uma Key para usar a script caso não tenha usado alguma anteriormente.",
 	Duration = 3,
 	Ico = "bug"
 })
-task.wait(2)
+wait(2)
 
 -------------------------------* Janela principal *-------------------------------
 
@@ -2555,7 +1300,7 @@ local Window = WindUI:CreateWindow({
     HideSearchBar = false,
     
     OpenButton = {
-        Title = "loc:OPEN_ROYAL_HUB", 
+        Title = "Open Royal Hub", 
         CornerRadius = UDim.new(1,0), 
         StrokeThickness = 3, -- remove outline
         Enabled = true, -- Ativa ou desativa o openbutton
@@ -2588,21 +1333,21 @@ User = {
                       "\nTime: " .. (player.Team and player.Team.Name or "Nenhum"),
             Buttons = {
                 {
-                    Title = "loc:COPIAR_USERID",
+                    Title = "Copiar UserID",
                     Icon = "copy",
                     Variant = "secondary",
                     Callback = function()
                         setclipboard(tostring(player.UserId))
                         WindUI:Notify({
-                            Title = "loc:COPIADO",
-                            Content = "loc:USERID_COPIADO_PARA_A_AREA_DE_TRANSFEREN",
+                            Title = "Copiado!",
+                            Content = "UserID copiado para a área de transferência.",
                             Duration = 2,
                             Icon = "copy",
                         })
                     end
                 },
                 {
-                    Title = "loc:FECHAR",
+                    Title = "Fechar",
                     Icon = "x",
                     Variant = "secondary",
                     Callback = function() end
@@ -2630,8 +1375,8 @@ local ConfigMenu = Window.ConfigManager:Config("RoyalHub_Config")
 -------------------------------* Aviso Keybind *-------------------------------
 
 WindUI:Notify({
-    Title = "loc:KEYBIND",
-    Content = "loc:APERTE_A_TECLA_H_PARA_ESCONDER_MOSTRAR_O",
+    Title = "KeyBind",
+    Content = "Aperte a tecla ( H )  para esconder | Mostrar o menu",
     Duration = 4,
     Icon = "user"
 })
@@ -2643,21 +1388,21 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 -------------------------------* Tags *-------------------------------
 
 Window:Tag({
-    Title = "loc:V144",
+    Title = "v1.4.4",
     Icon = "github",
     Color = Color3.fromHex("#f0d01a"),
     Radius = 8,
 })
 
 Window:Tag({
-	Title = "loc:SECURE",
+	Title = "Secure",
 	Icon = "solar:shield-check-bold",
 	Color = Color3.fromHex("#30ff6a"),
 	Radius = 8,
 })
 -------------------------------* FPS TAG *-------------------------------
 local FPSTag = Window:Tag({
-    Title = "loc:FPS_0",
+    Title = "FPS: 0",
     Color = Color3.fromRGB(100, 150, 255),
 })
  
@@ -2688,7 +1433,7 @@ RunService.RenderStepped:Connect(function()
 end)
 ------------------------------* PING TAG *-------------------------------
 local PingTag = Window:Tag({
-    Title = "loc:PING_0MS",
+    Title = "Ping: 0ms",
     Color = Color3.fromRGB(100, 200, 255),
 })
  
@@ -2723,9 +1468,9 @@ end)
 
 -------------------------------* Tabs *-------------------------------
 local TabHome = Window:Tab({
-    Title = "loc:INICIO",
+    Title = "Inicio",
     Icon = "solar:home-2-bold",
-    Desc = "loc:FUNCOES_PRINCIPAIS_DO_ROYAL_HUB",
+    Desc = "Funções principais do Royal Hub.",
     IconColor = DarkGray,
     IconShape = "Square",
    -- ShowTabTitle = true,
@@ -2735,18 +1480,18 @@ local TabHome = Window:Tab({
 
 
 local TabPersonagem = Window:Tab({
-	Title = "loc:PERSONAGEM",
+	Title = "Personagem",
 	Icon = "solar:user-bold",
-    Desc = "loc:MODIFICACOES_NO_PERSONAGEM",
+    Desc = "Modificações no personagem.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
 })
 
 local TabFarm = Window:Tab({
-	Title = "loc:FARM",
+	Title = "Farm",
 	Icon = "solar:black-hole-bold",
-    Desc = "loc:FUNCOES_DE_FARM_AUTOMATICO",
+    Desc = "Funções de farm automático.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -2754,9 +1499,9 @@ local TabFarm = Window:Tab({
 })
 
 local TabShopping = Window:Tab({
-	Title = "loc:LOJA",
+	Title = "Loja",
 	Icon = "solar:cart-large-bold",
-    Desc = "loc:COMPRE_ITENS_AUTOMATICAMENTE",
+    Desc = "Compre itens automaticamente.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -2764,9 +1509,9 @@ local TabShopping = Window:Tab({
 })
 
 local TabTeleport = Window:Tab({
-	Title = "loc:TP_AND_WBHK",
+	Title = "TP and WBHK",
 	Icon = "solar:cloud-bold",
-    Desc = "loc:TELEPORTE_E_WEBHOOK",
+    Desc = "Teleporte e WebHook.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -2774,8 +1519,8 @@ local TabTeleport = Window:Tab({
 })
 
 local TabMisc = Window:Tab({ 
-	Title = "loc:MISC",
-    Desc = "loc:FUNCOES_DIVERSAS",
+	Title = "Misc",
+    Desc = "Funções diversas.",
 	Icon = "box",
     IconColor = DarkGray,
     IconShape = "Square",
@@ -2784,8 +1529,8 @@ local TabMisc = Window:Tab({
 })
 
 local TabExploits = Window:Tab({
-    Title = "loc:EXPLOITS",
-    Desc = "loc:SCRIPTS_QUE_PODEM_SER_UTEIS",
+    Title = "Exploits",
+    Desc = "Scripts que podem ser uteis",
     Icon = "solar:bolt-bold",
     IconColor = DarkGray,
     IconShape = "Square",
@@ -2793,18 +1538,18 @@ local TabExploits = Window:Tab({
 })
 
 local TabSettings = Window:Tab({
-	Title = "loc:CONFIGURACOES",
+	Title = "Configurações",
 	Icon = "solar:settings-minimalistic-bold",
-    Desc = "loc:CONFIGURACOES_DO_ROYAL_HUB",
+    Desc = "Configurações do Royal Hub.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
 })
 
 local TabInfo = Window:Tab({
-	Title = "loc:INFO",
+	Title = "Info",
 	Icon = "solar:info-circle-bold",
-    Desc = "loc:INFORMACOES_SOBRE_O_ROYAL_HUB_E_DESENVOL",
+    Desc = "Informações sobre o Royal Hub e Desenvolvedores.",
     IconColor = DarkGray,
     IconShape = "Square",
 	Locked = false,
@@ -2816,8 +1561,8 @@ TabHome:Select()
 -------------------------------* TabHome * -------------------------
 
 local SectionAimbot = TabHome:Section({
-	Title = "loc:AIMBOT",
-	Desc = "loc:FUNCAO_DE_AIMBOT_PARA_FACILITAR_SEUS_TIR",
+	Title = "Aimbot",
+	Desc = "Função de aimbot para facilitar seus tiros & Ataques.",
 	Icon = "geist:crosshair",
 	--IconColor = "Green" ,
 	TextSize = 19,
@@ -2833,27 +1578,27 @@ local SectionAimbot = TabHome:Section({
 
 local GrupoAimbot = SectionAimbot:Group({})
     
-GrupoAimbot:Toggle({ Title = "loc:AIMBOT_COMUM", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.normal = enabled toggleAimbot("normal") end })
+GrupoAimbot:Toggle({ Title = "Aimbot comum", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.normal = enabled toggleAimbot("normal") end })
 
 GrupoAimbot:Space()
 
-GrupoAimbot:Toggle({ Title = "loc:AIMBOT_RAGE", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.rage = enabled toggleAimbot("rage") end })
+GrupoAimbot:Toggle({ Title = "Aimbot rage", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.rage = enabled toggleAimbot("rage") end })
 
 SectionAimbot:Space()
 
-SectionAimbot:Toggle({ Title = "loc:IGNORAR_ALIADOS_TEAM_CHECK", Default = true, Callback = function(enabled) UseTeamCheck = enabled WindUI:Notify({Title = "loc:TEAM_CHECK", Content = enabled and "Ligado" or "Desligado", Duration = 2}) end })
+SectionAimbot:Toggle({ Title = "Ignorar Aliados (Team Check)", Default = true, Callback = function(enabled) UseTeamCheck = enabled WindUI:Notify({Title = "Team Check", Content = enabled and "Ligado" or "Desligado", Duration = 2}) end })
 
-SectionAimbot:Toggle({ Title = "loc:WALL_CHECK_IGNORAR_PAREDES", Default = true, Callback = function(enabled) UseWallCheck = enabled WindUI:Notify({Title = "loc:WALL_CHECK", Content = enabled and "Ligado (só mira visível)" or "Desligado (mira através)", Duration = 2}) end })
+SectionAimbot:Toggle({ Title = "Wall Check (Ignorar Paredes)", Default = true, Callback = function(enabled) UseWallCheck = enabled WindUI:Notify({Title = "Wall Check", Content = enabled and "Ligado (só mira visível)" or "Desligado (mira através)", Duration = 2}) end })
 
 SectionAimbot:Space({ Columns = 1 })
 
 local ToggleESP = SectionAimbot:Toggle({
-    Title = "loc:ESP",
-    Desc = "loc:PLAYERS_FICAM_VISIVEIS_ATRAS_DE_PAREDES_",
+    Title = "Esp",
+    Desc = "Players ficam visiveis atrás de paredes e marcados.",
     Icon = "solar:eye-bold",
     --Type = "Checkbox",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO",
+    LockedTitle = "Em desenvolvimento",
     Value = false, 
     Callback = function(state)
 		espEnabled = state
@@ -2861,10 +1606,10 @@ local ToggleESP = SectionAimbot:Toggle({
         for _, player in ipairs(S.Players:GetPlayers()) do
             createESP(player)
         end
-        WindUI:Notify({Title = "loc:ESP_ATIVADO_2", Content = "loc:PLAYERS_DESTACADOS", Duration = 3, Icon = "eye"})
+        WindUI:Notify({Title = "ESP Ativado", Content = "Players destacados!", Duration = 3, Icon = "eye"})
     else
         removeAllESP()  
-        WindUI:Notify({Title = "loc:ESP_DESATIVADO_2", Content = "loc:REMOVIDO", Duration = 2, Icon = "x"})
+        WindUI:Notify({Title = "ESP Desativado", Content = "Removido.", Duration = 2, Icon = "x"})
     end
 end
 })
@@ -2873,8 +1618,8 @@ SectionAimbot:Space({ Columns = 1 })
 
 --! Blocqueado até o velocity atualizar e voltar a injetar no roblox, fiz alterações mas ainda não consegui testar.
 local ToggleEsp2 = SectionAimbot:Toggle({
-    Title = "loc:ESP_20_TWILIGHT",
-    Desc = "loc:ESP_COM_HEALTH_BAR_BOX_E_NOME_POWERED_BY",
+    Title = "Esp 2.0 (Twilight)",
+    Desc = "ESP com health bar, box e nome — powered by Twilight.",
     Icon = "solar:eye-bold",
     Locked = true,
     Value = false,
@@ -2889,7 +1634,7 @@ local ToggleEsp2 = SectionAimbot:Toggle({
         Twilight:SetOptions({ Enabled = state })
 
             WindUI:Notify({
-                Title = "loc:ESP_20",
+                Title = "ESP 2.0",
                 Content = state and "Twilight ESP ativado!" or "Desativado.",
                 Duration = 2,
                 Icon = state and "eye" or "x"
@@ -2901,7 +1646,7 @@ local ToggleEsp2 = SectionAimbot:Toggle({
 SectionAimbot:Space({ Columns = 1 })
 
 SectionAimbot:Toggle({
-    Title = "loc:FAKE_TP_DODGE",
+    Title = "Fake TP (Dodge)",
     Default = false,
     Callback = function(enabled)
         toggleFakeTP(enabled)
@@ -2909,8 +1654,8 @@ SectionAimbot:Toggle({
 })
 
 SectionAimbot:Slider({
-    Title = "loc:DELAY_FAKE_TP",
-    Desc = "loc:TEMPO_ENTRE_FAKES_MENOR_MAIS_RAPIDO",
+    Title = "Delay Fake TP",
+    Desc = "Tempo entre fakes (menor = mais rápido)",
     Step = 0.1,
     Value = { Min = 0.1, Max = 1, Default = 0.2 },
     Callback = function(value)
@@ -2919,8 +1664,8 @@ SectionAimbot:Slider({
 })
 
 SectionAimbot:Slider({
-    Title = "loc:DISTANCIA_FAKE_TP",
-    Desc = "loc:QUAO_LONGE_O_FAKE_TP_VAI_EM_STUDS",
+    Title = "Distância Fake TP",
+    Desc = "Quão longe o fake TP vai (em studs)",
     Step = 1,
     Value = { Min = 1, Max = 10, Default = 3 },
     Callback = function(value)
@@ -2932,8 +1677,8 @@ TabHome:Space({ Columns = 2 })
 
 -------------------------------* Section Visuals *-------------------------------
 local SectionView = TabHome:Section({
-    Title = "loc:VISUAL",
-    Desc = "loc:MODIFICACOES_VISUAIS_NO_JOGO",
+    Title = "Visual",
+    Desc = "Modificações visuais no jogo.",
     Icon = "solar:eye-bold",
     --IconColor = "Green" ,
     TextSize = 19, 
@@ -2949,10 +1694,10 @@ local SectionView = TabHome:Section({
 
 
 local SelectPlayerToView = SectionView:Dropdown({
-    Title = "loc:SELECIONE_O_PLAYER",
-    Desc = "loc:SELECIONA_O_PLAYER_PARA_APLICAR_AS_MODIF",
+    Title = "Selecione o Player",
+    Desc = "Seleciona o player para aplicar as modificações visuais.",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Values = playerValues,
     Value = playerValues[0],
     Callback = function(option)
@@ -2962,11 +1707,11 @@ local SelectPlayerToView = SectionView:Dropdown({
 })
 
 local ViewPlayerToggle = SectionView:Toggle({
-    Title = "loc:VISUALIZAR_PLAYER",
-    Desc = "loc:ATIVA_AS_MODIFICACOES_VISUAIS_NO_PLAYER_",
+    Title = "Visualizar Player",
+    Desc = "Ativa as modificações visuais no player selecionado acima.",
     Icon = "solar:eye-bold",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false, 
     Callback = function(state)
         if state then
@@ -2982,11 +1727,11 @@ end
 SectionView:Space({ Columns = 1 })
 
 local ToggleNoclip = SectionView:Toggle({
-    Title = "loc:NOCLIP",
-    Desc = "loc:PERMITE_ATRAVESSAR_PAREDES_E_OBJETOS",
+    Title = "NoClip",
+    Desc = "Permite atravessar paredes e objetos.",
     Icon = "solar:ghost-bold",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false, 
     Callback = function(state)
         toggleNoClip(state)
@@ -2998,8 +1743,8 @@ local ToggleNoclip = SectionView:Toggle({
 
 local SectionAutofarmLevel = TabFarm:Section({
     Icon = "solar:info-circle-bold",
-    Title = "loc:AUTO_FARM_LEVEL",
-    Desc = "loc:FARMA_AUTOMATICAMENTE_SEU_LEVEL_SE_NAO_E",
+    Title = "Auto Farm Level",
+    Desc = "Farma automaticamente seu level ( se não estiver no maximo )",
     Icon = "geist:sparkles",
    -- IconColor = "Green" ,
     TextSize = 19, 
@@ -3014,24 +1759,24 @@ local SectionAutofarmLevel = TabFarm:Section({
 })
 
 local AutoFarmToggle = SectionAutofarmLevel:Toggle({
-    Title = "loc:ATIVAR_AUTO_FARM_LEVEL",
-    Desc = "loc:ATIVA_O_FARM_AUTOMATICO_DE_LEVEL",
+    Title = "Ativar Auto Farm Level",
+    Desc = "Ativa o farm automático de level.",
     Icon = "",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false, 
     Callback = function(state)
         if state then
             WindUI:Notify({
-                Title = "loc:AUTO_FARM_LEVEL",
-                Content = "loc:AUTO_FARM_LEVEL_ATIVADO",
+                Title = "Auto Farm Level",
+                Content = "Auto Farm Level ativado!",
                 Duration = 3,
                 Icon = "solar:check-circle-bold"
             })
         else
             WindUI:Notify({
-                Title = "loc:AUTO_FARM_LEVEL",
-                Content = "loc:AUTO_FARM_LEVEL_DESATIVADO",
+                Title = "Auto Farm Level",
+                Content = "Auto Farm Level desativado!",
                 Duration = 3,
                 Icon = "x"
             })
@@ -3044,8 +1789,8 @@ TabFarm:Space({ Columns = 2 })
 -------------------------------* Auto Farm Materials *-------------------------------
 
 local SectionAutoF = TabFarm:Section({
-    Title = "loc:AUTO_FARM_MATERIALS",
-    Desc = "loc:FARMA_AUTOMATICAMENTE_MATERIAIS_DO_JOGO",
+    Title = "Auto Farm Materials",
+    Desc = "Farma automaticamente materiais do jogo.",
     Icon = "solar:backpack-bold",
     IconColor = "Green" ,
     TextSize = 19, 
@@ -3060,24 +1805,24 @@ local SectionAutoF = TabFarm:Section({
 })  
 
 local AutoFarmM = SectionAutoF:Toggle({
-    Title = "loc:ATIVAR_AUTO_FARM_MATERIALS",
-    Desc = "loc:ATIVA_O_FARM_AUTOMATICO_DE_MATERIAIS",
+    Title = "Ativar Auto Farm Materials",
+    Desc = "Ativa o farm automático de materiais.",
     Icon = "solar:check-circle-bold",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false, 
     Callback = function(state)
         if state then
             WindUI:Notify({
-                Title = "loc:AUTO_FARM_MATERIALS",
-                Content = "loc:AUTO_FARM_MATERIALS_ATIVADO",
+                Title = "Auto Farm Materials",
+                Content = "Auto Farm Materials ativado!",
                 Duration = 3,
                 Icon = "solar:check-circle-bold"
             })
         else
             WindUI:Notify({
-                Title = "loc:AUTO_FARM_MATERIALS",
-                Content = "loc:AUTO_FARM_MATERIALS_DESATIVADO",
+                Title = "Auto Farm Materials",
+                Content = "Auto Farm Materials desativado!",
                 Duration = 3,
                 Icon = "x"
             })
@@ -3088,14 +1833,14 @@ local AutoFarmM = SectionAutoF:Toggle({
 SectionAutoF:Space({ Columns = 1 })
 
 local MaterialSelect = SectionAutoF:Dropdown({
-    Title = "loc:SELECIONAR_MATERIAL",
-    Desc = "loc:SELECIONA_O_MATERIAL_QUE_DESEJA_FARMAR_A",
+    Title = "Selecionar Material",
+    Desc = "Seleciona o material que deseja farmar automaticamente.",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Values = {
-        { Title = "loc:MATERIAL_1" },
-        { Title = "loc:MATERIAL_2" },
-        { Title = "loc:MATERIAL_3" },
+        { Title = "Material 1" },
+        { Title = "Material 2" },
+        { Title = "Material 3" },
     },
     Value = "Material 1",
     Callback = function(option)
@@ -3104,8 +1849,8 @@ local MaterialSelect = SectionAutoF:Dropdown({
 })
 -------------------------------* Auto Buy Itens ( TAB SHOPPING ) *-------------------------------
 local SectionLoja = TabShopping:Section({
-    Title = "loc:AUTO_BUY",
-    Desc = "loc:COMPRA_ITENS_AUTOMATICAMENTE_DO_BLACKMAR",
+    Title = "Auto Buy",
+    Desc = "Compra itens automaticamente do blackmarket.",
     Icon = "solar:cart-large-bold",
     IconColor = "Green" ,
     TextSize = 19, 
@@ -3120,14 +1865,14 @@ local SectionLoja = TabShopping:Section({
 })
 
 local AutoBuySelectItem = SectionLoja:Dropdown({
-    Title = "loc:SELECIONAR_ITEM",
-    Desc = "loc:SELECIONA_O_ITEM_QUE_DESEJA_COMPRAR_AUTO",
+    Title = "Selecionar Item",
+    Desc = "Seleciona o item que deseja comprar automaticamente.",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Values = {
-        { Title = "loc:ITEM_1" },
-        { Title = "loc:ITEM_2" },
-        { Title = "loc:ITEM_3" },
+        { Title = "Item 1" },
+        { Title = "Item 2" },
+        { Title = "Item 3" },
     },
     Value = "Item 1",
     Callback = function(option)
@@ -3136,24 +1881,24 @@ local AutoBuySelectItem = SectionLoja:Dropdown({
 })
 
 local AutoBuyToggle = SectionLoja:Toggle({
-    Title = "loc:ATIVAR_AUTO_BUY",
-    Desc = "loc:ATIVA_A_COMPRA_AUTOMATICA_DO_ITEM_SELECI",
+    Title = "Ativar Auto Buy",
+    Desc = "Ativa a compra automática do item selecionado acima.",
     Icon = "solar:cart-large-bold",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false, 
     Callback = function(state)
         if state then
             WindUI:Notify({
-                Title = "loc:AUTO_BUY",
-                Content = "loc:AUTO_BUY_ATIVADO",
+                Title = "Auto Buy",
+                Content = "Auto Buy ativado!",
                 Duration = 3,
                 Icon = "solar:check-circle-bold"
             })
         else
             WindUI:Notify({
-                Title = "loc:AUTO_BUY",
-                Content = "loc:AUTO_BUY_DESATIVADO",
+                Title = "Auto Buy",
+                Content = "Auto Buy desativado!",
                 Duration = 3,
                 Icon = "x"
             })
@@ -3167,8 +1912,8 @@ local ResetGravity
 local ButtonBypass
 
 local SectionConfig = TabSettings:Section({
-    Title = "loc:GENERAL_SETTINGS",
-    Desc = "loc:CONFIGURACOES_DE_TEMA_KEYBIND_E_ETC", 
+    Title = "General Settings",
+    Desc = "Configurações de tema, keybind e etc.", 
     Icon = "settings", 
     IconColor = Color3.fromRGB(100, 100, 255),
     TextSize = 19, 
@@ -3183,16 +1928,16 @@ local SectionConfig = TabSettings:Section({
 })
 
 ButtonBypass = SectionConfig:Button({
-        Title = "loc:BYPASS_ANTICHEAT",
-        Desc = "loc:TENTA_BURLAR_O_SISTEMA_ANTICHEAT_DO_JOGO",
+        Title = "Bypass Anti-Cheat",
+        Desc = "Tenta burlar o sistema anti-cheat do jogo.",
         Locked = false,
          Callback = function()
             ButtonBypass:Highlight()
-			task.wait(2)
+			wait(2)
             NotifySound:Play()
             WindUI:Notify({
-                Title = "loc:AVISO_2",
-                Content = "loc:BYPASS_ATIVADO_COM_SUCESSO_FUNCIONALIDAD",
+                Title = "Aviso!",
+                Content = "Bypass ativado com sucesso! (Funcionalidade em desenvolvimento)",
                 Duration = 3,
                 Icon = "shield-check"
             })
@@ -3201,60 +1946,60 @@ ButtonBypass = SectionConfig:Button({
 })
 
 local DropdownTemas = SectionConfig:Dropdown({
-    Title = "loc:TEMAS",
-    Desc = "loc:ALTERA_O_TEMA_DO_ROYAL_HUB",
+    Title = "Temas",
+    Desc = "Altera o tema do Royal Hub",
     Flag = "tema_selecionado",
     Values = {
         {
-            Title = "loc:DARK_AMOLED_DEFAULT",
+            Title = "Dark Amoled ( Default )",
         },
         {
-            Title = "loc:HUTAO_BY_EINZBERN",
+            Title = "Hutao By Einzbern",
         },
         {
-            Title = "loc:REDX_HUB",
+            Title = "RedX Hub",
         },
         {
-            Title = "loc:WHITE",
+            Title = "White",
         },
         {
-            Title = "loc:MAIN_THEME",
+            Title = "Main Theme",
         },
         {
-            Title = "loc:CYBERPUNK",
+            Title = "CyberPunk",
         },
         {
-            Title = "loc:SOLAR_THEME",
+            Title = "Solar Theme",
         },
         {
-            Title = "loc:MIDNIGHT",
+            Title = "Midnight",
         },
         {
-            Title = "loc:CRIMSON",
+            Title = "Crimson",
         },
         {
-            Title = "loc:SNOW",
+            Title = "Snow",
         },
         {
-            Title = "loc:TUNDRA",
+            Title = "Tundra",
         },
         {
-            Title = "loc:SAMURAI_DARK",
+            Title = "Samurai Dark",
         },
         {
-            Title = "loc:MONOKAI",
+            Title = "Monokai",
         },
         {
-            Title = "loc:MOONLIGHT",
+            Title = "Moonlight",
         },
         {
-            Title = "loc:LUNAR",
+            Title = "Lunar",
         },
         {
-            Title = "loc:INDIGO"
+            Title = "Indigo"
         },
         {
-            Title = "loc:STARTORCH"
+            Title = "Startorch"
         },
     },
     Value = "Dark Amoled ( Default )",
@@ -3264,8 +2009,8 @@ local DropdownTemas = SectionConfig:Dropdown({
 })
 
 local Keybind = SectionConfig:Keybind({
-    Title = "loc:TOGGLE_UI",
-    Desc = "loc:ALTERA_A_TECLA_QUE_MOSTRA_ESCONDE_O_MENU",
+    Title = "Toggle UI",
+    Desc = "Altera a tecla que mostra | esconde o menu.",
     Value = "H",
     Locked = false,
     Flag = "toggle_ui_key",
@@ -3278,16 +2023,16 @@ local Keybind = SectionConfig:Keybind({
 SectionConfig:Space({ Columns = 1 })
 
 local SaveConfigButton = SectionConfig:Button({
-    Title = "loc:SALVAR_CONFIG",
-    Desc = "loc:SALVA_TEMA_SELECIONADO_E_ETC", 
+    Title = "Salvar Config",
+    Desc = "Salva tema selecionado e etc.", 
     Icon = "save", 
     --Color = "Green", 
     Callback = function()
         ConfigMenu:Save()
         NotifySound:Play()
         WindUI:Notify({
-            Title = "loc:CONFIGURACAO_SALVA",
-            Content = "loc:SUA_CONFIGURACAO_FOI_SALVA_COM_SUCESSO",
+            Title = "Configuração salva!",
+            Content = "Sua configuração foi salva com sucesso!",
             Duration = 3,
             Icon = "save"
         })
@@ -3296,15 +2041,15 @@ local SaveConfigButton = SectionConfig:Button({
 })
 
 local Load = SectionConfig:Button({
-    Title = "loc:CARREGAR_CONFIG",
-    Desc = "loc:CARREGA_A_CONFIGURACAO_SALVA_ANTERIORMEN",
+    Title = "Carregar config",
+    Desc = "Carrega a configuração salva anteriormente.",
     Icon = "save",
     Callback = function()
         ConfigMenu:Load()
         NotifySound:Play()
         WindUI:Notify({
-            Title = "loc:CONFIGURACAO_CARREGADA",
-            Content = "loc:SUA_CONFIGURACAO_FOI_CARREGADA_COM_SUCES",
+            Title = "Configuração carregada!",
+            Content = "Sua configuração foi carregada com sucesso!",
             Duration = 3,
             Icon = "save"
         })
@@ -3314,8 +2059,8 @@ local Load = SectionConfig:Button({
 SectionConfig:Space({ Columns = 1 })
 
 SectionConfig:Button({
-    Title = "loc:BACKDOOR_SCANNER",
-    Desc = "loc:ESCANEIA_O_JOGO_EM_BUSCA_DE_BACKDOORS_CO",
+    Title = "Backdoor scanner",
+    Desc = "Escaneia o jogo em busca de backdoors conhecidos.",
     Icon = "door-open",
     Callback = function()
         loadstring(game:HttpGet("https://spawnix.github.io/DevTools.rbxm/Loader/index.lua", true))() 
@@ -3326,19 +2071,19 @@ SectionConfig:Button({
 SectionConfig:Space({ Columns = 1 })
 
 local DestruirHub = SectionConfig:Button({
-	Title = "loc:EJETAR_SCRIPT",
-	Desc = "loc:EJETA_A_SCRIPT_DO_JOGO",
+	Title = "Ejetar script",
+	Desc = "Ejeta a script do jogo.",
 	Icon = "",
 	Color = "Red",
 	Callback = function()
 		local Dialog = Window:Dialog({
     Icon = "alert-circle",
-    Title = "loc:CONFIRM_DELETE",
+    Title = "Confirm Delete",
     IconThemed = true,
-    Content = "loc:ESTA_ACAO_NAO_PODE_SER_DESFEITA",
+    Content = "Esta ação não pode ser desfeita.",
     Buttons = {
         {
-            Title = "loc:CANCELAR",
+            Title = "Cancelar",
             Icon = "x",
             Variant = "secondary",
             Callback = function()
@@ -3347,7 +2092,7 @@ local DestruirHub = SectionConfig:Button({
             end
         },
         {
-            Title = "loc:EJETAR",
+            Title = "Ejetar",
             Icon = "geist:rotate-clockwise",
             Variant = "Destructive",
             Callback = function()
@@ -3362,8 +2107,8 @@ local DestruirHub = SectionConfig:Button({
 })
 
 local SectionKeyBinds = TabSettings:Section({
-    Title = "loc:KEYBINDS",
-    Desc = "loc:AQUI_VOCE_PODE_ALTERAR_OS_KEYBINDS_DAS_F",
+    Title = "KeyBinds",
+    Desc = "Aqui você pode alterar os keybinds das funções.",
     Icon = "keyboard",
     IconColor = Color3.fromRGB(100, 100, 255),
     TextSize = 19,
@@ -3378,14 +2123,14 @@ local SectionKeyBinds = TabSettings:Section({
 })
 
 SectionKeyBinds:Keybind({
-    Title = "loc:AIMBOT_COMUM_K",
+    Title = "Aimbot Comum (K)",
     Flag = "aimbot_comum_keybind",
     Value = "K", 
     Callback = function(key)
         AimbotEnabled.normal = not AimbotEnabled.normal
         toggleAimbot("normal")
         WindUI:Notify({
-            Title = "loc:AIMBOT_COMUM_2",
+            Title = "Aimbot Comum",
             Content = AimbotEnabled.normal and "Ativado!" or "Desativado!",
             Duration = 2,
             Icon = AimbotEnabled.normal and "target" or "x"
@@ -3398,14 +2143,14 @@ SectionKeyBinds:Space({ Columns = 1 })
 
 -- Keybind pro Aimbot Rage
 SectionKeyBinds:Keybind({
-    Title = "loc:AIMBOT_RAGE_L",
+    Title = "Aimbot Rage (L)",
     Flag = "aimbot_rage_keybind",
     Value = "L",
     Callback = function(key)
         AimbotEnabled.rage = not AimbotEnabled.rage
         toggleAimbot("rage")
         WindUI:Notify({
-            Title = "loc:AIMBOT_RAGE_2",
+            Title = "Aimbot Rage",
             Content = AimbotEnabled.rage and "Ativado!" or "Desativado!",
             Duration = 2,
             Icon = AimbotEnabled.rage and "target" or "x"
@@ -3418,7 +2163,7 @@ SectionKeyBinds:Space({ Columns = 1 })
 
 -- Keybind pro ESP
 SectionKeyBinds:Keybind({
-    Title = "loc:ESP_E",
+    Title = "ESP (E)",
     Flag = "esp_keybind",
     Value = "E",
     Callback = function(key)
@@ -3427,10 +2172,10 @@ SectionKeyBinds:Keybind({
             for _, player in ipairs(S.Players:GetPlayers()) do
                 createESP(player)
             end
-            WindUI:Notify({Title = "loc:ESP_2", Content = "loc:ATIVADO", Duration = 2, Icon = "eye"})
+            WindUI:Notify({Title = "ESP", Content = "Ativado!", Duration = 2, Icon = "eye"})
         else
             removeAllESP()
-           -- WindUI:Notify({Title = "loc:ESP_2", Content = "loc:DESATIVADO_2", Duration = 2, Icon = "x"})
+           -- WindUI:Notify({Title = "ESP", Content = "Desativado!", Duration = 2, Icon = "x"})
         end
         print("ESP toggled via keybind:", key)
     end
@@ -3440,7 +2185,7 @@ SectionKeyBinds:Space({ Columns = 1 })
 
 -- Keybind pro Fly
 SectionKeyBinds:Keybind({
-    Title = "loc:FLY_F",
+    Title = "Fly (F)",
     Flag = "fly_keybind",
     Value = "F",
     Callback = function(key)
@@ -3453,7 +2198,7 @@ SectionKeyBinds:Space({ Columns = 1 })
 
 -- Keybind pro Spin
 SectionKeyBinds:Keybind({
-    Title = "loc:SPIN_G",
+    Title = "Spin (G)",
     Flag = "spin_keybind",
     Value = "G",
     Callback = function(key)
@@ -3466,7 +2211,7 @@ SectionKeyBinds:Space({ Columns = 1 })
 
 -- Keybind pro Loop TP
 SectionKeyBinds:Keybind({
-    Title = "loc:LOOP_TP_T",
+    Title = "Loop TP (T)",
     Flag = "looptp_keybind",
     Value = "T",
     Callback = function(key)
@@ -3478,7 +2223,7 @@ SectionKeyBinds:Keybind({
 TabSettings:Space({ Columns = 2 })
 
 local SectionConfigFuncs = TabSettings:Section({
-    Title = "loc:CONFIGURACOES_DE_FUNCOES",
+    Title = "Configurações de funções",
     Desc = "Aqui você pode encontrar funções para alterar comportamentos do jogo e do personagem.",
     Icon = "settings",
     IconColor = Color3.fromRGB(100, 100, 255),
@@ -3495,11 +2240,11 @@ local SectionConfigFuncs = TabSettings:Section({
 
 
 SectionConfigFuncs:Toggle({
-    Title = "loc:MODO_ANONYMOUS",
-    Desc = "loc:ATIVA_O_MODO_ANONYMOUS_QUE_ESCONDE_SEU_N",
+    Title = "Modo anonymous",
+    Desc = "Ativa o modo anonymous, que esconde seu nome e imagem do painel",
     Icon = "user",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
         Window.User:SetAnonymous(state)
@@ -3508,48 +2253,18 @@ SectionConfigFuncs:Toggle({
 
 SectionConfigFuncs:Space({ Columns = 1 })
 
--- local ButtonEnglish = SectionConfigFuncs:Button({
---     Title = "English", Icon = "arrow-right", Variant = "Primary",
---     Callback = function()
---         print("English language selected")
---         WindUI:SetLanguage("en")
---     end
--- })
-
--- local ButtonPortuguese = SectionConfigFuncs:Button({
---     Title = "Português", Icon = "arrow-right", Variant = "Secondary",
---     Callback = function()
---         print("Portuguese language selected")
---         WindUI:SetLanguage("pt-br")
---     end
--- })
-
--- local ButtonSpanish = SectionConfigFuncs:Button({
---     Title = "Español", Icon = "arrow-right", Variant = "Secondary",
---     Callback = function()
---         print("Spanish language selected")
---         WindUI:SetLanguage("es")
---     end
--- })
-
--- local ButtonRussian = SectionConfigFuncs:Button({
---     Title = "Русский", Icon = "arrow-right", Variant = "Secondary",
---     Callback = function()
---         print("Russian language selected")
---         WindUI:SetLanguage("ru")
---     end
--- })
+SectionConfigFuncs:Toggle({ })
 
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
-    Title = "loc:MOVIMENTO",
+    Title = "Movimento",
     TextSize = 20,
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
 local SliderVelocidade = TabPersonagem:Slider({
-    Title = "loc:SPEED",
-    Desc = "loc:ALTERA_VELOCIDADE_DO_JOGADOR",
+    Title = "Speed",
+    Desc = "Altera velocidade do jogador",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -3566,8 +2281,8 @@ local SliderVelocidade = TabPersonagem:Slider({
 })
 
 local SliderJump = TabPersonagem:Slider({
-	Title = "loc:JUMP",
-	Desc = "loc:AUMENTA_A_FORCA_DO_PULO",
+	Title = "Jump",
+	Desc = "Aumenta a força do pulo",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -3586,11 +2301,11 @@ local SliderJump = TabPersonagem:Slider({
 TabPersonagem:Space({ Columns = 1 })
 
 local FlyToggle = TabPersonagem:Toggle({
-    Title = "loc:FLY",
-    Desc = "loc:ATIVA_O_MODO_VOO",
+    Title = "Fly",
+    Desc = "Ativa o modo voo",
     Icon = "solar:rocket-bold",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
         toggleFly(state)
@@ -3598,8 +2313,8 @@ local FlyToggle = TabPersonagem:Toggle({
 })
 
 local SliderFlySpeed = TabPersonagem:Slider({
-    Title = "loc:VELOCIDADE_DO_FLY",
-    Desc = "loc:AJUSTE_A_VELOCIDADE_DO_VOO_QUANTO_MAIOR_",
+    Title = "Velocidade do Fly",
+    Desc = "Ajuste a velocidade do voo (quanto maior, mais rápido).",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -3616,14 +2331,14 @@ local SliderFlySpeed = TabPersonagem:Slider({
 TabPersonagem:Space({ Columns = 2 })
 
 TabPersonagem:Section({
-    Title = "loc:GRAVIDADE",
+    Title = "Gravidade",
     TextSize = 20,
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
 local SliderGravity = TabPersonagem:Slider({
-    Title = "loc:GRAVITY",
-    Desc = "loc:ALTERA_A_GRAVIDADE_DO_JOGO",
+    Title = "Gravity",
+    Desc = "Altera a gravidade do jogo",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -3640,16 +2355,16 @@ local SliderGravity = TabPersonagem:Slider({
 })
 
 ResetGravity = TabPersonagem:Button({
-        Title = "loc:RESET_GRAVITY",
-        Desc = "loc:RESETA_A_GRAVIDADE_PARA_O_VALOR_PADRAO_1",
+        Title = "Reset Gravity",
+        Desc = "Reseta a gravidade para o valor padrão (196.2)",
         Locked = false,
-		LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+		LockedTitle = "Em desenvolvimento.",
         Callback = function()
             setGravity(196.2)
             ResetGravity:Highlight()
             WindUI:Notify({
-                Title = "loc:GRAVIDADE_RESETADA",
-                Content = "loc:A_GRAVIDADE_FOI_RESETADA_PARA_O_VALOR_PA",
+                Title = "Gravidade resetada!",
+                Content = "A gravidade foi resetada para o valor padrão (196.2)",
                 Duration = 3,
                 Icon = "shield-check"
             })
@@ -3661,7 +2376,7 @@ ResetGravity = TabPersonagem:Button({
 TabPersonagem:Space({ Columns = 2 })
 
 TabPersonagem:Section({
-    Title = "loc:OUTROS",
+    Title = "Outros",
     TextSize = 20,
     FontWeight = Enum.FontWeight.SemiBold,
 })
@@ -3670,7 +2385,7 @@ TabPersonagem:Section({
 
 local SectionTP = TabTeleport:Section({
     Title = "Teleport ",
-    Desc = "loc:PERMITE_TELEPORTAR_ATE_OUTROS_JOGADORES", 
+    Desc = "Permite teleportar até outros jogadores.", 
     Icon = "bird", 
     IconColor = Color3.fromRGB(100, 100, 255), 
     TextSize = 19, 
@@ -3685,8 +2400,8 @@ local SectionTP = TabTeleport:Section({
 })
 
 local DropDownPlayersTP = SectionTP:Dropdown({
-	Title = "loc:TELEPORTAR_ATE_JOGADOR",
-    Desc = "loc:TELEPORTA_ATE_O_JOGADOR_SELECIONADO",
+	Title = "Teleportar até jogador",
+    Desc = "Teleporta até o jogador selecionado",
     Values = playerValues,
     Value = playerValues[0],
     Callback = function(option)
@@ -3700,11 +2415,11 @@ local DropDownPlayersTP = SectionTP:Dropdown({
 SectionTP:Space({ Columns = 1 })
 
 local LoopTP = SectionTP:Toggle({
-	Title = "loc:LOOP_TP",
-	Desc = "loc:TELEPORTA_INFINITAMENTE_NO_JOGADO_QUE_FO",
+	Title = "Loop TP",
+	Desc = "Teleporta infinitamente no jogado que foi selecionado acima.",
 	Icon = "",
 	Locked = false,
-	LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+	LockedTitle = "Em desenvolvimento.",
 	Value = false,
 	Callback = function(state)
         toggleLoopTP(state)
@@ -3715,8 +2430,8 @@ local LoopTP = SectionTP:Toggle({
 SectionTP:Space({ Columns = 1 })
 
 local SliderLoopDelay = SectionTP:Slider({
-    Title = "loc:DELAY_ENTRE_TPS",
-    Desc = "loc:TEMPO_EM_SEGUNDOS_ENTRE_CADA_TELEPORTE_M",
+    Title = "Delay entre TPs",
+    Desc = "Tempo em segundos entre cada teleporte (menor = mais rápido)",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -3729,7 +2444,7 @@ local SliderLoopDelay = SectionTP:Slider({
     Callback = function(value)
         LoopTPDelay = value
         WindUI:Notify({
-            Title = "loc:LOOP_TP_DELAY",
+            Title = "Loop TP Delay",
             Content = "Atualizado para " .. value .. " segundos",
             Duration = 2,
             Icon = "timer"
@@ -3740,8 +2455,8 @@ local SliderLoopDelay = SectionTP:Slider({
 TabTeleport:Space({ Columns = 2 })
 
 local SectionTeleportToIsland = TabTeleport:Section({
-    Title = "loc:TELEPORT_TO_ISLANDS",
-    Desc = "loc:TELEPORTA_PARA_AS_ILHAS_PRINCIPAIS_DO_JO", 
+    Title = "Teleport to Islands",
+    Desc = "Teleporta para as ilhas principais do jogo.", 
     Icon = "solar:map-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
     TextSize = 19, 
@@ -3756,17 +2471,17 @@ local SectionTeleportToIsland = TabTeleport:Section({
 })
 
 local DropDownIslandsTP = SectionTeleportToIsland:Dropdown({
-    Title = "loc:TELEPORTE_PARA_ILHA",
-    Desc = "loc:TELEPORTA_PARA_A_ILHA_SELECIONADA",
+    Title = "Teleporte para ilha",
+    Desc = "Teleporta para a ilha selecionada.",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Values = {
-        { Title = "loc:STARTER_ISLAND" },
-        { Title = "loc:FOREST_ISLAND" },
-        { Title = "loc:DESERT_ISLAND" },
-        { Title = "loc:SNOW_ISLAND" },
-        { Title = "loc:VOLCANO_ISLAND" },
-        { Title = "loc:SKY_ISLAND" },
+        { Title = "Starter Island" },
+        { Title = "Forest Island" },
+        { Title = "Desert Island" },
+        { Title = "Snow Island" },
+        { Title = "Volcano Island" },
+        { Title = "Sky Island" },
     },
     Value = "Starter Island",
     Callback = function(option)
@@ -3778,8 +2493,8 @@ local DropDownIslandsTP = SectionTeleportToIsland:Dropdown({
 -------------------------------* TabMisc *-------------------------------
 
 local SectionMisc = TabMisc:Section({
-    Title = "loc:MISCELLANEOUS",
-    Desc = "loc:FUNCOES_DIVERSAS_DO_ROYAL_HUB", 
+    Title = "Miscellaneous",
+    Desc = "Funções diversas do Royal Hub.", 
     Icon = "solar:settings-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
     TextSize = 19, 
@@ -3794,10 +2509,10 @@ local SectionMisc = TabMisc:Section({
 })
 
 local ButtonRejoin = SectionMisc:Button({
-    Title = "loc:REJOIN",
-    Desc = "loc:REENTRA_NA_PARTIDA_ATUAL",
+    Title = "Rejoin",
+    Desc = "Reentra na partida atual.",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Callback = function()
         RejoinServer()
         print("Rejoining...")
@@ -3807,10 +2522,10 @@ local ButtonRejoin = SectionMisc:Button({
 SectionMisc:Space({ Columns = 1 })
 
 local ButtonServerHop = SectionMisc:Button({
-    Title = "loc:SERVER_HOP",
-    Desc = "loc:ENTRA_EM_OUTRO_SERVIDOR_DA_PARTIDA_ATUAL",
+    Title = "Server Hop",
+    Desc = "Entra em outro servidor da partida atual.",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Callback = function()
         ServerHop()
         print("Server Hopping...")
@@ -3820,10 +2535,10 @@ local ButtonServerHop = SectionMisc:Button({
 SectionMisc:Space({ Columns = 1 })
 
 local ButtonRedeemCodes = SectionMisc:Button({
-    Title = "loc:REDEEM_CODES",
-    Desc = "loc:RESGATA_CODIGOS_AUTOMATICAMENTE",
+    Title = "Redeem Codes",
+    Desc = "Resgata códigos automaticamente.",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Callback = function()
         print("Redeeming Codes...")
     end
@@ -3832,10 +2547,10 @@ local ButtonRedeemCodes = SectionMisc:Button({
 SectionMisc:Space({ Columns = 1 })
 
 local ButtonCollectRewards = SectionMisc:Button({
-    Title = "loc:COLLECT_REWARDS",
-    Desc = "loc:COLETA_RECOMPENSAS_DIARIAS_AUTOMATICAMEN",
+    Title = "Collect Rewards",
+    Desc = "Coleta recompensas diárias automaticamente.",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Callback = function()
         print("Collecting Rewards...")
     end
@@ -3844,7 +2559,7 @@ local ButtonCollectRewards = SectionMisc:Button({
 TabMisc:Space({ Columns = 1 })
 
 local SectionExploits = TabMisc:Section({
-    Title = "loc:EXPLOITS",
+    Title = "Exploits",
     Desc = " Funções exploits do Royal Hub. ( pode não funcionar )", 
     Icon = "solar:flash-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
@@ -3860,10 +2575,10 @@ local SectionExploits = TabMisc:Section({
 })
 
 local DropdownSelectPlayerFling = SectionExploits:Dropdown({
-    Title = "loc:SELECIONE_JOGADOR",
+    Title = "Selecione Jogador",
     Values = playerValues,
     Locked = false,
-    LockedTitle = "loc:EM_MANUTENCAO",
+    LockedTitle = "Em manutenção.",
     Multi = false,
     Default = nil,
     Callback = function(selected)
@@ -3872,9 +2587,9 @@ local DropdownSelectPlayerFling = SectionExploits:Dropdown({
 })
 
 local SliderFling = SectionExploits:Slider({
-    Title = "loc:FLING_POWER",
+    Title = "Fling Power",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -3890,15 +2605,15 @@ local SliderFling = SectionExploits:Slider({
 })
 
 local LoopFling = SectionExploits:Toggle({
-    Title = "loc:LOOP_FLING",
+    Title = "Loop Fling",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO",
+    LockedTitle = "Em desenvolvimento",
     Default = false,
     Callback = function(enabled)
         LoopFlingEnabled = enabled
         if enabled then
             if not FlingTargetPlayer then
-                WindUI:Notify({Title = "loc:ERRO", Content = "loc:SELECIONE_UM_ALVO", Duration = 3})
+                WindUI:Notify({Title = "Erro", Content = "Selecione um alvo!", Duration = 3})
                 return false
             end
             LoopFlingConnection = S.Run.Heartbeat:Connect(function()
@@ -3916,25 +2631,25 @@ local LoopFling = SectionExploits:Toggle({
 })
 
 local flingButton = SectionExploits:Button({
-    Title = "loc:FLING_PLAYER",
+    Title = "Fling Player",
     Locked = true,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
-    Desc = "loc:FAZ_O_JOGADOR_SELECIONADO_VOAR_PELO_MAPA",
+    LockedTitle = "Em desenvolvimento.",
+    Desc = "Faz o jogador selecionado voar pelo mapa.",
     Locked = false,
-    LockedTitle = "loc:EM_MANUTENCAO",
+    LockedTitle = "Em manutenção.",
     Callback = function()
         if FlingTargetPlayer then
             Fling(FlingTargetPlayer, FlingPower)
             WindUI:Notify({
-                Title = "loc:FLING",
+                Title = "Fling",
                 Content = "Arremessado: " .. FlingTargetPlayer.Name,
                 Duration = 3,
                 Icon = "wind"
             })
         else
             WindUI:Notify({
-                Title = "loc:ERRO",
-                Content = "loc:SELECIONE_UM_ALVO_PRIMEIRO",
+                Title = "Erro",
+                Content = "Selecione um alvo primeiro!",
                 Duration = 3,
                 Icon = "alert-circle"
             })
@@ -3945,10 +2660,10 @@ local flingButton = SectionExploits:Button({
 TabMisc:Space({ Columns = 1 })
 
 local spyToggle = SectionExploits:Toggle({
-    Title = "loc:SPYCHAT",
-    Desc = "loc:ESPIONA_TODOS_CHATS_PRIVADOSDMS",
+    Title = "SpyChat",
+    Desc = "Espiona TODOS chats privados/DMs.",
     Locked = true,
-    LockedTitle = "loc:EM_MANUTENCAO",
+    LockedTitle = "Em manutenção.",
     Icon = "solar:eye-bold",
     Value = false,
     Callback = toggleSpyChat
@@ -3956,8 +2671,8 @@ local spyToggle = SectionExploits:Toggle({
 
 
 local SectionFun = TabMisc:Section({
-    Title = "loc:FUN",
-    Desc = "loc:FUNCOES_DIVERTIDAS_DO_ROYAL_HUB", 
+    Title = "Fun",
+    Desc = "Funções divertidas do Royal Hub.", 
     Icon = "solar:emoji-funny-circle-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
     TextSize = 19, 
@@ -3972,10 +2687,10 @@ local SectionFun = TabMisc:Section({
 })
 
 local ToggleSpin = SectionFun:Toggle({
-    Title = "loc:SPIN",
-    Desc = "loc:FAZ_O_PERSONAGEM_GIRAR_INFINITAMENTE",
+    Title = "Spin",
+    Desc = "Faz o personagem girar infinitamente.",
     Locked = false,
-    LockedTitle = "loc:EM_DESENVOLVIMENTO_2",
+    LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
         toggleSpin(state)
@@ -3986,7 +2701,7 @@ local ToggleSpin = SectionFun:Toggle({
 SectionFun:Space({ Columns = 1 })
 
 local orbitDropdown = SectionFun:Dropdown({
-    Title = "loc:SELECIONE_JOGADOR",
+    Title = "Selecione Jogador",
     Values = playerValues,  -- Use o mesmo playerValues do seu script
     Multi = false,
     Default = nil,
@@ -3996,14 +2711,14 @@ local orbitDropdown = SectionFun:Dropdown({
 })
 
 local orbitToggle = SectionFun:Toggle({
-    Title = "loc:ATIVAR_ORBIT",
+    Title = "Ativar Orbit",
     Default = false,
     Callback = toggleOrbit
 })
 
 
 local orbitSlider = SectionFun:Slider({
-    Title = "loc:VELOCIDADE_ROTACAO",
+    Title = "Velocidade Rotação",
     IsTooltip = true,
     IsTextbox = false,
     Width = 200,
@@ -4019,9 +2734,9 @@ local orbitSlider = SectionFun:Slider({
 SectionFun:Space({ Columns = 1 })
 
 local trollDropdown = SectionFun:Dropdown({
-    Title = "loc:IDS_TROLL_PRONTOS",
+    Title = "IDs Troll Prontos",
     Locked = true,
-    LockedTitle = "loc:EM_MANUTENCAO_2",
+    LockedTitle = "Em manutenção",
     Values = trollAudios,
     Multi = false,
     Default = nil,
@@ -4029,7 +2744,7 @@ local trollDropdown = SectionFun:Dropdown({
         if selected and selected.id then
             currentAudioId = selected.id
             WindUI:Notify({
-                Title = "loc:TROLL_SELECIONADO",
+                Title = "Troll Selecionado",
                 Content = "Carregado: " .. selected.Title .. " (ID: " .. selected.id .. ")",
                 Duration = 3,
                 Icon = "zap"
@@ -4039,9 +2754,9 @@ local trollDropdown = SectionFun:Dropdown({
 })
 
 local volumeSlider = SectionFun:Slider({
-    Title = "loc:VOLUME",
+    Title = "Volume",
     Locked = true,
-    LockedTitle = "loc:EM_MANUTENCAO",
+    LockedTitle = "Em manutenção.",
     Value = {
         Min = 1,
         Max = 20,
@@ -4053,9 +2768,9 @@ local volumeSlider = SectionFun:Slider({
 })
 
 local PlayAudio = SectionFun:Button({
-    Title = "loc:TOCAR_GLOBAL",
+    Title = "Tocar Global",
     locked = true,
-    LockedTitle = "loc:EM_MANUTENCAO",
+    LockedTitle = "Em manutenção.",
     Callback = function()
         playGlobalAudioRemote(currentAudio, currentVolume)
         game:GetService("ReplicatedStorage").Remotes:FindFirstChild("BuyMusicPass"):FireServer()  -- Tenta bypass (pode não funcionar)
@@ -4065,8 +2780,8 @@ local PlayAudio = SectionFun:Button({
 SectionFun:Space({ Columns = 1 })
 
 local EmoteDropdown = SectionFun:Dropdown({
-    Title = "loc:SELECIONE_EMOTE",
-    Desc = "loc:EMOTES_DISPONIVEIS_MESMO_SEM_TER_NA_CONT",
+    Title = "Selecione Emote",
+    Desc = "Emotes disponíveis (mesmo sem ter na conta).",
     Values = emoteValues,
     Multi = false,
     Default = nil,
@@ -4076,8 +2791,8 @@ local EmoteDropdown = SectionFun:Dropdown({
 })
 
 local emoteLoopToggle = SectionFun:Toggle({
-    Title = "loc:LOOP_EMOTE",
-    Desc = "loc:FAZ_O_EMOTE_REPETIR_AUTOMATICAMENTE",
+    Title = "Loop Emote",
+    Desc = "Faz o emote repetir automaticamente.",
     Icon = "solar:repeat-bold",
     Value = false,
     Callback = function(state)
@@ -4101,7 +2816,7 @@ local emoteLoopToggle = SectionFun:Toggle({
         end
         
         WindUI:Notify({
-            Title = "loc:EMOTE",
+            Title = "Emote",
             Content = "Loop " .. (state and "ativado!" or "desativado!"),
             Duration = 2,
             Icon = "repeat"
@@ -4112,14 +2827,14 @@ local emoteLoopToggle = SectionFun:Toggle({
 SectionFun:Space({ Columns = 1 })
 
 local EmoteStart = SectionFun:Button({
-    Title = "loc:USAR_EMOTE",
-    Desc = "loc:EXECUTA_O_EMOTE_SELECIONADO",
+    Title = "Usar Emote",
+    Desc = "Executa o emote selecionado.",
     Icon = "solar:emoji-funny-square-bold",
     Callback = function()
         if not SelectedEmote then
             WindUI:Notify({
-                Title = "loc:EMOTE",
-                Content = "loc:SELECIONE_UM_EMOTE_PRIMEIRO",
+                Title = "Emote",
+                Content = "Selecione um emote primeiro!",
                 Duration = 4,
                 Icon = "alert-circle"
             })
@@ -4160,7 +2875,7 @@ local EmoteStart = SectionFun:Button({
         
         if not success or not track then
             WindUI:Notify({
-                Title = "loc:EMOTE",
+                Title = "Emote",
                 Content = "Falha ao carregar " .. SelectedEmote .. "! ID inválido.",
                 Duration = 5,
                 Icon = "alert-circle"
@@ -4182,7 +2897,7 @@ local EmoteStart = SectionFun:Button({
         end
         
         WindUI:Notify({
-            Title = "loc:EMOTE",
+            Title = "Emote",
             Content = "Tocando " .. SelectedEmote .. (LoopEmote and " em LOOP INFINITO!" or "!"),
             Duration = 3,
             Icon = "smile"
@@ -4191,8 +2906,8 @@ local EmoteStart = SectionFun:Button({
 })
 
 local emoteStopButton = SectionFun:Button({
-    Title = "loc:PARAR_EMOTE",
-    Desc = "loc:INTERROMPE_O_EMOTE_ATUAL",
+    Title = "Parar Emote",
+    Desc = "Interrompe o emote atual.",
     Icon = "solar:stop-bold", 
     Callback = function()
        if CurrentEmoteTrack then
@@ -4206,8 +2921,8 @@ local emoteStopButton = SectionFun:Button({
         LoopEmote = false
         emoteLoopToggle:Set(false)
         WindUI:Notify({
-            Title = "loc:EMOTE",
-            Content = "loc:EMOTE_E_LOOP_PARADOS",
+            Title = "Emote",
+            Content = "Emote e loop parados!",
             Duration = 3,
             Icon = "x"
         })
@@ -4217,7 +2932,7 @@ local emoteStopButton = SectionFun:Button({
 ------------------------------* TabExploits *-------------------------------
 
 local SectionExploitsTab = TabExploits:Section({
-    Title = "loc:BROOKHAVEN",
+    Title = "BrookHaven",
     Desc = "", 
     Icon = "solar:bolt-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
@@ -4233,7 +2948,7 @@ local SectionExploitsTab = TabExploits:Section({
 })
 
 SectionExploitsTab:Button({
-    Title = "loc:FAELZIN_HUB",
+    Title = "FAELZIN HUB",
     Callback = function()
         loadstring(game:HttpGet("https://gist.githubusercontent.com/PhantomClientDEV/6d65c2e0f668d998b4be8dcab6d9f969/raw/6d1f08a15d890149f5c033b6f29d51eda3de7149/HalloweenV2.lua", true))()
     end
@@ -4242,7 +2957,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:BRUTON_HUB",
+    Title = "BRUTON HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/bruton-lua-sources/BRUTON-HUB-/refs/heads/main/BRUTON"))()
     end
@@ -4251,7 +2966,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:CARTOLA_HUB",
+    Title = "CARTOLA HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Davi999z/Cartola-Hub/refs/heads/main/Brookhaven",true))()
     end
@@ -4260,7 +2975,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:PILOT_HUB",
+    Title = "PILOT HUB",
     Callback = function()
         loadstring(game:HttpGet('https://pastebin.com/raw/mbm9XDQG'))()
     end
@@ -4269,7 +2984,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:SALVATORE",
+    Title = "SALVATORE",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/RFR-R1CH4RD/Loader/main/Salvatore.lua"))()
     end
@@ -4278,7 +2993,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:SANDER_XY",
+    Title = "SANDER XY",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/kigredns/testUIDK/refs/heads/main/panel.lua"))()
     end
@@ -4287,7 +3002,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:HX_HEXAGON",
+    Title = "HX HEXAGON",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/nxvap/hexagon/refs/heads/main/brookhaven"))()
     end
@@ -4296,7 +3011,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:COVET_HUB",
+    Title = "COVET HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/pl4y80ytt-a11y/VoidHub/refs/heads/main/covet"))()
     end
@@ -4305,7 +3020,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:LOBO_HUB",
+    Title = "LOBO HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/luauhubs666/lobohub/refs/heads/main/lobohub.luau"))()
     end
@@ -4314,7 +3029,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:FORBID_SPAMMER",
+    Title = "FORBID SPAMMER",
     Callback = function()
         loadstring(game:HttpGet("https://pastefy.app/QjmKIpUW/raw"))()
     end
@@ -4323,7 +3038,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:SPECTRA_HUB",
+    Title = "SPECTRA HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/assure157tv157157157-boop/Spectra-HUB-V2-/refs/heads/main/URL%20do%20scriptblox"))()
     end
@@ -4332,7 +3047,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:CHAD_HUB",
+    Title = "CHAD HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/bjair5955-wq/Chad-Hub-V2.0/refs/heads/main/obfuscated.lua%20(3).txt"))()
     end
@@ -4341,7 +3056,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:MAX_HUB",
+    Title = "MAX HUB",
     Callback = function()
         loadstring(game:HttpGet("https://scriptsneonauth.vercel.app/api/scripts/565a57db-dea3-46cf-b46d-1cfcdcbe7700/raw"))()
     end
@@ -4350,7 +3065,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:CHAD_HUB_V2",
+    Title = "CHAD HUB V2",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/bjair5955-wq/Chad-Hub-V2.0/refs/heads/main/obfuscated.lua%20(3).txt"))()
     end
@@ -4359,7 +3074,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:PHANTOM_CLIENT",
+    Title = "PHANTOM CLIENT",
     Callback = function()
         loadstring(game:HttpGet("https://gist.githubusercontent.com/phantomdevelopers078-star/125196a67d4baa872a569230471dd38b/raw/20eed7bae23eac4fddf8177ca64a3f6323313aca/PhantomClienteasy.lua"))()
     end
@@ -4368,7 +3083,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:LYRA_HUB",
+    Title = "LYRA HUB",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/kayrus999/Lyrapainel/refs/heads/main/Lyrabrookhaven"))()
     end
@@ -4377,7 +3092,7 @@ SectionExploitsTab:Button({
 SectionExploitsTab:Space({ Columns = 1 })
 
 SectionExploitsTab:Button({
-    Title = "loc:SANT_HUB",
+    Title = "SANT HUB",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-Nytherune-Hub-58124"))()
     end
@@ -4386,7 +3101,7 @@ SectionExploitsTab:Button({
 TabExploits:Space({ Columns = 2 })
 
 local SectionExpUniv = TabExploits:Section({
-    Title = "loc:KINGLEGACY",
+    Title = "King-Legacy",
     Desc = "", 
     Icon = "solar:bolt-bold", 
     IconColor = Color3.fromRGB(100, 100, 255), 
@@ -4402,7 +3117,7 @@ local SectionExpUniv = TabExploits:Section({
 })
 
 SectionExpUniv:Button({
-    Title = "loc:ZEEHUB_UPD_9",
+    Title = "ZEE-HUB UPD 9",
     Desc = "",
     Callback = function()
         loadstring(game:HttpGet('https://zuwz.me/Ls-Zee-Hub-KL'))()
@@ -4412,7 +3127,7 @@ TabExploits:Space({ Columns = 1 })
 
 
 local SectionUniversal = TabExploits:Section({
-    Title = "loc:UNIVERSAIS",
+    Title = "Universais",
     Desc = "",
     Icon = "solar:bolt-bold",
     Box = true,
@@ -4421,7 +3136,7 @@ local SectionUniversal = TabExploits:Section({
 })
 
 SectionUniversal:Button({
-     Title = "loc:DEXEXPLORER",
+     Title = "DEX-EXPLORER",
      Desc = "",
      Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
@@ -4431,7 +3146,7 @@ SectionUniversal:Button({
 SectionUniversal:Space({ Columns = 1 })
 
 SectionUniversal:Button({
-     Title = "loc:TCA_GUI",
+     Title = "TCA GUI",
      Desc = "",
      Callback = function()
         require(82040251531905):TCA("username")
@@ -4441,7 +3156,7 @@ SectionUniversal:Button({
 SectionUniversal:Space({ Columns = 1 })
 
 SectionUniversal:Button({
-     Title = "loc:INFINITE_YIELD",
+     Title = "INFINITE YIELD",
      Desc = "",
      Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
@@ -4451,15 +3166,15 @@ SectionUniversal:Button({
 -------------------------------* Paragrafos *-------------------------------
 
 local SectionInfo = TabInfo:Section({
-    Title = "loc:INFORMACOES",
+    Title = "Informações",
     Icon = "solar:info-circle-bold",
     TextSize = 24,
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
 local DevParagraph = TabInfo:Paragraph({
-    Title = "loc:EODRAXKK",
-    Desc = "loc:DESENVOLVEDOR_PRINCIPAL_DO_ROYAL_HUB_FOC",
+    Title = "Eodraxkk",
+    Desc = "Desenvolvedor principal do Royal Hub, focado em programação e segurança.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
     ImageSize = 60,
@@ -4469,8 +3184,8 @@ local DevParagraph = TabInfo:Paragraph({
 TabInfo:Space({ Columns = 1 })
 
 local DevParagraph2 = TabInfo:Paragraph({
-    Title = "loc:EINZBERN",
-    Desc = "loc:CODESENVOLVEDOR_DO_ROYAL_HUB_FOCADO_EM_D",
+    Title = "Einzbern",
+    Desc = "Co-desenvolvedor do Royal Hub, focado em design e ideias de funções.",
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
     ImageSize = 60,
@@ -4480,7 +3195,7 @@ local DevParagraph2 = TabInfo:Paragraph({
 TabInfo:Space({ Columns = 2 })
 
 local ParagraphLink = TabInfo:Paragraph({
-    Title = "loc:LINK_DO_DISCORD",
+    Title = "Link do Discord",
     Desc = "Este é o link do nosso Discord, entre para ficar por dentro das novidades e atualizações do Royal Hub!",
     Color = "Grey",
     Image = "geist:logo-discord",
@@ -4489,12 +3204,12 @@ local ParagraphLink = TabInfo:Paragraph({
     Buttons = {
         {
             Icon = "solar:clipboard-bold",
-            Title = "loc:CLIQUE_PARA_COPIAR_O_LINK",
+            Title = "Clique para copiar o link",
             Callback = function()
                 setclipboard("https://discord.gg/DmdTDgJc")
 			WindUI:Notify({
-				Title = "loc:CLIPBOARD",
-				Content = "loc:LINK_DO_DISCORD_COPIADO_PARA_A_AREA_DE_T",
+				Title = "Clipboard",
+				Content = "Link do Discord copiado para a área de transferência!",
 				Duration = 3,
 				Icon = "discord",
 			})
@@ -4506,7 +3221,7 @@ local ParagraphLink = TabInfo:Paragraph({
 TabInfo:Space({ Columns = 2 })
 
 local SobreRoyalHub = TabInfo:Section({
-    Title = "loc:SOBRE_O_ROYAL_HUB",
+    Title = "Sobre o Royal Hub",
     TextSize = 24,
     FontWeight = Enum.FontWeight.SemiBold,
 })
