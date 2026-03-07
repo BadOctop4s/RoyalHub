@@ -2483,6 +2483,9 @@ SectionConfigFuncs:Toggle({ })
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({
     Title = "Movimento",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
     TextSize = 20,
     FontWeight = Enum.FontWeight.SemiBold,
 })
@@ -2557,6 +2560,9 @@ TabPersonagem:Space({ Columns = 2 })
 
 TabPersonagem:Section({
     Title = "Gravidade",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
     TextSize = 20,
     FontWeight = Enum.FontWeight.SemiBold,
 })
@@ -2597,10 +2603,8 @@ ResetGravity = TabPersonagem:Button({
     end
 })
 
-
 TabPersonagem:Space({ Columns = 2 })
 
-TabPersonagem:Space({Columns = 2})
 
 local SectionMov2 = TabPersonagem:Section({
     Title = "Proteção",
