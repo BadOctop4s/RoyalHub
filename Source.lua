@@ -2526,7 +2526,7 @@ MoveSection:Slider({
 	end
 })
 
-TabPersonagem:Space({ Columns = 2 })
+MoveSection:Space({ Columns = 1 })
 
 MoveSection:Toggle({
     Title = "Fly",
