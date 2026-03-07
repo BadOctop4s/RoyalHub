@@ -2822,7 +2822,7 @@ local SectionExploits = TabMisc:Section({
 local DropdownSelectPlayerFling = SectionExploits:Dropdown({
     Title = "Selecione Jogador",
     Values = playerValues,
-    Locked = false,
+    Locked = true,
     LockedTitle = "Em manutenção.",
     Multi = false,
     Default = nil,
@@ -2877,10 +2877,8 @@ local LoopFling = SectionExploits:Toggle({
 
 local flingButton = SectionExploits:Button({
     Title = "Fling Player",
-    Locked = true,
-    LockedTitle = "Em desenvolvimento.",
     Desc = "Faz o jogador selecionado voar pelo mapa.",
-    Locked = false,
+    Locked = true,
     LockedTitle = "Em manutenção.",
     Callback = function()
         if FlingTargetPlayer then
