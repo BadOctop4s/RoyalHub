@@ -1190,133 +1190,34 @@ local function toggleFreecam(enabled)
     end
 end
 
+
+local function reloadHub()
+    Window.Destroy()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
+end
+
+local function reloadWithVerbose()
+    Window.Destroy()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
+    wait(1)
+    print("Verbose mode enabled. All debug info will be printed to the console.")
+    print("Current player count: " .. #S.Players:GetPlayers())
+    wait(1)
+    print("Current camera type: " .. tostring(S.WS.CurrentCamera.CameraType))
+    wait(1)
+    print("Current character: " .. tostring(S.Players.LocalPlayer.Character))
+    wait(1)
+    print("Current HumanoidRootPart: " .. tostring(S.Players.LocalPlayer.Character and S.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")))
+    wait(1)
+    print("Current JobId: " .. tostring(game.JobId))
+    wait(1)
+    print("Current PlaceId: " .. tostring(game.PlaceId))
+    wait(1)
+    print("Verbose mode finished. Check the console for all debug info.")
+end
+
 -------------------------------* Chat Commands *-------------------------------
 
-local chatPrefix = "/"
-
-local chatCommands = {
-    ["fly"] = function(args)
-        FlyEnabled = not FlyEnabled
-        toggleFly(FlyEnabled)
-        FlyToggle:Set(FlyEnabled)
-    end,
-
-    ["noclip"] = function(args)
-        NoClipEnabled = not NoClipEnabled
-        toggleNoClip(NoClipEnabled)
-        ToggleNoclip:Set(NoClipEnabled)
-    end,
-
-    ["spin"] = function(args)
-        SpinEnabled = not SpinEnabled
-        toggleSpin(SpinEnabled)
-        ToggleSpin:Set(SpinEnabled)
-    end,
-
-    ["esp"] = function(args)
-        espEnabled = not espEnabled
-        if espEnabled then
-            for _, player in ipairs(S.Players:GetPlayers()) do
-                createESP(player)
-            end
-            WindUI:Notify({Title = "ESP", Content = "Ativado via chat!", Duration = 2, Icon = "eye"})
-        else
-            removeAllESP()
-            WindUI:Notify({Title = "ESP", Content = "Desativado via chat!", Duration = 2, Icon = "x"})
-        end
-        ToggleESP:Set(espEnabled)
-    end,
-
-    ["speed"] = function(args)
-        local val = tonumber(args[1])
-        if val then
-            setSpeed(val)
-            SliderVelocidade:Set(math.clamp(val, 20, 999))
-            WindUI:Notify({Title = "Speed", Content = "Velocidade: " .. val, Duration = 2, Icon = "zap"})
-        else
-            WindUI:Notify({Title = "Speed", Content = "Uso: /speed <valor>", Duration = 3, Icon = "alert-circle"})
-        end
-    end,
-
-    ["jump"] = function(args)
-        local val = tonumber(args[1])
-        if val then
-            setJumpPower(val)
-            SliderJump:Set(math.clamp(val, 20, 999))
-            WindUI:Notify({Title = "Jump", Content = "Pulo: " .. val, Duration = 2, Icon = "zap"})
-        else
-            WindUI:Notify({Title = "Jump", Content = "Uso: /jump <valor>", Duration = 3, Icon = "alert-circle"})
-        end
-    end,
-
-    ["gravity"] = function(args)
-        local val = tonumber(args[1])
-        if val then
-            setGravity(val)
-            WindUI:Notify({Title = "Gravity", Content = "Gravidade: " .. val, Duration = 2, Icon = "zap"})
-        else
-            WindUI:Notify({Title = "Gravity", Content = "Uso: /gravity <valor>", Duration = 3, Icon = "alert-circle"})
-        end
-    end,
-
-    ["tp"] = function(args)
-        local name = args[1]
-        if name then
-            TeleporteToPlayer(name)
-        else
-            WindUI:Notify({Title = "TP", Content = "Uso: /tp <NomeJogador>", Duration = 3, Icon = "alert-circle"})
-        end
-    end,
-
-    ["looptp"] = function(args)
-        LoopTPEnabled = not LoopTPEnabled
-        toggleLoopTP(LoopTPEnabled)
-    end,
-
-    ["rejoin"] = function(args)
-        RejoinServer()
-    end,
-
-    ["hop"] = function(args)
-        ServerHop()
-    end,
-
-    ["faketp"] = function(args)
-        FakeTPEnabled = not FakeTPEnabled
-        toggleFakeTP(FakeTPEnabled)
-    end,
-
-    ["help"] = function(args)
-        WindUI:Notify({
-            Title = "Comandos disponíveis",
-            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp",
-            Duration = 8,
-            Icon = "info"
-        })
-    end,
-
-    ["Reload"] = function(args)
-        WindUI:Notify({Title = "Reload", Content = "Recarregando script...", Duration = 2, Icon = "reload"})
-        task.wait(2)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/EinzbernHub/EinzHub/main/Script.lua"))()
-    end,
-
-
-}
-
-S.Players.LocalPlayer.Chatted:Connect(function(msg)
-    msg = msg:lower()
-    if msg:sub(1, #chatPrefix) ~= chatPrefix then return end
-
-    local parts = msg:sub(#chatPrefix + 1):split(" ")
-    local cmd = parts[1]
-    local args = {}
-    for i = 2, #parts do args[#args + 1] = parts[i] end
-
-    if chatCommands[cmd] then
-        chatCommands[cmd](args)
-    end
-end)
 -------------------------------* Temas *-------------------------------
 
 WindUI:AddTheme({
@@ -1640,7 +1541,7 @@ print(" ========================= Apocalipse 6:1-6 =========================")
 Window:Tag({
     Title = "v1.5.2",
     Icon = "github",
-    Color = Color3.fromHex("rgb(26, 90, 240)"),
+    Color = Color3.fromHex("#1a5af0"),
     Radius = 8,
 })
 
@@ -1715,6 +1616,136 @@ end)
 -------------------------------* KeyBind Padrão *-------------------------------
 
  Window:SetToggleKey(Enum.KeyCode.H)
+
+
+-----------------------------*comandos de chat-------------------------------
+ local chatPrefix = "/"
+
+local chatCommands = {
+    ["fly"] = function(args)
+        FlyEnabled = not FlyEnabled
+        toggleFly(FlyEnabled)
+        FlyToggle:Set(FlyEnabled)
+    end,
+
+    ["noclip"] = function(args)
+        NoClipEnabled = not NoClipEnabled
+        toggleNoClip(NoClipEnabled)
+        ToggleNoclip:Set(NoClipEnabled)
+    end,
+
+    ["spin"] = function(args)
+        SpinEnabled = not SpinEnabled
+        toggleSpin(SpinEnabled)
+        ToggleSpin:Set(SpinEnabled)
+    end,
+
+    ["esp"] = function(args)
+        espEnabled = not espEnabled
+        if espEnabled then
+            for _, player in ipairs(S.Players:GetPlayers()) do
+                createESP(player)
+            end
+            WindUI:Notify({Title = "ESP", Content = "Ativado via chat!", Duration = 2, Icon = "eye"})
+        else
+            removeAllESP()
+            WindUI:Notify({Title = "ESP", Content = "Desativado via chat!", Duration = 2, Icon = "x"})
+        end
+        ToggleESP:Set(espEnabled)
+    end,
+
+    ["speed"] = function(args)
+        local val = tonumber(args[1])
+        if val then
+            setSpeed(val)
+            SliderVelocidade:Set(math.clamp(val, 20, 999))
+            WindUI:Notify({Title = "Speed", Content = "Velocidade: " .. val, Duration = 2, Icon = "zap"})
+        else
+            WindUI:Notify({Title = "Speed", Content = "Uso: /speed <valor>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["jump"] = function(args)
+        local val = tonumber(args[1])
+        if val then
+            setJumpPower(val)
+            SliderJump:Set(math.clamp(val, 20, 999))
+            WindUI:Notify({Title = "Jump", Content = "Pulo: " .. val, Duration = 2, Icon = "zap"})
+        else
+            WindUI:Notify({Title = "Jump", Content = "Uso: /jump <valor>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["gravity"] = function(args)
+        local val = tonumber(args[1])
+        if val then
+            setGravity(val)
+            WindUI:Notify({Title = "Gravity", Content = "Gravidade: " .. val, Duration = 2, Icon = "zap"})
+        else
+            WindUI:Notify({Title = "Gravity", Content = "Uso: /gravity <valor>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["tp"] = function(args)
+        local name = args[1]
+        if name then
+            TeleporteToPlayer(name)
+        else
+            WindUI:Notify({Title = "TP", Content = "Uso: /tp <NomeJogador>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["looptp"] = function(args)
+        LoopTPEnabled = not LoopTPEnabled
+        toggleLoopTP(LoopTPEnabled)
+    end,
+
+    ["rejoin"] = function(args)
+        RejoinServer()
+    end,
+
+    ["hop"] = function(args)
+        ServerHop()
+    end,
+
+    ["faketp"] = function(args)
+        FakeTPEnabled = not FakeTPEnabled
+        toggleFakeTP(FakeTPEnabled)
+    end,
+
+    ["help"] = function(args)
+        WindUI:Notify({
+            Title = "Comandos disponíveis",
+            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp",
+            Duration = 8,
+            Icon = "info"
+        })
+    end,
+
+    ["reload"] = function(args)
+        reloadHub()
+    end,
+
+    ["reload -v"] = function(args)
+        reloadWithVerbose()
+    end,
+
+
+}
+
+S.Players.LocalPlayer.Chatted:Connect(function(msg)
+    msg = msg:lower()
+    if msg:sub(1, #chatPrefix) ~= chatPrefix then return end
+
+    local parts = msg:sub(#chatPrefix + 1):split(" ")
+    local cmd = parts[1]
+    local args = {}
+    for i = 2, #parts do args[#args + 1] = parts[i] end
+
+    if chatCommands[cmd] then
+        chatCommands[cmd](args)
+    end
+end)
 
 -------------------------------* Tabs *-------------------------------
 local TabHome = Window:Tab({
