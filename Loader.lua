@@ -2,6 +2,7 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 WindUI:SetNotificationLower(true)
 
+local selectedLang = "pt-br"
 
 local NotifySound = Instance.new("Sound")
 NotifySound.SoundId = "rbxassetid://6518811702"
@@ -142,10 +143,15 @@ local ButtonExecute = SectionLoader:Button({
     Variant = "Primary",
     Highlight = true,
     Callback = function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
-            NotifySound:Play()
-            desativarBlur()
-            Window:Destroy()
+        -- Salva o idioma escolhido
+        pcall(function()
+            writefile("RoyalHub/lang.txt", selectedLang)
+        end)
+        
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
+        NotifySound:Play()
+        desativarBlur()
+        Window:Destroy()
     end
 })
 
@@ -164,37 +170,33 @@ local SectionLanguage = TabLanguage:Section({
 })
 
 local ButtonEnglish = SectionLanguage:Button({
-    Title = "English",
-    Icon = "arrow-right",
-    Variant = "Primary",
+    Title = "English", Icon = "arrow-right", Variant = "Primary",
     Callback = function()
-        WindUI:Localization():SetLanguage("en")
+        selectedLang = "en"
+        WindUI:SetLanguage("en")
     end
 })
 
 local ButtonPortuguese = SectionLanguage:Button({
-    Title = "Português",
-    Icon = "arrow-right",
-    Variant = "Secondary",
+    Title = "Português", Icon = "arrow-right", Variant = "Secondary",
     Callback = function()
-         WindUI:SetLanguage("pt-br")
+        selectedLang = "pt-br"
+        WindUI:SetLanguage("pt-br")
     end
 })
 
 local ButtonSpanish = SectionLanguage:Button({
-    Title = "Español",
-    Icon = "arrow-right", 
-    Variant = "Secondary",
+    Title = "Español", Icon = "arrow-right", Variant = "Secondary",
     Callback = function()
+        selectedLang = "es"
         WindUI:SetLanguage("es")
     end
 })
 
 local ButtonRussian = SectionLanguage:Button({
-    Title = "Русский",
-    Icon = "arrow-right",
-    Variant = "Secondary",
+    Title = "Русский", Icon = "arrow-right", Variant = "Secondary",
     Callback = function()
+        selectedLang = "ru"
         WindUI:SetLanguage("ru")
     end
 })
