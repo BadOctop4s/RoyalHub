@@ -1716,7 +1716,7 @@ local chatCommands = {
     ["help"] = function(args)
         WindUI:Notify({
             Title = "Comandos disponíveis",
-            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp",
+            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp /reload /reload -v",
             Duration = 8,
             Icon = "info"
         })
