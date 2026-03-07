@@ -2481,7 +2481,7 @@ SectionConfigFuncs:Space({ Columns = 1 })
 SectionConfigFuncs:Toggle({ })
 
 -------------------------------* Buttons TabPersonagem *------------------------
-TabPersonagem:Section({
+local MoveSection = TabPersonagem:Section({
     Title = "Movimento",
     Box = true,
     BoxBorder = true,
@@ -2490,7 +2490,7 @@ TabPersonagem:Section({
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
-local SliderVelocidade = TabPersonagem:Slider({
+MoveSection:Slider({
     Title = "Speed",
     Desc = "Altera velocidade do jogador",
     IsTooltip = true,
@@ -2508,7 +2508,7 @@ local SliderVelocidade = TabPersonagem:Slider({
     end
 })
 
-local SliderJump = TabPersonagem:Slider({
+MoveSection:Slider({
 	Title = "Jump",
 	Desc = "Aumenta a força do pulo",
     IsTooltip = true,
@@ -2526,9 +2526,9 @@ local SliderJump = TabPersonagem:Slider({
 	end
 })
 
-TabPersonagem:Space({ Columns = 1 })
+TabPersonagem:Space({ Columns = 2 })
 
-local FlyToggle = TabPersonagem:Toggle({
+MoveSection:Toggle({
     Title = "Fly",
     Desc = "Ativa o modo voo",
     Icon = "solar:rocket-bold",
@@ -2540,7 +2540,7 @@ local FlyToggle = TabPersonagem:Toggle({
     end
 })
 
-local SliderFlySpeed = TabPersonagem:Slider({
+MoveSection:Slider({
     Title = "Velocidade do Fly",
     Desc = "Ajuste a velocidade do voo (quanto maior, mais rápido).",
     IsTooltip = true,
@@ -2558,7 +2558,7 @@ local SliderFlySpeed = TabPersonagem:Slider({
 
 TabPersonagem:Space({ Columns = 2 })
 
-TabPersonagem:Section({
+local GravitySection = TabPersonagem:Section({
     Title = "Gravidade",
     Box = true,
     BoxBorder = true,
@@ -2567,7 +2567,7 @@ TabPersonagem:Section({
     FontWeight = Enum.FontWeight.SemiBold,
 })
 
-local SliderGravity = TabPersonagem:Slider({
+GravitySection:Slider({
     Title = "Gravity",
     Desc = "Altera a gravidade do jogo",
     IsTooltip = true,
@@ -2585,7 +2585,7 @@ local SliderGravity = TabPersonagem:Slider({
     end
 })
 
-ResetGravity = TabPersonagem:Button({
+GravitySection:Button({
         Title = "Reset Gravity",
         Desc = "Reseta a gravidade para o valor padrão (196.2)",
         Locked = false,
@@ -2604,7 +2604,6 @@ ResetGravity = TabPersonagem:Button({
 })
 
 TabPersonagem:Space({ Columns = 2 })
-
 
 local SectionMov2 = TabPersonagem:Section({
     Title = "Proteção",
