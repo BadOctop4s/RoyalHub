@@ -3,8 +3,14 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 WindUI:SetNotificationLower(true)
 --*updated
 
--- Logo após WindUI = loadstring(...)()
-local savedLang = "pt-br" -- fallback padrão
+local savedLang = "en"
+pcall(function()
+    if isfile("RoyalHub/lang.txt") then
+        savedLang = readfile("RoyalHub/lang.txt")
+    end
+end)
+
+local savedLang = "pt-br"
 pcall(function()
     if isfile("RoyalHub/lang.txt") then
         savedLang = readfile("RoyalHub/lang.txt")
@@ -3514,23 +3520,37 @@ SectionConfigFuncs:Toggle({
 
 SectionConfigFuncs:Space({ Columns = 1 })
 
-SectionConfigFuncs:Button({
-    Title = "🌐 Idioma",
-    Icon = "solar:language-bold",
-    Callback = function()
-        Window:Dialog({
-            Title = "Selecionar Idioma",
-            Icon = "solar:language-bold",
-            Content = "Escolha o idioma do Royal Hub:",
-            Buttons = {
-                    { Title = "🇧🇷 Português", Variant = "secondary", Callback = function() setLang("pt-br") end },
-                    { Title = "🇺🇸 English",   Variant = "secondary", Callback = function() setLang("en") end },
-                    { Title = "🇪🇸 Español",   Variant = "secondary", Callback = function() setLang("es") end },
-                    { Title = "🇷🇺 Русский",   Variant = "secondary", Callback = function() setLang("ru") end },
-            }
-        })
-    end
-})
+-- local ButtonEnglish = SectionConfigFuncs:Button({
+--     Title = "English", Icon = "arrow-right", Variant = "Primary",
+--     Callback = function()
+--         print("English language selected")
+--         WindUI:SetLanguage("en")
+--     end
+-- })
+
+-- local ButtonPortuguese = SectionConfigFuncs:Button({
+--     Title = "Português", Icon = "arrow-right", Variant = "Secondary",
+--     Callback = function()
+--         print("Portuguese language selected")
+--         WindUI:SetLanguage("pt-br")
+--     end
+-- })
+
+-- local ButtonSpanish = SectionConfigFuncs:Button({
+--     Title = "Español", Icon = "arrow-right", Variant = "Secondary",
+--     Callback = function()
+--         print("Spanish language selected")
+--         WindUI:SetLanguage("es")
+--     end
+-- })
+
+-- local ButtonRussian = SectionConfigFuncs:Button({
+--     Title = "Русский", Icon = "arrow-right", Variant = "Secondary",
+--     Callback = function()
+--         print("Russian language selected")
+--         WindUI:SetLanguage("ru")
+--     end
+-- })
 
 -------------------------------* Buttons TabPersonagem *------------------------
 TabPersonagem:Section({

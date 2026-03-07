@@ -2,7 +2,6 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 WindUI:SetNotificationLower(true)
 
-local selectedLang = "pt-br"
 
 local NotifySound = Instance.new("Sound")
 NotifySound.SoundId = "rbxassetid://6518811702"
@@ -12,14 +11,11 @@ NotifySound.Parent = game:GetService("SoundService")
 
 local Lighting = game:GetService("Lighting")
 
-
 local blur = Instance.new("BlurEffect")
 blur.Size = 0
 blur.Parent = Lighting
 
-
 local function ativarBlur()
-    
     local tween = game:GetService("TweenService"):Create(
         blur,
         TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -27,7 +23,6 @@ local function ativarBlur()
     )
     tween:Play()
 end
-
 
 local function desativarBlur()
     local tween = game:GetService("TweenService"):Create(
@@ -41,11 +36,20 @@ local function desativarBlur()
     end)
 end
 
+-------------------------------* Idioma salvo *-------------------------------
+-- Lê o idioma salvo anteriormente (se existir)
+local selectedLang = "en"
+pcall(function()
+    if isfile("RoyalHub/lang.txt") then
+        selectedLang = readfile("RoyalHub/lang.txt")
+    end
+end)
+
 ------------------* Language *-------------------
 local Localization = WindUI:Localization({
     Enabled = true,
     Prefix = "loc:",
-    DefaultLanguage = "en",
+    DefaultLanguage = selectedLang, -- já abre no idioma salvo
     Translations = {
         ["en"] = {
             ["TITLE_SECTION1"] = "Loader",
@@ -53,9 +57,9 @@ local Localization = WindUI:Localization({
             ["LANGUAGE_TAB"] = "Language",
             ["LOADER"] = "Loader",
             ["EXECUTE"] = "Execute",  
-            ["CANCELAR"] = "Cancelar",
+            ["CANCELAR"] = "Cancel",
             ["LOAD_DESC"] = "Royal Hub is under development, functions may be unavailable or unstable. Join our discord for more information: https://discord.gg/royalhub",
-    },
+        },
 
         ["pt-br"] = {
             ["TITLE_SECTION1"] = "Carregar",
@@ -65,7 +69,6 @@ local Localization = WindUI:Localization({
             ["EXECUTE"] = "Executar",
             ["CANCELAR"] = "Cancelar",
             ["LOAD_DESC"] = "Royal Hub está em desenvolvimento, funções podem estar indisponíveis ou instáveis. Entre no nosso discord para mais informações: https://discord.gg/royalhub",
-
         },
 
         ["es"] = {
@@ -97,11 +100,7 @@ local Window = WindUI:CreateWindow({
     Title = "RoyalHub  |  Loader",
     Folder = "RoyalHub",
     Icon = "solar:folder-2-bold-duotone",
-    --Theme = "Mellowsi",
-    --IconSize = 22*2,
     NewElements = true,
-    --Size = UDim2.fromOffset(700,700),
-    
     HideSearchBar = true,
     
     OpenButton = {
@@ -112,7 +111,6 @@ local Window = WindUI:CreateWindow({
         Draggable = true,
         OnlyMobile = true,
         Scale = 0.5,
-        
         Color = ColorSequence.new(
             Color3.fromHex("#30FF6A"), 
             Color3.fromHex("#e7ff2f")
@@ -143,11 +141,14 @@ local ButtonExecute = SectionLoader:Button({
     Variant = "Primary",
     Highlight = true,
     Callback = function()
-        -- Salva o idioma escolhido
+        -- Salva o idioma selecionado antes de executar o Source
         pcall(function()
+            if not isfolder("RoyalHub") then
+                makefolder("RoyalHub")
+            end
             writefile("RoyalHub/lang.txt", selectedLang)
         end)
-        
+
         loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
         NotifySound:Play()
         desativarBlur()
@@ -155,6 +156,7 @@ local ButtonExecute = SectionLoader:Button({
     end
 })
 
+-------------* Aba Language *----------------
 local TabLanguage = Window:Tab({
     Title = "loc:LANGUAGE_TAB",
     Icon = "solar:language-duotone",
@@ -170,7 +172,9 @@ local SectionLanguage = TabLanguage:Section({
 })
 
 local ButtonEnglish = SectionLanguage:Button({
-    Title = "English", Icon = "arrow-right", Variant = "Primary",
+    Title = "🇺🇸 English",
+    Icon = "arrow-right",
+    Variant = selectedLang == "en" and "Primary" or "Secondary",
     Callback = function()
         selectedLang = "en"
         WindUI:SetLanguage("en")
@@ -178,7 +182,9 @@ local ButtonEnglish = SectionLanguage:Button({
 })
 
 local ButtonPortuguese = SectionLanguage:Button({
-    Title = "Português", Icon = "arrow-right", Variant = "Secondary",
+    Title = "🇧🇷 Português",
+    Icon = "arrow-right",
+    Variant = selectedLang == "pt-br" and "Primary" or "Secondary",
     Callback = function()
         selectedLang = "pt-br"
         WindUI:SetLanguage("pt-br")
@@ -186,7 +192,9 @@ local ButtonPortuguese = SectionLanguage:Button({
 })
 
 local ButtonSpanish = SectionLanguage:Button({
-    Title = "Español", Icon = "arrow-right", Variant = "Secondary",
+    Title = "🇪🇸 Español",
+    Icon = "arrow-right",
+    Variant = selectedLang == "es" and "Primary" or "Secondary",
     Callback = function()
         selectedLang = "es"
         WindUI:SetLanguage("es")
@@ -194,7 +202,9 @@ local ButtonSpanish = SectionLanguage:Button({
 })
 
 local ButtonRussian = SectionLanguage:Button({
-    Title = "Русский", Icon = "arrow-right", Variant = "Secondary",
+    Title = "🇷🇺 Русский",
+    Icon = "arrow-right",
+    Variant = selectedLang == "ru" and "Primary" or "Secondary",
     Callback = function()
         selectedLang = "ru"
         WindUI:SetLanguage("ru")
