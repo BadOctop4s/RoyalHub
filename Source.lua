@@ -1,1071 +1,71 @@
+-- ╔══════════════════════════════════════════════════════╗
+-- ║              Royal Hub — Source.lua                 ║
+-- ║  UI principal. Funções em Functions.lua             ║
+-- ╚══════════════════════════════════════════════════════╝
+
+-- 1) Carrega WindUI
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
-
 WindUI:SetNotificationLower(true)
---*updated
--------------------------------* Cores *--------------------------
 
-local Purple = Color3.fromHex("#7775F2")
-local Yellow = Color3.fromHex("#ECA201")
-local Green = Color3.fromHex("#10C550")
-local Grey = Color3.fromHex("#83889E")
-local Blue = Color3.fromHex("#257AF7")
-local Red = Color3.fromHex("#ea0909")
-local Gray = Color3.fromHex("#2C2F38")
+-- 2) Disponibiliza WindUI globalmente para Functions.lua
+_G.RH_WindUI = WindUI
+
+-- 3) Carrega todas as funções
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/main/Functions.lua"))()
+
+-- Atalho local conveniente
+local G = _G.RH
+
+-------------------------------* Cores *-------------------------------
+local Purple  = Color3.fromHex("#7775F2")
+local Yellow  = Color3.fromHex("#ECA201")
+local Green   = Color3.fromHex("#10C550")
+local Grey    = Color3.fromHex("#83889E")
+local Blue    = Color3.fromHex("#257AF7")
+local Red     = Color3.fromHex("#ea0909")
+local Gray    = Color3.fromHex("#2C2F38")
 local DarkGray = Color3.fromHex("#1B1C20")
 
--------------------------------* Icones *---------------------------------
-
-local Key = "geist:key"
-local box = "geist:box"
-local bug = "geist:bug"
-local star = "geist:star" 
-local cloud = "geist:cloud"
-local shield = "geist:shield-check"
-
--------------------------------* Serviços personagem *-------------------------------
+-------------------------------* Serviços *-------------------------------
 local S = {
     Players = game:GetService("Players"),
-    Tween = game:GetService("TweenService"),
-    RS = game:GetService("ReplicatedStorage"),
-    WS = game:GetService("Workspace"),
-    Run = game:GetService("RunService"),
-    UI = game:GetService("UserInputService"),
-    Sound = game:GetService("SoundService"),
+    Tween   = game:GetService("TweenService"),
+    RS      = game:GetService("ReplicatedStorage"),
+    WS      = game:GetService("Workspace"),
+    Run     = game:GetService("RunService"),
+    UI      = game:GetService("UserInputService"),
+    Sound   = game:GetService("SoundService"),
 }
 
--------------------------------* Variáveis globais *-------------------------------
-local LoopEmote = false
-local CurrentEmoteTrack = nil
-local EmoteLoopConnection = nil
+local LP = S.Players.LocalPlayer
 
+-- Sound de notificação
 local NotifySound = Instance.new("Sound")
 NotifySound.SoundId = "rbxassetid://6518811702"
-NotifySound.Volume = 1.0
-NotifySound.Parent = game:GetService("SoundService")
+NotifySound.Volume  = 1.0
+NotifySound.Parent  = game:GetService("SoundService")
 
-------------------------------* Funções externas *-------------------------------
+-- Variáveis locais de UI
+local SelectedPlayerToView = nil
+local _pvpTargetName       = nil
 
-local function tableToClipboard(luau_table, indent)
-    indent = indent or 4
-    local jsonString = parseJSON(luau_table, indent)
-    setclipboard(jsonString)
-    return jsonString
-end
+-- Aviso inicial (não bloqueante)
+WindUI:Notify({
+    Title   = "Royal Hub",
+    Content = "Carregando... aguarde.",
+    Duration = 3,
+    Icon    = "solar:bell-bold",
+})
 
--------------------------------* Functions personagem *-------------------------------
-
-local function setSpeed(value)
-    local player = S.Players.LocalPlayer
-    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-    if humanoid then
-        humanoid.WalkSpeed = value
-    end
-end
-
-local function setJumpPower(value)
-    local player = S.Players.LocalPlayer
-    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-    if humanoid then
-        humanoid.JumpPower = value
-    end
-end
-
-local function setGravity(value)
-    local Workspace = S.Workspace
-    S.Workspace.Gravity = value
-end
-
-local Players = game:GetService("Players")
-
-local playerValues = {}
-
-for _, plr in ipairs(Players:GetPlayers()) do
-    table.insert(playerValues, {
-        Title = plr.Name,
-        Player = plr
-    })
-end
-
-------------------------------* Set rpName *-------------------------
-
-local function SetRPNameAndBio()
-    local admins = {"DARK_ZIINN", "S1wlkrX", "thenoctisblack78"}
-    local player = game:GetService("Players").LocalPlayer
-    local isAdmin = table.find(admins, player.Name) ~= nil
-    local rpName = isAdmin and " [ DEV ]" or "CLIENTE ROYAL HUB"
-    local bio = isAdmin and "CREATOR OF ROYAL HUB" or ""
-    print("[RoyalHub] Aplicando RP Name: '" .. rpName .. "' | Bio: '" .. bio .. "' | Admin: " .. tostring(isAdmin))
-
-    local PlayersBag = player:WaitForChild("PlayersBag", 10)
-    if PlayersBag then
-        if PlayersBag:FindFirstChild("RPName") then PlayersBag.RPName.Value = rpName end
-        if PlayersBag:FindFirstChild("RPBio") then PlayersBag.RPBio.Value = bio end
-        print("[RoyalHub] PlayersBag texto atualizado")
-    end
-    local RE = game:GetService("ReplicatedStorage"):WaitForChild("RE", 5)
-    if not RE then
-        warn("[RoyalHub] Pasta RE não encontrada!")
-        return
-    end
-
-    local textRemote = RE:FindFirstChild("1RPNam1eTex1t")
-    if textRemote and textRemote:IsA("RemoteEvent") then
-        textRemote:FireServer("RolePlayName", rpName)
-        textRemote:FireServer("RolePlayBio", bio)
-        print("[RoyalHub] Texto Name e Bio disparados")
-    end
-
-    local nameColorRemote = RE:FindFirstChild("1RPNam1eColo1r")
-    local bioColorRemote = RE:FindFirstChild("1RPNam1eColo1r")
-    if isAdmin then
-        local nameR, nameG, nameB = 1, 0, 0 
-        local bioR, bioG, bioB = 0, 1, 1
-        if nameColorRemote then
-            nameColorRemote:FireServer("PickingRPNamColor", nameR, nameG, nameB)
-            print("[RoyalHub] Cor Nome disparada: " .. nameR .. ", " .. nameG .. ", " .. nameB)
-        end
-        if bioColorRemote then
-            bioColorRemote:FireServer("PickingRPNameColor", bioR, bioG, bioB)
-            print("[RoyalHub] Cor Bio disparada: " .. bioR .. ", " .. bioG .. ", " .. bioB)
-        end
-    else
-        local whiteR, whiteG, whiteB = 1, 1, 1
-        if nameColorRemote then nameColorRemote:FireServer("PickingRPNamColor", whiteR, whiteG, whiteB) end
-        if bioColorRemote then bioColorRemote:FireServer("PickingRPNameColor", whiteR, whiteG, whiteB) end
-    end
-end
-
-
-local function CheckAndSetRP()
-    local placeId = game.PlaceId
-    local brookhavenPlaceId = 4924922222
-    if placeId == brookhavenPlaceId then
-        WindUI:Notify({
-            Title = "AVISO!",
-            Content = '<font color="#FF0000">POR FAVOR, DEIXE O JOGO CARREGAR, APERTE EM JOGAR ASSIM QUE POSSIVEL!</font>',
-        })
-        print("[RoyalHub] Detectado Brookhaven (PlaceId " .. placeId .. ") - Aplicando RP custom")
-        Wait(8)
-        SetRPNameAndBio()
-    else
-        print("[RoyalHub] Não é Brookhaven (PlaceId " .. placeId .. ") - Pulando RP custom e indo para load do menu")
-    end
-end
-
-wait(1) 
-CheckAndSetRP()
-
--------------------------------* Teleporte To Player Function *-------------------------------
-
-local function TeleporteToPlayer(playerName)
-    local player = S.Players:FindFirstChild(playerName)
-    local localPlayer = S.Players.LocalPlayer
-    if player and player.Character and localPlayer.Character then
-        local targetPosition = player.Character:FindFirstChild("HumanoidRootPart").Position
-        localPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(targetPosition + Vector3.new(0, 5, 0))
-    else
-        WindUI:Notify({
-            Title = "Erro",
-            Content = "Jogador não encontrado ou sem personagem.",
-            Duration = 3,
-            Icon = "alert-circle"
-        })
-    end
-end
-
--------------------------------* LOOP TP *------------------------------
-
-local LoopTPEnabled = false
-local LoopTPTargetName = nil 
-local LoopTPDelay = 1 
-local LoopTPConnection = nil
-
-local function startLoopTP()
-    if LoopTPConnection then LoopTPConnection:Disconnect() end
-    
-    LoopTPConnection = S.Run.Heartbeat:Connect(function()
-        if not LoopTPEnabled then return end
-        if not LoopTPTargetName then return end
-        
-        -- Tenta teleportar
-        TeleporteToPlayer(LoopTPTargetName)
-        
-        -- Opcional: Check se alvo ainda existe (evita spam de erro)
-        local target = S.Players:FindFirstChild(LoopTPTargetName)
-        if not target or not target.Character then
-            WindUI:Notify({
-                Title = "Loop TP",
-                Content = "Alvo sumiu ou morreu. Loop parado.",
-                Duration = 4,
-                Icon = "alert-circle"
-            })
-            LoopTPEnabled = false
-            if LoopTPConnection then
-                LoopTPConnection:Disconnect()
-                LoopTPConnection = nil
-            end
-        end
-    end)
-end
-
-local function toggleLoopTP(enabled)
-    LoopTPEnabled = enabled
-    
-    if enabled then
-        if not LoopTPTargetName then
-            WindUI:Notify({
-                Title = "Loop TP",
-                Content = "Selecione um jogador no dropdown primeiro!",
-                Duration = 4,
-                Icon = "alert-circle"
-            })
-            LoopTPEnabled = false  -- Desliga se não tiver alvo
-            return
-        end
-        
-        WindUI:Notify({
-            Title = "Loop TP",
-            Content = "Iniciando loop no jogador: " .. LoopTPTargetName .. " (delay: " .. LoopTPDelay .. "s)",
-            Duration = 4,
-            Icon = "repeat"
-        })
-        
-        startLoopTP()
-    else
-        if LoopTPConnection then
-            LoopTPConnection:Disconnect()
-            LoopTPConnection = nil
-        end
-        WindUI:Notify({
-            Title = "Loop TP",
-            Content = "Loop desativado.",
-            Duration = 3,
-            Icon = "x"
-        })
-    end
-end
-
-
-------------------------------* ESP Function *-------------------------------
-local LocalPlayer = S.Players.LocalPlayer
-local espEnabled = false
-local espObjects = {}  
-local playerListeners = {}  
-
-local function removeESP(player)
-    if espObjects[player] then
-        for _, obj in pairs(espObjects[player]) do
-            if obj and obj.Destroy then
-                obj:Destroy()
-            end
-        end
-        espObjects[player] = nil
-    end
-end
-
-local function removeAllESP()
-    for player, _ in pairs(espObjects) do
-        removeESP(player)
-    end
-    espObjects = {}
-end
-
-local function createESP(player)
-    if player == LocalPlayer then return end 
-    if espObjects[player] then return end  
-
-    local character = player.Character
-    if not character then return end
-
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRootPart then return end
-
-    espObjects[player] = {}
-
-    -- 🔶 Highlight
-    local highlight = Instance.new("Highlight")
-    highlight.Name = "ESP_Highlight"
-    highlight.Adornee = character
-    highlight.FillColor = Color3.fromRGB(255, 80, 80)
-    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-    highlight.FillTransparency = 0.5
-    highlight.OutlineTransparency = 0
-    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    highlight.Parent = character
-    table.insert(espObjects[player], highlight)
-
-    -- 🏷️ NameTag
-    local billboard = Instance.new("BillboardGui")
-    billboard.Name = "ESP_Name"
-    billboard.Adornee = humanoidRootPart
-    billboard.Size = UDim2.new(0, 150, 0, 30)  
-    billboard.StudsOffset = Vector3.new(0, 3, 0)
-    billboard.AlwaysOnTop = true
-    billboard.Parent = humanoidRootPart
-
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Text = player.Name
-    textLabel.TextColor3 = Color3.new(1, 1, 1)
-    textLabel.TextStrokeTransparency = 0
-    textLabel.TextScaled = false  
-    textLabel.TextSize = 16  
-    textLabel.Font = Enum.Font.GothamBold
-    textLabel.Parent = billboard
-
-    table.insert(espObjects[player], billboard)
-end
-
-local function setupPlayerListeners(player)
-    if playerListeners[player] then return end
-
-    local charAddedConn, charRemovingConn
-
-    charAddedConn = player.CharacterAdded:Connect(function()
-        task.wait(0.5)  -- Espera carregar
-        if espEnabled then
-            createESP(player)
-            -- WindUI:Notify({
-            --     Title = "Esp ativado!",
-            --     Icon = "Crosshair",
-            -- })
-        end
-    end)
-
-    charRemovingConn = player.CharacterRemoving:Connect(function()
-        removeESP(player)
-        -- WindUI:Notify({
-        --     Title = "Esp desativado!",
-        --     Icon = "Crosshair",
-        -- })
-    end)
-
-    playerListeners[player] = {charAddedConn, charRemovingConn}
-end
-
-for _, player in ipairs(S.Players:GetPlayers()) do
-    setupPlayerListeners(player)
-end
-
-S.Players.PlayerAdded:Connect(setupPlayerListeners)
-
-S.Players.PlayerRemoving:Connect(function(player)
-    removeESP(player)
-    if playerListeners[player] then
-        for _, conn in pairs(playerListeners[player]) do
-            conn:Disconnect()
-        end
-        playerListeners[player] = nil
-    end
-end)
-
-spawn(function()
-    S.WS.CurrentCamera.CameraType = Enum.CameraType.Custom
-end)
-
-------------------------------* Rejoin & ServerHope Function *-------------------------------
-
-local TeleportService = game:GetService("TeleportService")
-local HttpService = game:GetService("HttpService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local function RejoinServer()
-    if not LocalPlayer then return end
-    
-    local placeId = game.PlaceId
-    local jobId = game.JobId
-    
-    if jobId == "" then
-        WindUI:Notify({
-            Title = "Rejoin",
-            Content = "Não foi possível pegar o JobId atual. Tente novamente.",
-            Duration = 4,
-            Icon = "alert-circle"
-        })
-        return
-    end
-    
+task.spawn(function()
+    task.wait(2)
     WindUI:Notify({
-        Title = "Rejoin",
-        Content = "Voltando pro mesmo servidor...",
-        Duration = 3,
-        Icon = "refresh-cw"
+        Title   = "Royal Hub",
+        Content = "Pronto! Hub carregado com sucesso.",
+        Duration = 4,
+        Icon    = "solar:check-circle-bold",
     })
-    
-    TeleportService:TeleportToPlaceInstance(placeId, jobId, LocalPlayer)
-end
-
--------------------------* SERVER HOP FUNCTION *------------------------- 
-
-local AlreadyJoined = {}
-
-local function ServerHop()
-    local placeId = game.PlaceId
-    local cursor = ""
-    local servers = {}
-    
-    WindUI:Notify({
-        Title = "Server Hop",
-        Content = "Buscando servidores... (aguarde 5-10s)",
-        Duration = 5,
-        Icon = "refresh-cw"
-    })
-    
-    repeat
-        local success, response = pcall(function()
-            local url = "https://games.roblox.com/v1/games/" .. placeId .. "/servers/Public?sortOrder=Asc&limit=100"
-            if cursor ~= "" then url = url .. "&cursor=" .. cursor end
-            return HttpService:JSONDecode(game:HttpGet(url))
-        end)
-        
-        if not success then
-            WindUI:Notify({Title = "Erro Hop", Content = "Falha no HttpGet: " .. tostring(response), Duration = 5, Icon = "x"})
-            return
-        end
-        
-        if response and response.data then
-            for _, server in ipairs(response.data) do
-                if server.playing < server.maxPlayers and server.id ~= game.JobId and not AlreadyJoined[server.id] then
-                    table.insert(servers, server.id)
-                end
-            end
-            cursor = response.nextPageCursor or ""
-        else
-            cursor = ""
-        end
-    until cursor == ""
-    
-    if #servers == 0 then
-        WindUI:Notify({Title = "Sem Servidores", Content = "Nenhum server disponível agora. Tente de novo ou em outro jogo.", Duration = 5, Icon = "alert-circle"})
-        return
-    end
-    
-    local randomServer = servers[math.random(1, #servers)]
-    AlreadyJoined[randomServer] = true
-    
-    WindUI:Notify({Title = "Hop!", Content = "Teleportando pro server: " .. randomServer, Duration = 3, Icon = "server"})
-    
-    local success, err = pcall(function()
-        TeleportService:TeleportToPlaceInstance(placeId, randomServer, LocalPlayer)
-    end)
-    
-    if not success then
-        WindUI:Notify({Title = "Teleport Falhou", Content = "Erro: " .. tostring(err) .. ". Verifique executor/anti-cheat.", Duration = 5, Icon = "x"})
-    end
-end
-
-
-------------------------------* Spin function *-------------------------------
-
-local SpinEnabled = false
-local SpinConnection
-
-local function toggleSpin(enabled)
-    SpinEnabled = enabled
-    if enabled then
-        local char = LocalPlayer.Character
-        if char and char:FindFirstChild("HumanoidRootPart") then
-            if SpinConnection then SpinConnection:Disconnect() end
-            SpinConnection = S.Run.Heartbeat:Connect(function(delta)
-                local root = char.HumanoidRootPart
-                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(360 * delta), 0)
-            end)
-            WindUI:Notify({Title = "Spin", Content = "Girando! (Desative pra parar)", Duration = 3, Icon = "rotate-cw"})
-        else
-            WindUI:Notify({Title = "Erro Spin", Content = "Personagem não carregado.", Duration = 2, Icon = "x"})
-            toggleSpin(false)
-        end
-    else
-        if SpinConnection then
-            SpinConnection:Disconnect()
-            SpinConnection = nil
-        end
-        WindUI:Notify({Title = "Spin", Content = "Parou de girar.", Duration = 2, Icon = "x"})
-    end
-end
-
-
-LocalPlayer.CharacterAdded:Connect(function(char)
-    if SpinEnabled then
-        task.wait(0.5) 
-        toggleSpin(true)  
-    end
 end)
-
--------------------------------* Fly function *-------------------------------
-
-local FlyEnabled = false
-local FlySpeed = 50
-local FlyConnection = nil
-local FlyBodyVelocity = nil
-local FlyBodyGyro = nil
-local FlyAlignOrientation = nil
-
-local function toggleFly(enabled)
-    FlyEnabled = enabled
-    local char = LocalPlayer.Character
-    if not char or not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") then
-        WindUI:Notify({Title = "Fly", Content = "Personagem não carregado.", Duration = 3, Icon = "x"})
-        return
-    end
-
-    local humanoid = char.Humanoid
-    local root = char.HumanoidRootPart
-
-    if enabled then
-        
-        humanoid.PlatformStand = true
-
-        FlyBodyVelocity = Instance.new("BodyVelocity")
-        FlyBodyVelocity.MaxForce = Vector3.new(1e9, 1e9, 1e9)
-        FlyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
-        FlyBodyVelocity.Parent = root
-
-        FlyBodyGyro = Instance.new("BodyGyro")
-        FlyBodyGyro.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
-        FlyBodyGyro.P = 10000
-        FlyBodyGyro.Parent = root
-
-        FlyAlignOrientation = Instance.new("AlignOrientation")
-        FlyAlignOrientation.MaxTorque = 1e9
-        FlyAlignOrientation.Responsiveness = 25
-        FlyAlignOrientation.Parent = root
-        FlyAlignOrientation.CFrame = root.CFrame
-
-        -- Controle WASD + Ctrl/Space
-        FlyConnection = S.Run.RenderStepped:Connect(function()
-            if not FlyEnabled then return end
-            local cam = S.WS.CurrentCamera
-            local moveDir = Vector3.new(0, 0, 0)
-
-            if S.UI:IsKeyDown(Enum.KeyCode.W) then moveDir += cam.CFrame.LookVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.S) then moveDir -= cam.CFrame.LookVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.A) then moveDir -= cam.CFrame.RightVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.D) then moveDir += cam.CFrame.RightVector end
-            if S.UI:IsKeyDown(Enum.KeyCode.Space) then moveDir += Vector3.new(0, 1, 0) end
-            if S.UI:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir -= Vector3.new(0, 1, 0) end
-
-            if moveDir.Magnitude > 0 then moveDir = moveDir.Unit * FlySpeed end
-            FlyBodyVelocity.Velocity = moveDir
-
-            FlyBodyGyro.CFrame = cam.CFrame
-        end)
-
-        WindUI:Notify({Title = "Fly", Content = "Voo ativado!", Duration = 1, Icon = "plane"})
-    else
-        
-        spawn(function()
-            if FlyConnection then FlyConnection:Disconnect() FlyConnection = nil end
-
-            humanoid.PlatformStand = false
-
-            if FlyBodyVelocity then
-                FlyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
-                FlyBodyVelocity:Destroy()
-                FlyBodyVelocity = nil
-            end
-            if FlyBodyGyro then FlyBodyGyro:Destroy() FlyBodyGyro = nil end
-            if FlyAlignOrientation then FlyAlignOrientation:Destroy() FlyAlignOrientation = nil end
-
-            
-            root.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-            root.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-
-            humanoid.Sit = true
-            task.wait(0.1)
-            humanoid.Sit = false
-
-            root.CFrame = root.CFrame + Vector3.new(0, 5, 0)
-            task.wait(0.1)
-            humanoid:ChangeState(Enum.HumanoidStateType.Landed)
-            task.wait(0.1)
-            humanoid:ChangeState(Enum.HumanoidStateType.Running)
-
-            WindUI:Notify({Title = "Fly", Content = "Desativado", Duration = 1, Icon = "check"})
-        end)
-    end
-end
-
-LocalPlayer.CharacterAdded:Connect(function()
-    task.wait(0.5)
-    if FlyEnabled then toggleFly(true) end
-end)
-
-------------------------------* Aimbot Variables *-------------------------------
-
-local AimbotEnabled = {normal = false, rage = false}
-local AimbotConnections = {}
-local TargetPart = "Head" 
-local MaxDistance = 1500
-local UseTeamCheck = true
-
--------------------------------* Aimbot Functions *-------------------------------
-
-local AimbotEnabled = {normal = false, rage = false}
-local AimbotConnections = {}
-local TargetPart = "Head" 
-local MaxDistance = 1500
-local UseTeamCheck = true
-local UseWallCheck = true 
-
-
-local function getClosestTarget()
-    local camera = S.WS.CurrentCamera
-    local closest, shortestDist = nil, MaxDistance
-    local localTeam = LocalPlayer.Team
-    local origin = camera.CFrame.Position
-
-    for _, player in ipairs(S.Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character then
-            local humanoid = player.Character:FindFirstChild("Humanoid")
-            if humanoid and humanoid.Health > 0 then
-                local part = player.Character:FindFirstChild(TargetPart)
-                if part then
-                    local dist = (camera.CFrame.Position - part.Position).Magnitude
-                    if dist < shortestDist then
-                       
-                        if not UseTeamCheck or not localTeam or player.Team ~= localTeam then
-                           
-                            local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
-                            if onScreen and screenPos.Z > 0 then
-                                
-                                if not UseWallCheck then
-                                    shortestDist = dist
-                                    closest = player
-                                else
-                                    local direction = (part.Position - origin).Unit
-                                    local rayParams = RaycastParams.new()
-                                    rayParams.FilterType = Enum.RaycastFilterType.Exclude
-                                    rayParams.FilterDescendantsInstances = {LocalPlayer.Character or {}}
-                                    rayParams.IgnoreWater = true
-
-                                    local rayResult = workspace:Raycast(origin, direction * dist, rayParams)
-
-                                    if rayResult and rayResult.Instance:IsDescendantOf(player.Character) then
-                                       
-                                        shortestDist = dist
-                                        closest = player
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-    return closest
-end
-
-
-local function smoothAim(target)
-    local camera = S.WS.CurrentCamera
-    local part = target.Character:FindFirstChild(TargetPart)
-    if part then
-        local goalCFrame = CFrame.new(camera.CFrame.Position, part.Position)
-        camera.CFrame = camera.CFrame:Lerp(goalCFrame, 0.2) 
-    end
-end
-
-
-local function snapAim(target)
-    local camera = S.WS.CurrentCamera
-    local part = target.Character:FindFirstChild(TargetPart)
-    if part then
-        camera.CFrame = CFrame.new(camera.CFrame.Position, part.Position)
-    end
-end
-
-local function toggleAimbot(mode)  
-    local enabled = AimbotEnabled[mode]
-    local aimFunc = (mode == "normal") and smoothAim or snapAim
-
-    if enabled then
-        if AimbotConnections[mode] then AimbotConnections[mode]:Disconnect() end
-        AimbotConnections[mode] = S.Run.Heartbeat:Connect(function()
-            local target = getClosestTarget()
-            if target then
-                aimFunc(target)
-            end
-        end)
-      
-    else
-        if AimbotConnections[mode] then
-            AimbotConnections[mode]:Disconnect()
-            AimbotConnections[mode] = nil
-        end
-    end
-end
-
-------------------------------* Fake TP Function *-------------------------------
-
-local FakeTPEnabled = false
-local FakeTPConnection = nil
-local FakeTPDelay = 0.2  
-local FakeTPDistance = 3 
-
-local function toggleFakeTP(enabled)
-    FakeTPEnabled = enabled
-    if enabled then
-        if FakeTPConnection then FakeTPConnection:Disconnect() end
-        FakeTPConnection = S.Run.Heartbeat:Connect(function()
-            local char = LocalPlayer.Character
-            if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-
-            local root = char.HumanoidRootPart
-            local originalCFrame = root.CFrame
-
-            local randomOffset = Vector3.new(math.random(-FakeTPDistance, FakeTPDistance), math.random(1, FakeTPDistance), math.random(-FakeTPDistance, FakeTPDistance))
-            root.CFrame = originalCFrame + randomOffset
-
-            task.wait(FakeTPDelay)
-            root.CFrame = originalCFrame
-        end)
-        WindUI:Notify({
-            Title = "Fake TP",
-            Content = "Ativado! (Dodge anti-aim ligado)",
-            Duration = 3,
-            Icon = "ghost"
-        })
-    else
-        if FakeTPConnection then
-            FakeTPConnection:Disconnect()
-            FakeTPConnection = nil
-        end
-        WindUI:Notify({
-            Title = "Fake TP",
-            Content = "Desativado.",
-            Duration = 2,
-            Icon = "x"
-        })
-    end
-end
-
-
-LocalPlayer.CharacterAdded:Connect(function()
-    task.wait(0.5)
-    if FakeTPEnabled then toggleFakeTP(true) end
-end)
-
--------------------------------* Spectate player *-------------------------------
-
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local Camera = workspace.CurrentCamera
-
-local spectateConnection
-local originalSubject
-local originalType
-
-local function startSpectate(targetPlayer)
-    if not targetPlayer then return end
-    if targetPlayer == Players.LocalPlayer then return end
-
-    originalSubject = Camera.CameraSubject
-    originalType = Camera.CameraType
-
-    Camera.CameraType = Enum.CameraType.Custom
-
-    local function applyCharacter(char)
-        local humanoid = char:WaitForChild("Humanoid", 5)
-        if humanoid then
-            Camera.CameraSubject = humanoid
-        end
-    end
-
-    if targetPlayer.Character then
-        applyCharacter(targetPlayer.Character)
-    end
-
-    spectateConnection = targetPlayer.CharacterAdded:Connect(applyCharacter)
-end
-
-local function stopSpectate()
-    if spectateConnection then
-        spectateConnection:Disconnect()
-        spectateConnection = nil
-    end
-
-    if originalSubject then
-        Camera.CameraSubject = originalSubject
-    end
-
-    if originalType then
-        Camera.CameraType = originalType
-    end
-end
-
-------------------------------* Orbitar Player Function *-------------------------------
-
-local OrbitEnabled = false
-local OrbitTargetName = nil
-local OrbitSpeed = 1
-local OrbitRadius = 10
-local OrbitConnection = nil
-
-local function startOrbit()
-    if OrbitConnection then OrbitConnection:Disconnect() end
-    
-    OrbitConnection = S.Run.Heartbeat:Connect(function(dt)
-        if not OrbitEnabled then return end
-        if not OrbitTargetName then return end
-        
-        local target = S.Players:FindFirstChild(OrbitTargetName)
-        if not target or not target.Character then
-            WindUI:Notify({
-                Title = "Orbit",
-                Content = "Alvo sumiu ou morreu. Orbit parado.",
-                Duration = 4,
-                Icon = "alert-circle"
-            })
-            OrbitEnabled = false
-            if OrbitConnection then
-                OrbitConnection:Disconnect()
-                OrbitConnection = nil
-            end
-            return
-        end
-        
-        local targetRoot = target.Character:FindFirstChild("HumanoidRootPart")
-        if not targetRoot then return end
-        
-        local localPlayer = S.Players.LocalPlayer
-        local localChar = localPlayer.Character
-        if not localChar then return end
-        
-        local localRoot = localChar:FindFirstChild("HumanoidRootPart")
-        if not localRoot then return end
-        
-        local humanoid = localChar:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.PlatformStand = true
-        end
-        
-        local angle = tick() * OrbitSpeed
-        local offset = Vector3.new(math.cos(angle) * OrbitRadius, 0, math.sin(angle) * OrbitRadius)
-        
-        local newPos = targetRoot.Position + offset
-        localRoot.CFrame = CFrame.lookAt(newPos, targetRoot.Position)
-    end)
-end
-
-local function toggleOrbit(enabled)
-    OrbitEnabled = enabled
-    
-    if enabled then
-        if not OrbitTargetName then
-            WindUI:Notify({
-                Title = "Orbit",
-                Content = "Selecione um jogador no dropdown primeiro!",
-                Duration = 4,
-                Icon = "alert-circle"
-            })
-            OrbitEnabled = false
-            return
-        end
-        
-        WindUI:Notify({
-            Title = "Orbit",
-            Content = "Orbitando " .. OrbitTargetName .. " com velocidade " .. OrbitSpeed,
-            Duration = 4,
-            Icon = "rotate-cw"
-        })
-        
-        startOrbit()
-    else
-        if OrbitConnection then
-            OrbitConnection:Disconnect()
-            OrbitConnection = nil
-        end
-        
-        local localPlayer = S.Players.LocalPlayer
-        local localChar = localPlayer.Character
-        if localChar then
-            local humanoid = localChar:FindFirstChildOfClass("Humanoid")
-            if humanoid then
-                humanoid.PlatformStand = false
-            end
-        end
-        
-        WindUI:Notify({
-            Title = "Orbit",
-            Content = "Orbit desativado.",
-            Duration = 3,
-            Icon = "x"
-        })
-    end
-end
-
-local function setOrbitSpeed(value)
-    OrbitSpeed = value
-    if OrbitEnabled then
-        WindUI:Notify({
-            Title = "Orbit",
-            Content = "Velocidade atualizada para " .. value,
-            Duration = 2,
-            Icon = "wind"
-        })
-    end
-end
-
---------------------------------* NoClip Function *-------------------------------
-
-local function toggleNoClip(enabled)
-    NoClipEnabled = enabled
-    
-    if enabled then
-        if NoClipConnection then NoClipConnection:Disconnect() end
-        
-        NoClipConnection = S.Run.Stepped:Connect(function(_, step)
-            if not NoClipEnabled then return end
-            
-            local char = S.Players.LocalPlayer.Character
-            if char then
-                for _, part in ipairs(char:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = false
-                    end
-                end
-            end
-        end)
-        
-        WindUI:Notify({
-            Title = "NoClip",
-            Content = "NoClip ativado!",
-            Duration = 3,
-            Icon = "ghost"
-        })
-    else
-        if NoClipConnection then
-            NoClipConnection:Disconnect()
-            NoClipConnection = nil
-        end
-
-        local char = S.Players.LocalPlayer.Character
-        if char then
-            for _, part in ipairs(char:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = true
-                end
-            end
-        end
-        
-        WindUI:Notify({
-            Title = "NoClip",
-            Content = "NoClip desativado.",
-            Duration = 3,
-            Icon = "x"
-        })
-    end
-end
-
-------------------------------* Emotes Function *-------------------------------
-
-local emoteList = {
-
-    RockOut = 11753474067,
-    Bow = 13823324057,
-    Prayer = 114388371896974,
-    WallLean = 10714392876,
-    Greed = 507765000,
-    CryForMeOG = 106082149118126,
-    FFPushUp = 76988349893259,
-    FFDemonDance = 103961097096319,
-    NyaDance = 106516971471692,
-    BrazilianFunkFootwork = 140219184038687,
-    FrenchConfidence = 126275747804327,
-    AuraPose = 133418516499878,
-    VemCaNenem = 91032467964520,
-    LegendAuraFly = 101420028871528,
-    EmperorOfTheAuraverse = 119810104205917,
-    GhostFaceEmote = 99850116159145,
-    EndlessAuraFloating = 123349905320515,
-    ZeroTwoDanceV2 = 82682811348660,
-    Jumpstyledance = 112773902133223,
-    MASSIVEPOOP = 125329959146841,
-    PasinhoJamal = 100545872015841,
-    FeelingCute = 73161476966723,
-    SpiderJumpingAround = 70981302031949,
-    RaceCar = 72382226286301,
-    Possesed = 90708290447388,
-    HalloweenHeadlessEffortlessAura = 121812124134821,
-    invisibleMe = 126995783634131,
-    GojoFloating = 111383986305209,
-    SHAKE = 98719422024341,
-    IWANNARUNAWAY = 104428851742579,
-    TallScaryCreature = 130916388086314,
-    FFLOL = 98316145061745,
-    PainAndSuffering = 122319751392556,
-    PossessedGlitcher = 80103653497738,
-    Helicopter = 71527789940915,
-    SummonAFriend = 118979452794479,
-    Tank = 137814849942324,
-    SadSit = 100798804992348,
-    FFTheWalker = 121448822763616,
-    FFpiopio = 131858162905276,
-    HearMeNow = 88974065639269,
-    PassinhoBolsonaro = 96673018720208,
-    YNWallLean = 114388371896974,
-    SHAKETHATTHANG = 103461852463003,
-    StylishFloating = 112089880074848,
-    Gangnamstyle = 131104967711844,
-    sturdy = 132104757386824,
-    ObbyHead = 125176243437210,
-
-}
-
-local function getEmoteValues()
-    local values = {}
-    local sortedNames = {}
-    for name in pairs(emoteList) do
-        table.insert(sortedNames, name)
-    end
-    table.sort(sortedNames)
-    
-    for _, name in ipairs(sortedNames) do
-        table.insert(values, {Title = name})
-    end
-    return values
-end
-
-local function activateManualLoop(track)
-    if EmoteLoopConnection then EmoteLoopConnection:Disconnect() end
-    
-    EmoteLoopConnection = track.Stopped:Connect(function()
-        if LoopEmote and track == CurrentEmoteTrack then
-            track:Play()
-        else
-            EmoteLoopConnection:Disconnect()
-            EmoteLoopConnection = nil
-        end
-    end)
-end
-
-local emoteValues = getEmoteValues()
-
-
-------------------------------* FLING Function *-------------------------------
-local FlingTargetPlayer = nil
-local FlingPower = 1000
-
-local function Fling(targetPlayer, flingPower, direction)
-    flingPower = flingPower or 1000
-    direction = direction or Vector3.new(math.random(-1,1), 1, math.random(-1,1)).Unit * 50  -- Direção aleatória para cima
-    
-    if targetPlayer and targetPlayer.Character then
-        local humanoidRootPart = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-        local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-        
-        if humanoidRootPart and humanoid and humanoid.Health > 0 then
-            humanoid:ChangeState(Enum.HumanoidStateType.Physics)
-            humanoidRootPart.Velocity = direction * flingPower
-            task.wait(0.1)
-            humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-        end
-    end
-end
 
 -------------------------------* Temas *-------------------------------
 
@@ -1259,31 +259,31 @@ WindUI:AddTheme({
   Icon = Color3.fromHex("#f59e0b"),
 })
 
-------------------------------* Notificação *-------------------------------
+-------------------------------* Notificação *-------------------------------
 
  WindUI:Notify({
     Title = "Royal Hub - Aviso!",
     Content = "Script em desenvolvimento, funções podem quebrar com o decorrer do tempo.",
-    Duration = 6, -- 3 seconds
+    Duration = 6,
     Icon = "bug",
 })
-wait(1)
 
-WindUI:Notify({
-	Title = "Verificação",
-	Content = "Verificando usuario...",
-	Duration = 3,
-	Icon = "user"
-})
-wait(2)
-
-WindUI:Notify({
-	Title = "Register",
-	Content = "Usuario verificado com sucesso!, será necessario uma Key para usar a script caso não tenha usado alguma anteriormente.",
-	Duration = 3,
-	Ico = "bug"
-})
-wait(2)
+task.spawn(function()
+    task.wait(1)
+    WindUI:Notify({
+        Title = "Verificação",
+        Content = "Verificando usuario...",
+        Duration = 3,
+        Icon = "user"
+    })
+    task.wait(2)
+    WindUI:Notify({
+        Title = "Register",
+        Content = "Usuario verificado com sucesso!",
+        Duration = 3,
+        Icon = "check"
+    })
+end)
 
 -------------------------------* Janela principal *-------------------------------
 
@@ -1578,17 +578,17 @@ local SectionAimbot = TabHome:Section({
 
 local GrupoAimbot = SectionAimbot:Group({})
     
-GrupoAimbot:Toggle({ Title = "Aimbot comum", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.normal = enabled toggleAimbot("normal") end })
+GrupoAimbot:Toggle({ Title = "Aimbot comum", Default = false, Locked = false, Callback = function(enabled) _G.RH.AimbotEnabled.normal = enabled _G.RH.toggleAimbot("normal") end })
 
 GrupoAimbot:Space()
 
-GrupoAimbot:Toggle({ Title = "Aimbot rage", Default = false, Locked = false, Callback = function(enabled) AimbotEnabled.rage = enabled toggleAimbot("rage") end })
+GrupoAimbot:Toggle({ Title = "Aimbot rage", Default = false, Locked = false, Callback = function(enabled) _G.RH.AimbotEnabled.rage = enabled _G.RH.toggleAimbot("rage") end })
 
 SectionAimbot:Space()
 
-SectionAimbot:Toggle({ Title = "Ignorar Aliados (Team Check)", Default = true, Callback = function(enabled) UseTeamCheck = enabled WindUI:Notify({Title = "Team Check", Content = enabled and "Ligado" or "Desligado", Duration = 2}) end })
+SectionAimbot:Toggle({ Title = "Ignorar Aliados (Team Check)", Default = true, Callback = function(enabled) _G.RH.UseTeamCheck = enabled WindUI:Notify({Title = "Team Check", Content = enabled and "Ligado" or "Desligado", Duration = 2}) end })
 
-SectionAimbot:Toggle({ Title = "Wall Check (Ignorar Paredes)", Default = true, Callback = function(enabled) UseWallCheck = enabled WindUI:Notify({Title = "Wall Check", Content = enabled and "Ligado (só mira visível)" or "Desligado (mira através)", Duration = 2}) end })
+SectionAimbot:Toggle({ Title = "Wall Check (Ignorar Paredes)", Default = true, Callback = function(enabled) _G.RH.UseWallCheck = enabled WindUI:Notify({Title = "Wall Check", Content = enabled and "Ligado (só mira visível)" or "Desligado (mira através)", Duration = 2}) end })
 
 SectionAimbot:Space({ Columns = 1 })
 
@@ -1601,14 +601,14 @@ local ToggleESP = SectionAimbot:Toggle({
     LockedTitle = "Em desenvolvimento",
     Value = false, 
     Callback = function(state)
-		espEnabled = state
+		_G.RH.EspEnabled = state
     if state then
         for _, player in ipairs(S.Players:GetPlayers()) do
-            createESP(player)
+            _G.RH.toggleESP(player)
         end
         WindUI:Notify({Title = "ESP Ativado", Content = "Players destacados!", Duration = 3, Icon = "eye"})
     else
-        removeAllESP()  
+        function() _G.RH.toggleESP(false) end --()  
         WindUI:Notify({Title = "ESP Desativado", Content = "Removido.", Duration = 2, Icon = "x"})
     end
 end
@@ -1625,9 +625,9 @@ local ToggleEsp2 = SectionAimbot:Toggle({
     Value = false,
     Callback = function(state)
 
-        if state and espEnabled then
-            espEnabled = false
-            removeAllESP()
+        if state and _G.RH.EspEnabled then
+            _G.RH.EspEnabled = false
+            function() _G.RH.toggleESP(false) end --()
             ToggleESP:Set(false)
         end
 
@@ -1649,7 +649,7 @@ SectionAimbot:Toggle({
     Title = "Fake TP (Dodge)",
     Default = false,
     Callback = function(enabled)
-        toggleFakeTP(enabled)
+        _G.RH.toggleFakeTP(enabled)
     end
 })
 
@@ -1675,6 +675,143 @@ SectionAimbot:Slider({
 
 TabHome:Space({ Columns = 2 })
 
+local SectionCombat = TabHome:Section({
+    Title = "Combat",
+    Desc = "Silent Aim, Hit Prediction, Hitbox Expander e Auto Parry.",
+    Icon = "geist:crosshair",
+    TextSize = 19,
+    TextXAlignment = "Left",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
+    FontWeight = Enum.FontWeight.SemiBold,
+    DescFontWeight = Enum.FontWeight.Medium,
+    TextTransparency = 0.05,
+    DescTextTransparency = 0.4,
+})
+
+SectionCombat:Toggle({
+    Title = "Silent Aim",
+    Desc = "Acerta o alvo sem mover a câmera.",
+    Icon = "solar:eye-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.SilentAimEnabled = state
+        WindUI:Notify({
+            Title = "Silent Aim",
+            Content = state and "Ativado!" or "Desativado.",
+            Duration = 2,
+            Icon = state and "target" or "x"
+        })
+    end
+})
+
+SectionCombat:Dropdown({
+    Title = "Parte do Silent Aim",
+    Desc = "Qual parte do corpo mira.",
+    Values = {
+        {Title = "HumanoidRootPart"},
+        {Title = "Head"},
+        {Title = "UpperTorso"},
+    },
+    Value = "HumanoidRootPart",
+    Callback = function(option)
+        _G.RH.SilentAimPart = option.Title
+    end
+})
+
+SectionCombat:Space({Columns = 1})
+
+SectionCombat:Toggle({
+    Title = "Hit Prediction",
+    Desc = "Compensa o lag prevendo a posição do alvo.",
+    Icon = "solar:clock-circle-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.HitPredEnabled = state
+        WindUI:Notify({
+            Title = "Hit Prediction",
+            Content = state and "Ativado!" or "Desativado.",
+            Duration = 2,
+            Icon = state and "check" or "x"
+        })
+    end
+})
+
+SectionCombat:Slider({
+    Title = "Fator de Predição",
+    Desc = "Quanto maior, mais à frente mira (1.0 = 100% do ping).",
+    Step = 0.1,
+    Value = {Min = 0.1, Max = 3.0, Default = 1.0},
+    Callback = function(value)
+        _G.RH.PredictionAmount = value
+    end
+})
+
+SectionCombat:Space({Columns = 1})
+
+SectionCombat:Toggle({
+    Title = "Hitbox Expander",
+    Desc = "Expande a hitbox dos jogadores para facilitar acertos.",
+    Icon = "geist:box",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleHitbox(state)
+    end
+})
+
+SectionCombat:Slider({
+    Title = "Tamanho da Hitbox",
+    Desc = "Em studs. Padrão = 4.",
+    Step = 1,
+    Value = {Min = 4, Max = 30, Default = 8},
+    Callback = function(value)
+        _G.RH.HitboxSize = value
+        if HitboxEnabled then
+            removeHitboxes()
+            applyHitboxes()
+        end
+    end
+})
+
+SectionCombat:Space({Columns = 1})
+
+SectionCombat:Toggle({
+    Title = "Auto Parry",
+    Desc = "Aperta a tecla de parry automaticamente quando inimigo está próximo.",
+    Icon = "solar:shield-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleAutoParry(state)
+    end
+})
+
+SectionCombat:Dropdown({
+    Title = "Tecla de Parry",
+    Desc = "Tecla que o jogo usa para parry.",
+    Values = {
+        {Title = "Q"},
+        {Title = "F"},
+        {Title = "E"},
+        {Title = "R"},
+        {Title = "LeftControl"},
+    },
+    Value = "Q",
+    Callback = function(option)
+        _G.RH.AutoParryKey = Enum.KeyCode[option.Title]
+        if AutoParryEnabled then _G.RH.toggleAutoParry(true) end
+    end
+})
+
+SectionCombat:Slider({
+    Title = "Distância do Auto Parry",
+    Desc = "Distância máxima (studs) para ativar o parry.",
+    Step = 1,
+    Value = {Min = 5, Max = 30, Default = 12},
+    Callback = function(value)
+        _G.RH.AutoParryDist = value
+    end
+})
 -------------------------------* Section Visuals *-------------------------------
 local SectionView = TabHome:Section({
     Title = "Visual",
@@ -1698,8 +835,8 @@ local SelectPlayerToView = SectionView:Dropdown({
     Desc = "Seleciona o player para aplicar as modificações visuais.",
     Locked = false,
     LockedTitle = "Em desenvolvimento.",
-    Values = playerValues,
-    Value = playerValues[0],
+    Values = _G.RH.playerValues,
+    Default = nil,
     Callback = function(option)
         SelectedPlayerToView = Players:FindFirstChild(option.Title)
         print("Selecionado:", option.Title)
@@ -1734,7 +871,95 @@ local ToggleNoclip = SectionView:Toggle({
     LockedTitle = "Em desenvolvimento.",
     Value = false, 
     Callback = function(state)
-        toggleNoClip(state)
+        _G.RH.toggleNoClip(state)
+    end
+})
+
+SectionView:Space({ Columns = 1 })
+
+SectionView:Toggle({
+    Title = "Fullbright",
+    Desc = "Remove toda escuridão do mapa — visão perfeita.",
+    Icon = "solar:sun-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleFullbright(state)
+    end
+})
+
+SectionView:Space({ Columns = 1 })
+
+SectionView:Toggle({
+    Title = "Xray",
+    Desc = "Jogadores ficam visíveis através das paredes.",
+    Icon = "solar:eye-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleXray(state)
+    end
+})
+
+SectionView:Space({ Columns = 1 })
+
+SectionView:Toggle({
+    Title = "Hover Name",
+    Desc = "Mostra nome e display name acima de todos os jogadores.",
+    Icon = "solar:user-id-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleHoverName(state)
+    end
+})
+
+SectionView:Space({ Columns = 1 })
+
+SectionView:Toggle({
+    Title = "No Fog",
+    Desc = "Remove a névoa do ambiente.",
+    Icon = "solar:cloud-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleNoFog(state)
+    end
+})
+
+SectionView:Space({ Columns = 1 })
+
+SectionView:Toggle({
+    Title = "Freecam",
+    Desc = "Câmera livre. WASD = mover | Q/E = subir/descer | Btn direito + arrastar = girar.",
+    Icon = "solar:camera-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleFreecam(state)
+    end
+})
+
+SectionView:Slider({
+    Title = "Velocidade Freecam",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 0.5,
+    Value = {
+        Min = 0.5,
+        Max = 10,
+        Default = 1,
+    },
+    Callback = function(value)
+        _G.RH.FreecamSpeed = value
+    end
+})
+
+SectionView:Space({ Columns = 1 })
+
+SectionView:Toggle({
+    Title = "Click Teleport",
+    Desc = "Clique no chão para teleportar até o cursor.",
+    Icon = "solar:cursor-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleClickTP(state)
     end
 })
 
@@ -1879,7 +1104,6 @@ local AutoBuySelectItem = SectionLoja:Dropdown({
         print("Selecionado:", option.Title)
     end
 })
-
 local AutoBuyToggle = SectionLoja:Toggle({
     Title = "Ativar Auto Buy",
     Desc = "Ativa a compra automática do item selecionado acima.",
@@ -1933,7 +1157,7 @@ ButtonBypass = SectionConfig:Button({
         Locked = false,
          Callback = function()
             ButtonBypass:Highlight()
-			wait(2)
+			task.wait(2)
             NotifySound:Play()
             WindUI:Notify({
                 Title = "Aviso!",
@@ -2127,13 +1351,13 @@ SectionKeyBinds:Keybind({
     Flag = "aimbot_comum_keybind",
     Value = "K", 
     Callback = function(key)
-        AimbotEnabled.normal = not AimbotEnabled.normal
-        toggleAimbot("normal")
+        _G.RH.AimbotEnabled.normal = not _G.RH.AimbotEnabled.normal
+        _G.RH.toggleAimbot("normal")
         WindUI:Notify({
             Title = "Aimbot Comum",
-            Content = AimbotEnabled.normal and "Ativado!" or "Desativado!",
+            Content = _G.RH.AimbotEnabled.normal and "Ativado!" or "Desativado!",
             Duration = 2,
-            Icon = AimbotEnabled.normal and "target" or "x"
+            Icon = _G.RH.AimbotEnabled.normal and "target" or "x"
         })
         print("Aimbot Comum toggled via keybind:", key)
     end
@@ -2147,13 +1371,13 @@ SectionKeyBinds:Keybind({
     Flag = "aimbot_rage_keybind",
     Value = "L",
     Callback = function(key)
-        AimbotEnabled.rage = not AimbotEnabled.rage
-        toggleAimbot("rage")
+        _G.RH.AimbotEnabled.rage = not _G.RH.AimbotEnabled.rage
+        _G.RH.toggleAimbot("rage")
         WindUI:Notify({
             Title = "Aimbot Rage",
-            Content = AimbotEnabled.rage and "Ativado!" or "Desativado!",
+            Content = _G.RH.AimbotEnabled.rage and "Ativado!" or "Desativado!",
             Duration = 2,
-            Icon = AimbotEnabled.rage and "target" or "x"
+            Icon = _G.RH.AimbotEnabled.rage and "target" or "x"
         })
         print("Aimbot Rage toggled via keybind:", key)
     end
@@ -2167,15 +1391,14 @@ SectionKeyBinds:Keybind({
     Flag = "esp_keybind",
     Value = "E",
     Callback = function(key)
-        espEnabled = not espEnabled
-        if espEnabled then
+        _G.RH.EspEnabled = not _G.RH.EspEnabled
+        if _G.RH.EspEnabled then
             for _, player in ipairs(S.Players:GetPlayers()) do
-                createESP(player)
+                _G.RH.toggleESP(player)
             end
             WindUI:Notify({Title = "ESP", Content = "Ativado!", Duration = 2, Icon = "eye"})
         else
-            removeAllESP()
-           -- WindUI:Notify({Title = "ESP", Content = "Desativado!", Duration = 2, Icon = "x"})
+            function() _G.RH.toggleESP(false) end --()
         end
         print("ESP toggled via keybind:", key)
     end
@@ -2189,7 +1412,7 @@ SectionKeyBinds:Keybind({
     Flag = "fly_keybind",
     Value = "F",
     Callback = function(key)
-        toggleFly(not FlyEnabled)
+        _G.RH.toggleFly(not _G.RH.FlyEnabled)
         print("Fly toggled via keybind:", key)
     end
 })
@@ -2202,7 +1425,7 @@ SectionKeyBinds:Keybind({
     Flag = "spin_keybind",
     Value = "G",
     Callback = function(key)
-        toggleSpin(not SpinEnabled)
+        _G.RH.toggleSpin(not _G.RH.SpinEnabled)
         print("Spin toggled via keybind:", key)
     end
 })
@@ -2215,7 +1438,7 @@ SectionKeyBinds:Keybind({
     Flag = "looptp_keybind",
     Value = "T",
     Callback = function(key)
-        toggleLoopTP(not LoopTPEnabled)
+        _G.RH.toggleLoopTP(not LoopTPEnabled)
         print("Loop TP toggled via keybind:", key)
     end
 })
@@ -2275,7 +1498,7 @@ local SliderVelocidade = TabPersonagem:Slider({
         Default = 20,
     },
     Callback = function(value)
-		setSpeed(value)
+		_G.RH.setSpeed(value)
         print("Velocidade alterada para:", value)
     end
 })
@@ -2293,7 +1516,7 @@ local SliderJump = TabPersonagem:Slider({
 		Default = 20,
 	},
 	Callback = function(value)
-		setJumpPower(value)
+		_G.RH.setJumpPower(value)
 		print("Valor do pulo alterado para:", value)
 	end
 })
@@ -2308,7 +1531,7 @@ local FlyToggle = TabPersonagem:Toggle({
     LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
-        toggleFly(state)
+        _G.RH.toggleFly(state)
     end
 })
 
@@ -2321,8 +1544,8 @@ local SliderFlySpeed = TabPersonagem:Slider({
     Step = 5,
     Value = { Min = 20, Max = 200, Default = 50 },
     Callback = function(value)
-        FlySpeed = value
-        if FlyEnabled and FlyBodyVelocity then
+        _G.RH.FlySpeed = value
+        if _G.RH.FlyEnabled and FlyBodyVelocity then
             FlyBodyVelocity.Velocity = FlyBodyVelocity.Velocity.Unit * value
         end
     end
@@ -2349,7 +1572,7 @@ local SliderGravity = TabPersonagem:Slider({
         Default = 196.2,
     },
     Callback = function(value)
-        setGravity(value)
+        _G.RH.setGravity(value)
         print("Gravidade alterada para:", value)
     end
 })
@@ -2360,7 +1583,7 @@ ResetGravity = TabPersonagem:Button({
         Locked = false,
 		LockedTitle = "Em desenvolvimento.",
         Callback = function()
-            setGravity(196.2)
+            _G.RH.setGravity(196.2)
             ResetGravity:Highlight()
             WindUI:Notify({
                 Title = "Gravidade resetada!",
@@ -2374,6 +1597,111 @@ ResetGravity = TabPersonagem:Button({
 
 
 TabPersonagem:Space({ Columns = 2 })
+
+TabPersonagem:Space({Columns = 2})
+
+local SectionMov2 = TabPersonagem:Section({
+    Title = "Proteção",
+    TextSize = 20,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
+
+SectionMov2:Toggle({
+    Title = "Anti-Ragdoll",
+    Desc = "Impede o personagem de cair/ragdoll.",
+    Icon = "solar:shield-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleAntiRagdoll(state)
+    end
+})
+
+SectionMov2:Space({ Columns = 1 })
+
+SectionMov2:Toggle({
+    Title = "God Mode",
+    Desc = "HP infinito — não morre.",
+    Icon = "solar:shield-star-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleGod(state)
+    end
+})
+
+SectionMov2:Space({ Columns = 1 })
+
+SectionMov2:Toggle({
+    Title = "Anti-AFK",
+    Desc = "Previne kick automático por inatividade.",
+    Icon = "solar:clock-circle-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleAntiAFK(state)
+    end
+})
+
+TabPersonagem:Space({ Columns = 2 })
+
+local SectionPlayerMods = TabPersonagem:Section({
+    Title = "Modificações",
+    TextSize = 20,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
+
+SectionPlayerMods:Toggle({
+    Title = "Invisible",
+    Desc = "Torna seu personagem invisível localmente.",
+    Icon = "solar:eye-closed-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleInvisible(state)
+    end
+})
+
+SectionPlayerMods:Space({ Columns = 1 })
+
+SectionPlayerMods:Toggle({
+    Title = "Infinite Jump",
+    Desc = "Permite pular infinitamente no ar.",
+    Icon = "solar:arrow-up-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleInfJump(state)
+    end
+})
+
+SectionPlayerMods:Space({ Columns = 1 })
+
+SectionPlayerMods:Toggle({
+    Title = "Freeze",
+    Desc = "Âncora seu personagem no lugar.",
+    Icon = "solar:snowflake-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleFreeze(state)
+    end
+})
+
+SectionPlayerMods:Space({ Columns = 1 })
+
+SectionPlayerMods:Slider({
+    Title = "Head Size",
+    Desc = "Tamanho da cabeça do personagem.",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 0.1,
+    Value = {
+        Min = 0.1,
+        Max = 5,
+        Default = 1,
+    },
+    Callback = function(value)
+        _G.RH.setHeadSize(value)
+    end
+})
+
+TabPersonagem:Space({ Columns = 1 })
 
 TabPersonagem:Section({
     Title = "Outros",
@@ -2402,11 +1730,11 @@ local SectionTP = TabTeleport:Section({
 local DropDownPlayersTP = SectionTP:Dropdown({
 	Title = "Teleportar até jogador",
     Desc = "Teleporta até o jogador selecionado",
-    Values = playerValues,
-    Value = playerValues[0],
+    Values = _G.RH.playerValues,
+    Default = nil,
     Callback = function(option)
-		LoopTPTargetName = option.Title
-        TeleporteToPlayer(option.Title)
+		_G.RH.LoopTPTarget = option.Title
+        _G.RH.tpToPlayerName(option.Title)
         print("Selecionado:", option.Title)
         print("Player:", option.Player)
     end
@@ -2422,7 +1750,7 @@ local LoopTP = SectionTP:Toggle({
 	LockedTitle = "Em desenvolvimento.",
 	Value = false,
 	Callback = function(state)
-        toggleLoopTP(state)
+        _G.RH.toggleLoopTP(state)
 		print("Em desenvolvimento.")	
 	end
 })
@@ -2442,7 +1770,7 @@ local SliderLoopDelay = SectionTP:Slider({
         Default = 1,
     },
     Callback = function(value)
-        LoopTPDelay = value
+        _G.RH.LoopTPDelay = value
         WindUI:Notify({
             Title = "Loop TP Delay",
             Content = "Atualizado para " .. value .. " segundos",
@@ -2514,7 +1842,7 @@ local ButtonRejoin = SectionMisc:Button({
     Locked = false,
     LockedTitle = "Em desenvolvimento.",
     Callback = function()
-        RejoinServer()
+        _G.RH.rejoinServer()
         print("Rejoining...")
     end
 })
@@ -2527,7 +1855,7 @@ local ButtonServerHop = SectionMisc:Button({
     Locked = false,
     LockedTitle = "Em desenvolvimento.",
     Callback = function()
-        ServerHop()
+        _G.RH.serverHop()
         print("Server Hopping...")
     end
 })
@@ -2576,18 +1904,18 @@ local SectionExploits = TabMisc:Section({
 
 local DropdownSelectPlayerFling = SectionExploits:Dropdown({
     Title = "Selecione Jogador",
-    Values = playerValues,
+    Values = _G.RH.playerValues,
     Locked = false,
     LockedTitle = "Em manutenção.",
     Multi = false,
     Default = nil,
     Callback = function(selected)
-       FlingTargetPlayer = selected.Player
+       _G.RH.FlingTarget = selected.Player
     end
 })
 
 local SliderFling = SectionExploits:Slider({
-    Title = "Fling Power",
+    Title = "_G.RH.flingPlayer Power",
     Locked = true,
     LockedTitle = "Em desenvolvimento.",
     IsTooltip = true,
@@ -2605,20 +1933,20 @@ local SliderFling = SectionExploits:Slider({
 })
 
 local LoopFling = SectionExploits:Toggle({
-    Title = "Loop Fling",
+    Title = "Loop _G.RH.flingPlayer",
     Locked = true,
     LockedTitle = "Em desenvolvimento",
     Default = false,
     Callback = function(enabled)
         LoopFlingEnabled = enabled
         if enabled then
-            if not FlingTargetPlayer then
+            if not _G.RH.FlingTarget then
                 WindUI:Notify({Title = "Erro", Content = "Selecione um alvo!", Duration = 3})
                 return false
             end
             LoopFlingConnection = S.Run.Heartbeat:Connect(function()
                 if LoopFlingEnabled then
-                    Fling(FlingTargetPlayer, FlingPower)
+                    _G.RH.flingPlayer(_G.RH.FlingTarget, FlingPower)
                 end
             end)
         else
@@ -2631,18 +1959,18 @@ local LoopFling = SectionExploits:Toggle({
 })
 
 local flingButton = SectionExploits:Button({
-    Title = "Fling Player",
+    Title = "_G.RH.flingPlayer Player",
     Locked = true,
     LockedTitle = "Em desenvolvimento.",
     Desc = "Faz o jogador selecionado voar pelo mapa.",
     Locked = false,
     LockedTitle = "Em manutenção.",
     Callback = function()
-        if FlingTargetPlayer then
-            Fling(FlingTargetPlayer, FlingPower)
+        if _G.RH.FlingTarget then
+            _G.RH.flingPlayer(_G.RH.FlingTarget, FlingPower)
             WindUI:Notify({
-                Title = "Fling",
-                Content = "Arremessado: " .. FlingTargetPlayer.Name,
+                Title = "_G.RH.flingPlayer",
+                Content = "Arremessado: " .. _G.RH.FlingTarget.Name,
                 Duration = 3,
                 Icon = "wind"
             })
@@ -2666,7 +1994,7 @@ local spyToggle = SectionExploits:Toggle({
     LockedTitle = "Em manutenção.",
     Icon = "solar:eye-bold",
     Value = false,
-    Callback = toggleSpyChat
+    Callback = function(s) end --
 })
 
 
@@ -2693,7 +2021,7 @@ local ToggleSpin = SectionFun:Toggle({
     LockedTitle = "Em desenvolvimento.",
     Value = false,
     Callback = function(state)
-        toggleSpin(state)
+        _G.RH.toggleSpin(state)
         print("Spin toggled:", state)
     end
 })
@@ -2702,18 +2030,18 @@ SectionFun:Space({ Columns = 1 })
 
 local orbitDropdown = SectionFun:Dropdown({
     Title = "Selecione Jogador",
-    Values = playerValues,  -- Use o mesmo playerValues do seu script
+    Values = _G.RH.playerValues, 
     Multi = false,
     Default = nil,
     Callback = function(selected)
-        OrbitTargetName = selected.Title  -- Ou selected.Player.Name
+        _G.RH.OrbitTarget = selected.Title 
     end
 })
 
 local orbitToggle = SectionFun:Toggle({
     Title = "Ativar Orbit",
     Default = false,
-    Callback = toggleOrbit
+    Callback = _G.RH.toggleOrbit
 })
 
 
@@ -2728,7 +2056,7 @@ local orbitSlider = SectionFun:Slider({
     Max = 10,
     Default = 1,
     },
-    Callback = setOrbitSpeed
+    Callback = function(v) _G.RH._G.RH.OrbitSpeed=v end --
 })
 
 SectionFun:Space({ Columns = 1 })
@@ -2772,7 +2100,7 @@ local PlayAudio = SectionFun:Button({
     locked = true,
     LockedTitle = "Em manutenção.",
     Callback = function()
-        playGlobalAudioRemote(currentAudio, currentVolume)
+        function() end --(currentAudio, currentVolume)
         game:GetService("ReplicatedStorage").Remotes:FindFirstChild("BuyMusicPass"):FireServer()  -- Tenta bypass (pode não funcionar)
     end
 })
@@ -2782,11 +2110,11 @@ SectionFun:Space({ Columns = 1 })
 local EmoteDropdown = SectionFun:Dropdown({
     Title = "Selecione Emote",
     Desc = "Emotes disponíveis (mesmo sem ter na conta).",
-    Values = emoteValues,
+    Values = _G.RH.emoteValues,
     Multi = false,
     Default = nil,
     Callback = function(selected)
-        SelectedEmote = selected.Title
+        _G.RH.SelectedEmote = selected.Title
     end
 })
 
@@ -2796,22 +2124,22 @@ local emoteLoopToggle = SectionFun:Toggle({
     Icon = "solar:repeat-bold",
     Value = false,
     Callback = function(state)
-        LoopEmote = state
+        _G.RH.LoopEmote = state
         
-        if CurrentEmoteTrack and CurrentEmoteTrack.IsPlaying then
+        if _G.RH.CurrentEmoteTrack and _G.RH.CurrentEmoteTrack.IsPlaying then
             if state then
 
-                if not EmoteLoopConnection then
-                    activateManualLoop(CurrentEmoteTrack)
+                if not _G.RH.EmoteLoopConn then
+                    _G.RH.activateManualLoop(_G.RH.CurrentEmoteTrack)
                 end
             else
 
-                if EmoteLoopConnection then
-                    EmoteLoopConnection:Disconnect()
-                    EmoteLoopConnection = nil
+                if _G.RH.EmoteLoopConn then
+                    _G.RH.EmoteLoopConn:Disconnect()
+                    _G.RH.EmoteLoopConn = nil
                 end
-                CurrentEmoteTrack:Stop()
-                CurrentEmoteTrack = nil
+                _G.RH.CurrentEmoteTrack:Stop()
+                _G.RH.CurrentEmoteTrack = nil
             end
         end
         
@@ -2831,7 +2159,7 @@ local EmoteStart = SectionFun:Button({
     Desc = "Executa o emote selecionado.",
     Icon = "solar:emoji-funny-square-bold",
     Callback = function()
-        if not SelectedEmote then
+        if not _G.RH.SelectedEmote then
             WindUI:Notify({
                 Title = "Emote",
                 Content = "Selecione um emote primeiro!",
@@ -2841,7 +2169,7 @@ local EmoteStart = SectionFun:Button({
             return
         end
         
-        local emoteID = emoteList[SelectedEmote]
+        local emoteID = _G.RH.emoteList[_G.RH.SelectedEmote]
         if not emoteID then return end
         
         local localPlayer = S.Players.LocalPlayer
@@ -2854,13 +2182,13 @@ local EmoteStart = SectionFun:Button({
         local animator = humanoid:FindFirstChildOfClass("Animator")
         if not animator then return end
         
-        if CurrentEmoteTrack then
-            CurrentEmoteTrack:Stop()
-            CurrentEmoteTrack = nil
+        if _G.RH.CurrentEmoteTrack then
+            _G.RH.CurrentEmoteTrack:Stop()
+            _G.RH.CurrentEmoteTrack = nil
         end
-        if EmoteLoopConnection then
-            EmoteLoopConnection:Disconnect()
-            EmoteLoopConnection = nil
+        if _G.RH.EmoteLoopConn then
+            _G.RH.EmoteLoopConn:Disconnect()
+            _G.RH.EmoteLoopConn = nil
         end
         
         local success, track = pcall(function()
@@ -2876,29 +2204,29 @@ local EmoteStart = SectionFun:Button({
         if not success or not track then
             WindUI:Notify({
                 Title = "Emote",
-                Content = "Falha ao carregar " .. SelectedEmote .. "! ID inválido.",
+                Content = "Falha ao carregar " .. _G.RH.SelectedEmote .. "! ID inválido.",
                 Duration = 5,
                 Icon = "alert-circle"
             })
             return
         end
         
-        CurrentEmoteTrack = track
+        _G.RH.CurrentEmoteTrack = track
         
-        if LoopEmote then
-            activateManualLoop(track)
+        if _G.RH.LoopEmote then
+            _G.RH.activateManualLoop(track)
         else
 
             track.Stopped:Connect(function()
-                if track == CurrentEmoteTrack then
-                    CurrentEmoteTrack = nil
+                if track == _G.RH.CurrentEmoteTrack then
+                    _G.RH.CurrentEmoteTrack = nil
                 end
             end)
         end
         
         WindUI:Notify({
             Title = "Emote",
-            Content = "Tocando " .. SelectedEmote .. (LoopEmote and " em LOOP INFINITO!" or "!"),
+            Content = "Tocando " .. _G.RH.SelectedEmote .. (_G.RH.LoopEmote and " em LOOP INFINITO!" or "!"),
             Duration = 3,
             Icon = "smile"
         })
@@ -2910,15 +2238,15 @@ local emoteStopButton = SectionFun:Button({
     Desc = "Interrompe o emote atual.",
     Icon = "solar:stop-bold", 
     Callback = function()
-       if CurrentEmoteTrack then
-            CurrentEmoteTrack:Stop()
-            CurrentEmoteTrack = nil
+       if _G.RH.CurrentEmoteTrack then
+            _G.RH.CurrentEmoteTrack:Stop()
+            _G.RH.CurrentEmoteTrack = nil
         end
-        if EmoteLoopConnection then
-            EmoteLoopConnection:Disconnect()
-            EmoteLoopConnection = nil
+        if _G.RH.EmoteLoopConn then
+            _G.RH.EmoteLoopConn:Disconnect()
+            _G.RH.EmoteLoopConn = nil
         end
-        LoopEmote = false
+        _G.RH.LoopEmote = false
         emoteLoopToggle:Set(false)
         WindUI:Notify({
             Title = "Emote",
@@ -2926,6 +2254,225 @@ local emoteStopButton = SectionFun:Button({
             Duration = 3,
             Icon = "x"
         })
+    end
+})
+
+local SectionPvP = TabMisc:Section({
+    Title = "PvP / Combate",
+    Desc = "Kill Aura, Reach, Bring e TP.",
+    Icon = "solar:danger-bold",
+    IconColor = Color3.fromRGB(220, 50, 50),
+    TextSize = 19,
+    TextXAlignment = "Left",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
+    FontWeight = Enum.FontWeight.SemiBold,
+    DescFontWeight = Enum.FontWeight.Medium,
+    TextTransparency = 0.05,
+    DescTextTransparency = 0.4,
+})
+
+SectionPvP:Toggle({
+    Title = "Kill Aura",
+    Desc = "Mata automaticamente qualquer jogador próximo.",
+    Icon = "solar:danger-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleKillAura(state)
+    end
+})
+
+SectionPvP:Slider({
+    Title = "Range Kill Aura",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 1,
+    Value = {
+        Min = 5,
+        Max = 100,
+        Default = 15,
+    },
+    Callback = function(value)
+        _G.RH.KillAuraRange = value
+    end
+})
+
+SectionPvP:Space({ Columns = 1 })
+
+SectionPvP:Toggle({
+    Title = "Reach Expander",
+    Desc = "Expande o alcance de ferramentas/armas.",
+    Icon = "solar:cursor-bold",
+    Value = false,
+    Callback = function(state)
+        _G.RH.toggleReach(state)
+    end
+})
+
+SectionPvP:Slider({
+    Title = "Tamanho Reach",
+    IsTooltip = true,
+    IsTextbox = false,
+    Width = 200,
+    Step = 1,
+    Value = {
+        Min = 2,
+        Max = 50,
+        Default = 10,
+    },
+    Callback = function(value)
+        _G.RH.ReachSize = value
+        if ReachEnabled then _G.RH.toggleReach(true, value) end
+    end
+})
+
+SectionPvP:Space({ Columns = 1 })
+
+local _pvpTargetName = nil
+
+SectionPvP:Dropdown({
+    Title = "Selecionar Jogador",
+    Desc = "Alvo para Bring ou TP.",
+    Values = _G.RH.playerValues,
+    Multi = false,
+    Default = nil,
+    Callback = function(option)
+        if option then _pvpTargetName = option.Title end
+    end
+})
+
+SectionPvP:Space({ Columns = 1 })
+
+SectionPvP:Button({
+    Title = "Bring Player",
+    Desc = "Traz o jogador selecionado até você.",
+    Icon = "solar:user-plus-bold",
+    Callback = function()
+        if _pvpTargetName then _G.RH.bringPlayer(_pvpTargetName)
+        else WindUI:Notify({Title="Bring", Content="Selecione um jogador!", Duration=3, Icon="alert-circle"}) end
+    end
+})
+
+SectionPvP:Space({ Columns = 1 })
+
+SectionPvP:Button({
+    Title = "TP to Player",
+    Desc = "Teleporta você até o jogador selecionado.",
+    Icon = "solar:map-arrow-right-bold",
+    Callback = function()
+        if _pvpTargetName then _G.RH.tpToPlayerName(_pvpTargetName)
+        else WindUI:Notify({Title="TP", Content="Selecione um jogador!", Duration=3, Icon="alert-circle"}) end
+    end
+})
+
+TabMisc:Space({ Columns = 1 })
+
+local SectionUtility = TabMisc:Section({
+    Title = "Utilidades",
+    Desc = "Copy Player, Anti-Kick e Remote Spy.",
+    Icon = "solar:settings-bold",
+    IconColor = Color3.fromRGB(100, 100, 255),
+    TextSize = 19,
+    TextXAlignment = "Left",
+    Box = true,
+    BoxBorder = true,
+    Opened = true,
+    FontWeight = Enum.FontWeight.SemiBold,
+    DescFontWeight = Enum.FontWeight.Medium,
+    TextTransparency = 0.05,
+    DescTextTransparency = 0.4,
+})
+
+-- Copy Player
+SectionUtility:Dropdown({
+    Title = "Copy Player — Selecionar",
+    Desc = "Selecione o jogador para copiar o visual.",
+    Values = _G.RH.playerValues,
+    Default = nil,
+    Callback = function(option)
+        _G.RH.CopyTarget = S.Players:FindFirstChild(option.Title)
+    end
+})
+
+SectionUtility:Button({
+    Title = "Copiar Visual",
+    Desc = "Copia o outfit do jogador selecionado.",
+    Icon = "solar:user-bold",
+    Callback = function()
+        _G.RH.copyPlayerLook(_G.RH.CopyTarget)
+    end
+})
+
+SectionUtility:Space({Columns = 1})
+
+-- Anti-Kick
+SectionUtility:Toggle({
+    Title = "Anti-Kick",
+    Desc = "Bloqueia tentativas de kick do servidor.",
+    Icon = "solar:shield-check-bold",
+    Value = false,
+    Callback = function(state)
+        AntiKickEnabled = state
+        WindUI:Notify({
+            Title = "Anti-Kick",
+            Content = state and "Ativado!" or "Desativado.",
+            Duration = 2,
+            Icon = state and "shield" or "x"
+        })
+    end
+})
+
+SectionUtility:Space({Columns = 1})
+
+-- Remote Spy
+SectionUtility:Toggle({
+    Title = "Remote Spy",
+    Desc = "Loga todos os RemoteEvents disparados no console.",
+    Icon = "solar:eye-bold",
+    Value = false,
+    Callback = function(state)
+        RemoteSpyEnabled = state
+        if state then RemoteLogs = {} end
+        WindUI:Notify({
+            Title = "Remote Spy",
+            Content = state and "Logando remotes no console..." or "Parado.",
+            Duration = 2,
+            Icon = state and "eye" or "x"
+        })
+    end
+})
+
+SectionUtility:Button({
+    Title = "Copiar Logs",
+    Desc = "Copia todos os remotes capturados para a área de transferência.",
+    Icon = "solar:copy-bold",
+    Callback = function()
+        if #RemoteLogs == 0 then
+            WindUI:Notify({Title = "Remote Spy", Content = "Nenhum log capturado ainda.", Duration = 3, Icon = "alert-circle"})
+            return
+        end
+        local lines = {}
+        for _, entry in ipairs(RemoteLogs) do
+            table.insert(lines, string.format("[%.2fs] %s", entry.t, entry.text))
+        end
+        pcall(function() setclipboard(table.concat(lines, "\n")) end)
+        WindUI:Notify({
+            Title = "Remote Spy",
+            Content = #RemoteLogs .. " logs copiados!",
+            Duration = 3,
+            Icon = "check"
+        })
+    end
+})
+
+SectionUtility:Button({
+    Title = "Limpar Logs",
+    Icon = "solar:trash-bin-trash-bold",
+    Callback = function()
+        RemoteLogs = {}
+        WindUI:Notify({Title = "Remote Spy", Content = "Logs limpos.", Duration = 2, Icon = "trash"})
     end
 })
 
@@ -3178,6 +2725,7 @@ local DevParagraph = TabInfo:Paragraph({
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EodraxkkRounded.png",
     ImageSize = 60,
+
     Locked = false,
 })
 
@@ -3189,6 +2737,7 @@ local DevParagraph2 = TabInfo:Paragraph({
     Color = "Grey",
     Image = "https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/assets/Devs%20icon/EinzbernRounded.png",
     ImageSize = 60,
+
     Locked = false,
 })
 
@@ -3200,6 +2749,7 @@ local ParagraphLink = TabInfo:Paragraph({
     Color = "Grey",
     Image = "geist:logo-discord",
     ImageSize = 40,
+
     Locked = false,
     Buttons = {
         {

@@ -168,7 +168,7 @@ local ButtonEnglish = SectionLanguage:Button({
     Icon = "arrow-right",
     Variant = "Primary",
     Callback = function()
-        WindUI:Localization():SetLanguage("en")
+        WindUI:SetLanguage("en")
     end
 })
 
