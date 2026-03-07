@@ -10,13 +10,6 @@ pcall(function()
     end
 end)
 
-local savedLang = "pt-br"
-pcall(function()
-    if isfile("RoyalHub/lang.txt") then
-        savedLang = readfile("RoyalHub/lang.txt")
-    end
-end)
-
 local Localization = WindUI:Localization({
     Enabled = true,
     Prefix = "loc:",
