@@ -3,12 +3,7 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 WindUI:SetNotificationLower(true)
 --*updated
 
-local savedLang = "en"
-pcall(function()
-    if isfile("RoyalHub/lang.txt") then
-        savedLang = readfile("RoyalHub/lang.txt")
-    end
-end)
+local savedLang = _G.RoyalHubLang or "pt-br"
 
 local Localization = WindUI:Localization({
     Enabled = true,

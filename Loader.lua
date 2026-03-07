@@ -141,13 +141,7 @@ local ButtonExecute = SectionLoader:Button({
     Variant = "Primary",
     Highlight = true,
     Callback = function()
-        -- Salva o idioma selecionado antes de executar o Source
-        pcall(function()
-            if not isfolder("RoyalHub") then
-                makefolder("RoyalHub")
-            end
-            writefile("RoyalHub/lang.txt", selectedLang)
-        end)
+         _G.RoyalHubLang = selectedLang  -- ← salva na global
 
         loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua"))()
         NotifySound:Play()
