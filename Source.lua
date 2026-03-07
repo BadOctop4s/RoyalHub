@@ -1131,6 +1131,184 @@ local function toggleXray(enabled)
     if not enabled then XrayOriginals = {} end
     WindUI:Notify({Title = "Xray", Content = enabled and "Ativado!" or "Desativado.", Duration = 2, Icon = "solar:eye-bold"})
 end
+
+-------------------------------* Copy Player Look *-------------------------------
+
+local function copyPlayerLook(target)
+    if not target then notify("Copy Player","Selecione um jogador!",3,"alert-circle") return end
+    local ok, desc = pcall(function() return S.Players:GetHumanoidDescriptionFromUserId(target.UserId) end)
+    if not ok then notify("Copy Player","Erro ao buscar visual!",3,"x") return end
+    local char = LP.Character
+    local hum  = char and char:FindFirstChildOfClass("Humanoid")
+    if not hum then return end
+    local ok2, err = pcall(function() hum:ApplyDescription(desc) end)
+    if ok2 then notify("Copy Player","Visual de "..target.Name.." copiado!",3,"solar:check-bold")
+    else notify("Copy Player","Falhou: "..tostring(err),4,"x") end
+end
+
+
+---------------------------------* Freecam Function *-------------------------------
+
+local function toggleFreecam(enabled)
+    FreecamEnabled = enabled
+    local cam = workspace.CurrentCamera
+    for _, c in pairs(FreecamConns) do pcall(function() c:Disconnect() end) end
+    FreecamConns = {}
+    if enabled then
+        cam.CameraType = Enum.CameraType.Scriptable
+        local fp = Instance.new("Part"); fp.Anchored=true; fp.CanCollide=false
+        fp.Transparency=1; fp.Size=Vector3.one; fp.CFrame=cam.CFrame; fp.Parent=workspace
+        FreecamPart = fp; cam.CFrame = fp.CFrame
+        local keys = {}
+        local c1 = S.UI.InputBegan:Connect(function(i,gp) if not gp then keys[i.KeyCode]=true end end)
+        local c2 = S.UI.InputEnded:Connect(function(i) keys[i.KeyCode]=false end)
+        local c3 = S.Run.RenderStepped:Connect(function(dt)
+            if not FreecamEnabled or not FreecamPart then return end
+            local sp = FreecamSpeed*50*dt; local cf = FreecamPart.CFrame
+            if keys[Enum.KeyCode.W] then cf=cf*CFrame.new(0,0,-sp) end
+            if keys[Enum.KeyCode.S] then cf=cf*CFrame.new(0,0,sp) end
+            if keys[Enum.KeyCode.A] then cf=cf*CFrame.new(-sp,0,0) end
+            if keys[Enum.KeyCode.D] then cf=cf*CFrame.new(sp,0,0) end
+            if keys[Enum.KeyCode.E] then cf=cf*CFrame.new(0,sp,0) end
+            if keys[Enum.KeyCode.Q] then cf=cf*CFrame.new(0,-sp,0) end
+            FreecamPart.CFrame=cf; cam.CFrame=cf
+        end)
+        local c4 = S.UI.InputChanged:Connect(function(i)
+            if i.UserInputType==Enum.UserInputType.MouseMovement and S.UI:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
+                FreecamPart.CFrame = FreecamPart.CFrame*CFrame.Angles(0,-i.Delta.X*0.005,0)*CFrame.Angles(-i.Delta.Y*0.005,0,0)
+                cam.CFrame = FreecamPart.CFrame
+            end
+        end)
+        G.FreecamConns = {c1,c2,c3,c4}
+        notify("Freecam","WASD mover | Q/E subir/descer | Btn direito+arrastar = girar",5,"solar:camera-bold")
+    else
+        cam.CameraType = Enum.CameraType.Custom
+        local hum = LP.Character and LP.Character:FindFirstChildOfClass("Humanoid")
+        if hum then cam.CameraSubject = hum end
+        if G.FreecamPart then G.FreecamPart:Destroy() G.FreecamPart = nil end
+        notify("Freecam","Desativado.",2,"x")
+    end
+end
+
+-------------------------------* Chat Commands *-------------------------------
+
+local chatPrefix = "/"
+
+local chatCommands = {
+    ["fly"] = function(args)
+        FlyEnabled = not FlyEnabled
+        toggleFly(FlyEnabled)
+        FlyToggle:Set(FlyEnabled)
+    end,
+
+    ["noclip"] = function(args)
+        NoClipEnabled = not NoClipEnabled
+        toggleNoClip(NoClipEnabled)
+        ToggleNoclip:Set(NoClipEnabled)
+    end,
+
+    ["spin"] = function(args)
+        SpinEnabled = not SpinEnabled
+        toggleSpin(SpinEnabled)
+        ToggleSpin:Set(SpinEnabled)
+    end,
+
+    ["esp"] = function(args)
+        espEnabled = not espEnabled
+        if espEnabled then
+            for _, player in ipairs(S.Players:GetPlayers()) do
+                createESP(player)
+            end
+            WindUI:Notify({Title = "ESP", Content = "Ativado via chat!", Duration = 2, Icon = "eye"})
+        else
+            removeAllESP()
+            WindUI:Notify({Title = "ESP", Content = "Desativado via chat!", Duration = 2, Icon = "x"})
+        end
+        ToggleESP:Set(espEnabled)
+    end,
+
+    ["speed"] = function(args)
+        local val = tonumber(args[1])
+        if val then
+            setSpeed(val)
+            SliderVelocidade:Set(math.clamp(val, 20, 999))
+            WindUI:Notify({Title = "Speed", Content = "Velocidade: " .. val, Duration = 2, Icon = "zap"})
+        else
+            WindUI:Notify({Title = "Speed", Content = "Uso: /speed <valor>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["jump"] = function(args)
+        local val = tonumber(args[1])
+        if val then
+            setJumpPower(val)
+            SliderJump:Set(math.clamp(val, 20, 999))
+            WindUI:Notify({Title = "Jump", Content = "Pulo: " .. val, Duration = 2, Icon = "zap"})
+        else
+            WindUI:Notify({Title = "Jump", Content = "Uso: /jump <valor>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["gravity"] = function(args)
+        local val = tonumber(args[1])
+        if val then
+            setGravity(val)
+            WindUI:Notify({Title = "Gravity", Content = "Gravidade: " .. val, Duration = 2, Icon = "zap"})
+        else
+            WindUI:Notify({Title = "Gravity", Content = "Uso: /gravity <valor>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["tp"] = function(args)
+        local name = args[1]
+        if name then
+            TeleporteToPlayer(name)
+        else
+            WindUI:Notify({Title = "TP", Content = "Uso: /tp <NomeJogador>", Duration = 3, Icon = "alert-circle"})
+        end
+    end,
+
+    ["looptp"] = function(args)
+        LoopTPEnabled = not LoopTPEnabled
+        toggleLoopTP(LoopTPEnabled)
+    end,
+
+    ["rejoin"] = function(args)
+        RejoinServer()
+    end,
+
+    ["hop"] = function(args)
+        ServerHop()
+    end,
+
+    ["faketp"] = function(args)
+        FakeTPEnabled = not FakeTPEnabled
+        toggleFakeTP(FakeTPEnabled)
+    end,
+
+    ["help"] = function(args)
+        WindUI:Notify({
+            Title = "Comandos disponíveis",
+            Content = "/fly /noclip /spin /esp /speed /jump /gravity /tp /looptp /rejoin /hop /faketp",
+            Duration = 8,
+            Icon = "info"
+        })
+    end,
+}
+
+S.Players.LocalPlayer.Chatted:Connect(function(msg)
+    msg = msg:lower()
+    if msg:sub(1, #chatPrefix) ~= chatPrefix then return end
+
+    local parts = msg:sub(#chatPrefix + 1):split(" ")
+    local cmd = parts[1]
+    local args = {}
+    for i = 2, #parts do args[#args + 1] = parts[i] end
+
+    if chatCommands[cmd] then
+        chatCommands[cmd](args)
+    end
+end)
 -------------------------------* Temas *-------------------------------
 
 WindUI:AddTheme({
@@ -2332,6 +2510,17 @@ local DestruirHub = SectionConfig:Button({
 	end
 })
 
+local ReloadScript = SectionConfig:Button({
+    Title = "Recarregar script",
+    Desc = "Recarrega o script, útil para aplicar atualizações sem precisar reiniciar o jogo.",
+    Icon = "reload",
+    Callback = function()
+        NotifySound:Play()
+        Window.Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/refs/heads/main/Source.lua", true))()
+    end
+})
+
 local SectionKeyBinds = TabSettings:Section({
     Title = "KeyBinds",
     Desc = "Aqui você pode alterar os keybinds das funções.",
@@ -3197,7 +3386,7 @@ SectionUtility:Dropdown({
     Values = playerValues,
     Value = playerValues[1],
     Callback = function(option)
-        -- CopyTargetPlayer = S.Players:FindFirstChild(option.Title)
+         CopyTargetPlayer = S.Players:FindFirstChild(option.Title)
     end
 })
 
