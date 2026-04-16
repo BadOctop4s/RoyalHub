@@ -1,7 +1,7 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 WindUI:SetNotificationLower(true)
---*updated
+--*updated3
 -------------------------------* Cores *--------------------------
 
 local Purple = Color3.fromHex("#7775F2")
