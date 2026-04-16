@@ -1237,7 +1237,6 @@ local function bypassAntiCheat(action, ...)
     -- Implementing a bypass would require detailed knowledge of the target game's anti-cheat system and is beyond the scope of this example.
 end
 
-
 -- local function coroutine.wrap(function()
 --     for _, v in ipairs(game:GetDescendants()) do
 --         if v:IsA("RemoteEvent") then
@@ -1246,6 +1245,52 @@ end
 --         task.wait()
 --     end
 -- end)()
+
+-------------------------------*Trocar SKIN*---------------------------
+
+-- Skin por UserId
+local OriginalDescription = nil
+local function applySkinByUserId(userId)
+    local numId = tonumber(userId)
+    if not numId then
+        WindUI:Notify({Title = "Skin", Content = "UserId inválido.", Duration = 3, Icon = "x"})
+        return
+    end
+    local ok, desc = pcall(function()
+        return game:GetService("Players"):GetHumanoidDescriptionFromUserId(numId)
+    end)
+    if not ok or not desc then
+        WindUI:Notify({Title = "Skin", Content = "Usuário não encontrado.", Duration = 3, Icon = "x"})
+        return
+    end
+    local char = game:GetService("Players").LocalPlayer.Character
+    local hum  = char and char:FindFirstChildOfClass("Humanoid")
+    if not hum then return end
+    -- Salva o original na primeira vez
+    if not OriginalDescription then
+        OriginalDescription = game:GetService("Players"):GetHumanoidDescriptionFromUserId(
+            game:GetService("Players").LocalPlayer.UserId
+        )
+    end
+    local ok2, err = pcall(function() hum:ApplyDescription(desc) end)
+    if ok2 then
+        WindUI:Notify({Title = "Skin", Content = "Skin do ID "..numId.." aplicada!", Duration = 3, Icon = "solar:user-bold"})
+    else
+        WindUI:Notify({Title = "Skin", Content = "Falhou: "..tostring(err), Duration = 4, Icon = "x"})
+    end
+end
+
+local function resetSkin()
+    if not OriginalDescription then
+        WindUI:Notify({Title = "Skin", Content = "Nenhuma skin aplicada.", Duration = 2, Icon = "x"})
+        return
+    end
+    local char = game:GetService("Players").LocalPlayer.Character
+    local hum  = char and char:FindFirstChildOfClass("Humanoid")
+    if not hum then return end
+    pcall(function() hum:ApplyDescription(OriginalDescription) end)
+    WindUI:Notify({Title = "Skin", Content = "Visual original restaurado!", Duration = 3, Icon = "solar:refresh-bold"})
+end
 
 -------------------------------* Temas *-------------------------------
 
@@ -3509,6 +3554,38 @@ SectionUtility:Button({
         copyPlayerLook(CopyTargetPlayer)
     end
 })
+
+SectionUtility:Space({Columns = 1})
+
+local skinInput = ""
+SectionUtility:Input({
+    Title = "Skin por UserId",
+    Desc = "Cole o UserId do jogador para copiar o outfit.",
+    Icon = "solar:user-bold",
+    Placeholder = "Ex: 123456789",
+    Callback = function(text)
+        skinInput = text
+    end
+})
+
+SectionUtility:Button({
+    Title = "Aplicar Skin",
+    Desc = "Aplica o outfit do UserId digitado.",
+    Icon = "solar:user-id-bold",
+    Callback = function()
+        applySkinByUserId(skinInput)
+    end
+})
+
+SectionUtility:Button({
+    Title = "Resetar Skin",
+    Desc = "Volta para o seu visual original.",
+    Icon = "solar:refresh-bold",
+    Callback = function()
+        resetSkin()
+    end
+})
+
 
 SectionUtility:Space({Columns = 1})
 

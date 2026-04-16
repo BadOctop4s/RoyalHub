@@ -1,8 +1,3 @@
--- ╔══════════════════════════════════════════════════════╗
--- ║           Royal Hub — Functions.lua                 ║
--- ║  Carregado pelo Source.lua via loadstring/HttpGet   ║
--- ║  Todas as funções ficam aqui para debug fácil       ║
--- ╚══════════════════════════════════════════════════════╝
 
 local S = {
     Players = game:GetService("Players"),
