@@ -1373,6 +1373,17 @@ WindUI:AddTheme({
   Button = Color3.fromHex("#010015"),
   Icon = Color3.fromHex("#4d95ff"),
 })
+WindUI:AddTheme({
+  Name = "Nightmare",
+  
+  Accent = Color3.fromHex("#1e3a8a"),
+  Background = Color3.fromHex("#6b0c0c"),
+  Outline = Color3.fromHex("#141414"),
+  Text = Color3.fromHex("#ffffff"),
+  Placeholder = Color3.fromHex("#2f74d1"),
+  Button = Color3.fromHex("#010015"),
+  Icon = Color3.fromHex("#4d95ff"),
+})
 
 -------------------------------* Notificação *-------------------------------
 
@@ -2269,6 +2280,9 @@ local DropdownTemas = SectionConfig:Dropdown({
         },
         {
             Title = "Night Fall"
+        },  
+        {
+            Title = "Nightmare"
         },
     },
     Value = "Dark Amoled ( Default )",
