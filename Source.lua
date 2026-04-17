@@ -1358,7 +1358,7 @@
     Background = Color3.fromHex("#0a0f1e"),
     Outline = Color3.fromHex("#131f55"),
     Text = Color3.fromHex("#ffffff"),
-    Placeholder = Color3.fromHex("#040661"),
+    Placeholder = Color3.fromHex("#ffffff"),
     Button = Color3.fromHex("#52525b"),
     Icon = Color3.fromHex("#000068"),
     })
@@ -1366,7 +1366,7 @@
     WindUI:AddTheme({
     Name = "Night Fall", 
     Accent = Color3.fromHex("#1e3a8a"),
-    Background = Color3.fromHex("#0a0f1e"),
+    Background = Color3.fromHex("#0c1e42"),
     Outline = Color3.fromHex("#141414"),
     Text = Color3.fromHex("#ffffff"),
     Placeholder = Color3.fromHex("#2f74d1"),
