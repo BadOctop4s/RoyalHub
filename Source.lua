@@ -2297,35 +2297,8 @@
                 Title = "RedX Hub",
             },
             {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = "",
-            },
-            {
-                Title = ",
-            },
-            {
-                Title = "" 
-        },
+                
+            
         Value = "CyberPunk",
         Callback = function(option)
             WindUI:SetTheme(option.Title)
