@@ -1277,13 +1277,13 @@ WindUI:AddTheme({
 
 WindUI:AddTheme({
   Name = "Lunar",
-  Accent = Color3.fromHex("#3a3a3a"),
-  Background = Color3.fromHex("#000000"),
-  Outline = Color3.fromHex("#b3b3b3"),
-  Text = Color3.fromHex("#e0e0e0"),
-  Placeholder = Color3.fromHex("#7a7a7a"),
-  Button = Color3.fromHex("#5c5c5c"),
-  Icon = Color3.fromHex("#444444"),
+  Accent = Color3.fromHex("#0a0f1e"),
+  Background = Color3.fromHex("#101722"),
+  Outline = Color3.fromHex("#2391ff"),
+  Text = Color3.fromHex("#ffffff"),
+  Placeholder = Color3.fromHex("#2391ff"),
+  Button = Color3.fromHex("#2563eb"),
+  Icon = Color3.fromHex("#2391ff"),
 })
 
 WindUI:AddTheme({
@@ -1306,6 +1306,72 @@ WindUI:AddTheme({
   Placeholder = Color3.fromHex("#fbbf24"),
   Button = Color3.fromHex("#d97706"),
   Icon = Color3.fromHex("#f59e0b"),
+})
+
+WindUI:AddTheme({
+  Name = "Nod Krai",
+  Accent = Color3.fromHex("#1e3a8a"),
+  Background = Color3.fromHex("#0a0f1e"),
+  Outline = Color3.fromHex("#bfdbfe"),
+  Text = Color3.fromHex("#dbeafe"), 
+  Placeholder = Color3.fromHex("#2f74d1"),
+  Button = Color3.fromHex("#2563eb"),
+  Icon = Color3.fromHex("#5591f4"),
+})
+
+WindUI:AddTheme({
+  Name = "Hoshimi",
+  Accent = Color3.fromHex("#166534"),
+  Background = Color3.fromHex("#0a1b0f"),
+  Outline = Color3.fromHex("#101010"),
+  Text = Color3.fromHex("#f0fdf4"),
+  Placeholder = Color3.fromHex("#4fbf7a"),
+  Button = Color3.fromHex("#16a34a"),
+  Icon = Color3.fromHex("#4ade80"),
+})
+
+WindUI:AddTheme({
+  Name = "Kumokiri",
+  Accent = Color3.fromHex("#991b1b"),
+  Background = Color3.fromHex("#000000"),
+  Outline = Color3.fromHex("#0a0f1e"),
+  Text = Color3.fromHex("#575656"),
+  Placeholder = Color3.fromHex("#1f1d1d"),
+  Button = Color3.fromHex("#991b1b"),
+  Icon = Color3.fromHex("#dc2626"),
+})
+
+WindUI:AddTheme({
+  Name = "Emerald",
+  Accent = Color3.fromHex("#047857"),
+  Background = Color3.fromHex("#011411"),
+  Outline = Color3.fromHex("#a7f3d0"),
+  Text = Color3.fromHex("#ecfdf5"),
+  Placeholder = Color3.fromHex("#3fbf8f"),
+  Button = Color3.fromHex("#059669"),
+  Icon = Color3.fromHex("#10b981"),
+})
+
+WindUI:AddTheme({
+  Name = "Lost At Sea",
+  Accent = Color3.fromHex("#000000"),
+  Background = Color3.fromHex("#0a0f1e"),
+  Outline = Color3.fromHex("#131f55"),
+  Text = Color3.fromHex("#ffffff"),
+  Placeholder = Color3.fromHex("#040661"),
+  Button = Color3.fromHex("#52525b"),
+  Icon = Color3.fromHex("#000068"),
+})
+
+WindUI:AddTheme({
+  Name = "Night Fall", 
+  Accent = Color3.fromHex("#1e3a8a"),
+  Background = Color3.fromHex("#0a0f1e"),
+  Outline = Color3.fromHex("#141414"),
+  Text = Color3.fromHex("#ffffff"),
+  Placeholder = Color3.fromHex("#2f74d1"),
+  Button = Color3.fromHex("#010015"),
+  Icon = Color3.fromHex("#4d95ff"),
 })
 
 -------------------------------* Notificação *-------------------------------
@@ -2185,6 +2251,24 @@ local DropdownTemas = SectionConfig:Dropdown({
         },
         {
             Title = "Startorch"
+        },
+        {
+            Title = "Nod Krai"
+        },
+        {
+            Title = "Hoshimi"
+        },
+        {
+            Title = "Kumokiri"
+        },
+        {
+            Title = "Emerald"
+        },
+        {
+            Title = "Lost At Sea"
+        },
+        {
+            Title = "Night Fall"
         },
     },
     Value = "Dark Amoled ( Default )",
