@@ -1287,17 +1287,6 @@
     })
 
     WindUI:AddTheme({
-    Name = "Indigo",
-    Accent = Color3.fromHex("#3730a3"),
-    Background = Color3.fromHex("#0f0a2e"),
-    Outline = Color3.fromHex("#c7d2fe"),
-    Text = Color3.fromHex("#f1f5f9"),
-    Placeholder = Color3.fromHex("#7078d9"),
-    Button = Color3.fromHex("#4f46e5"),
-    Icon = Color3.fromHex("#6366f1"),
-    })
-
-    WindUI:AddTheme({
     Name = "Startorch",
     Accent = Color3.fromHex("#b45309"),
     Background = Color3.fromHex("#1c1003"),
@@ -2294,9 +2283,7 @@
             },  
             {
                 Title = "Nightmare"
-            },
-            {
-                Title = "Shogun"  
+            } 
         },  
         Value = "Dark Amoled ( Default )",
         Callback = function(option)
