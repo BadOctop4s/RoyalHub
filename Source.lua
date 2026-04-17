@@ -1,7 +1,7 @@
     local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
     WindUI:SetNotificationLower(true)
-    --*updated 2.
+    --*fix.
     -------------------------------* Cores *--------------------------
 
     local Purple = Color3.fromHex("#7775F2")
@@ -2289,22 +2289,30 @@
         Title = "Temas Gradient",
         Desc = "Altera o tema do Royal Hub.",
         Flag = "temaGrad_selecionado",
-        Values = {
+        Values =
             {
                 Title = "CyberPunk",
             },  
             {
                 Title = "RedX Hub",
-            },
-            {
-                
             
-        Value = "CyberPunk",
+            local DropdownTemas = SectionConfig:Dropdown({
+        Title = "Temas Gradient",
+        Desc = "Altera o tema do Royal Hub",
+        Flag = "temaGrad_selecionado",
+        Values = {
+            {
+                Title = "Cyberpunk",
+            },
+        },
+        Value = "Cyberpunk",
         Callback = function(option)
             WindUI:SetTheme(option.Title)
         end 
 
-    })
+                
+            
+        
 
     local Keybind = SectionConfig:Keybind({
         Title = "Toggle UI",
