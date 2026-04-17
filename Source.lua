@@ -2285,10 +2285,52 @@
                 Title = "Nightmare"
             } 
         },  
-        Value = "Dark Amoled ( Default )",
+         local DropdownTemas = SectionConfig:Dropdown({
+        Title = "Temas Gradient",
+        Desc = "Altera o tema do Royal Hub.",
+        Flag = "temaGrad_selecionado",
+        Values = {
+            {
+                Title = "CyberPunk",
+            },  
+            {
+                Title = "RedX Hub",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = "",
+            },
+            {
+                Title = ",
+            },
+            {
+                Title = "" 
+        },
+        Value = "CyberPunk",
         Callback = function(option)
             WindUI:SetTheme(option.Title)
-        end
+        end 
+
     })
 
     local Keybind = SectionConfig:Keybind({
