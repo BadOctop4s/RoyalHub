@@ -2258,7 +2258,7 @@
                 Title = "Lunar",
             },
             {
-                Title = "Indigo"
+                Title = "Shogun",
             },
             {
                 Title = "Startorch"
