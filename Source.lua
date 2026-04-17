@@ -1384,6 +1384,17 @@
     Button = Color3.fromHex("#991b1b"),
     Icon = Color3.fromHex("#dc2626"),
     })
+    WindUI:AddTheme({
+  Name = "Shogun",
+  
+  Accent = Color3.fromHex("#3730a3"),
+  Background = Color3.fromHex("#1e1b4b"),
+  Outline = Color3.fromHex("#c7d2fe"),
+  Text = Color3.fromHex("#f1f5f9"),
+  Placeholder = Color3.fromHex("#7078d9"),
+  Button = Color3.fromHex("#4f46e5"),
+  Icon = Color3.fromHex("#6366f1"),
+})
 
     -------------------------------* Notificação *-------------------------------
 
@@ -2284,7 +2295,9 @@
             {
                 Title = "Nightmare"
             },
-        },
+            {
+                Title = "Shogun"  
+        },  
         Value = "Dark Amoled ( Default )",
         Callback = function(option)
             WindUI:SetTheme(option.Title)
